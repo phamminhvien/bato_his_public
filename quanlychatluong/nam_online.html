@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiếu Khảo Sát Ý Kiến Nhân Viên Y Tế - Trung tâm Y tế Ba Tơ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #9c27b0;
+            --primary-light: #f3e5f5;
+            --primary-dark: #7b1fa2;
+            --accent: #D14775;
+            --bg-gradient: linear-gradient(135deg, #F5EEF6 0%, #F9F4FA 50%, #FFFDFE 100%);
+            --card-bg: #ffffff;
+            --text-color: #352a3f;
+            --text-muted: #796c8e;
+            --border-color: #eadef0;
+            --shadow-sm: 0 2px 8px rgba(156, 39, 176, 0.05);
+            --shadow-md: 0 4px 20px rgba(156, 39, 176, 0.08);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #150f19 0%, #201526 100%);
+            --card-bg: #281d2f;
+            --text-color: #ede5f2;
+            --text-muted: #9c8db0;
+            --border-color: #3b2a42;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --primary-light: #3b1642;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto 100px auto;
+        }
+
+        /* --- Header Styles --- */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-color);
+            line-height: 1.3;
+            margin-bottom: 6px;
+        }
+
+        .header-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* --- Card Containers --- */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- Form Fields Layout --- */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .required::after {
+            content: ' *';
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 14px;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        /* --- Radio Custom Styles (Grid Select) --- */
+        .radio-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .radio-tile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            user-select: none;
+            font-size: 13px;
+            font-weight: 500;
+            flex-grow: 1;
+        }
+
+        .radio-tile:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--text-muted);
+            border-radius: 50%;
+            outline: none;
+            position: relative;
+            cursor: pointer;
+        }
+
+        input[type="radio"]:checked {
+            border-color: var(--primary);
+        }
+
+        input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary);
+            border-radius: 50%;
+        }
+
+        input[type="radio"]:checked+span,
+        .radio-tile:has(input[type="radio"]:checked) {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            font-weight: 600;
+            background: var(--primary-light);
+        }
+
+        /* --- Custom Other Input --- */
+        .other-input-container {
+            margin-top: 8px;
+            display: none;
+        }
+
+        /* --- Likert Evaluation Table/Cards --- */
+        .likert-card {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            margin-bottom: 16px;
+            background: var(--card-bg);
+        }
+
+        .likert-question {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 12px;
+        }
+
+        .likert-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .scale-options {
+            display: flex;
+            gap: 8px;
+        }
+
+        .scale-option {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            user-select: none;
+        }
+
+        .scale-option:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .scale-option.selected {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white !important;
+            box-shadow: 0 3px 10px rgba(156, 39, 176, 0.4);
+        }
+
+        .comment-field {
+            flex-grow: 1;
+            min-width: 250px;
+        }
+
+        .comment-field input {
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+        }
+
+        /* --- Dark Mode Toggle --- */
+        .theme-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-light);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- Fixed Bottom Bar --- */
+        .bottom-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 16px 24px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* --- Utility Alert Modal --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 24px 30px;
+            border-radius: var(--radius-md);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .modal-body {
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .btn-modal-close {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <button class="theme-switch" onclick="toggleTheme()" id="themeBtn">🌙 Tối</button>
+            <div class="header-subtitle">Trung tâm Y tế Ba Tơ</div>
+            <h1>PHIẾU KHẢO SÁT Ý KIẾN NHÂN VIÊN Y Tế</h1>
+            <div class="header-desc">Mẫu số 3: Đo lường sự hài lòng của nhân viên y tế đối với môi trường và điều kiện làm việc (Chu kỳ Năm)</div>
+        </header>
+
+        <form id="surveyForm" onsubmit="handleFormSubmit(event)">
+            <!-- ══════════ KHU HÀNH CHÍNH ══════════ -->
+            <div class="card">
+                <div class="section-title">📝 THÔNG TIN HÀNH CHÍNH</div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label class="required">Kiểu khảo sát</label>
+                        <div style="padding: 10px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border-color); background: #f3e5f5; color: var(--primary); font-weight: 600; font-size: 14px;">
+                            Bệnh viện tự đánh giá cuối năm
+                        </div>
+                        <input type="hidden" name="submitted[kieu_khao_sat]" value="2">
+                    </div>
+                    <div class="form-group">
+                        <label>Bệnh viện thực hiện</label>
+                        <select name="submitted[ttp][bvn][1_ten_benh_vien]">
+                            <option value="44614">Trung tâm Y tế huyện Ba Tơ - Quảng Ngãi (44614)</option>
+                        </select>
+                        <input type="hidden" name="submitted[ttp][bvn][mabv]" value="44614">
+                        <input type="hidden" name="submitted[guibyt]" value="1">
+                        <input type="hidden" name="submitted[ttp][masophieu]" value="">
+                    </div>
+                </div>
+
+                <div class="grid-2" style="margin-top: 10px;">
+                    <div class="form-group">
+                        <label class="required">Ngày khảo sát</label>
+                        <div style="display: flex; gap: 8px;">
+                            <select name="submitted[ttp][bvn][ngay_dien_phieu][day]" id="ns_day" required
+                                style="flex: 1;"></select>
+                            <select name="submitted[ttp][bvn][ngay_dien_phieu][month]" id="ns_month" required
+                                style="flex: 1;"></select>
+                            <select name="submitted[ttp][bvn][ngay_dien_phieu][year]" id="ns_year" required
+                                style="flex: 1.5;"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════ PHẦN THÔNG TIN CÁ NHÂN ══════════ -->
+            <div class="card">
+                <div class="section-title">👤 THÔNG TIN NGƯỜI ĐIỀN PHIẾU</div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label class="required">A1. Giới tính</label>
+                        <div class="radio-options">
+                            <label class="radio-tile">
+                                <input type="radio" name="submitted[thong_tin_nguoi_dien_phieu][gioi_tuoi][gioi_tinh]"
+                                    value="1" required>
+                                <span>Nam</span>
+                            </label>
+                            <label class="radio-tile">
+                                <input type="radio" name="submitted[thong_tin_nguoi_dien_phieu][gioi_tuoi][gioi_tinh]"
+                                    value="2">
+                                <span>Nữ</span>
+                            </label>
+                            <label class="radio-tile">
+                                <input type="radio" name="submitted[thong_tin_nguoi_dien_phieu][gioi_tuoi][gioi_tinh]"
+                                    value="3">
+                                <span>Khác</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>A2. Tuổi</label>
+                        <input type="number" name="submitted[thong_tin_nguoi_dien_phieu][gioi_tuoi][tuoi]" min="18"
+                            max="100" placeholder="Nhập số tuổi">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>A3. Chuyên môn đào tạo chính</label>
+                    <div class="radio-options" id="chuyenmon_opts">
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][chuyenmon][select]" value="1"
+                                onclick="toggleOtherInput('chuyenmon', false)"><span>Bác sỹ</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][chuyenmon][select]" value="2"
+                                onclick="toggleOtherInput('chuyenmon', false)"><span>Dược sỹ</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][chuyenmon][select]" value="3"
+                                onclick="toggleOtherInput('chuyenmon', false)"><span>Điều dưỡng, hộ sinh</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][chuyenmon][select]" value="4"
+                                onclick="toggleOtherInput('chuyenmon', false)"><span>Kỹ thuật viên</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][chuyenmon][select]" value="5"
+                                onclick="toggleOtherInput('chuyenmon', false)"><span>Khác</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][chuyenmon][select]" value="select_or_other"
+                                onclick="toggleOtherInput('chuyenmon', true)"><span>Khác (ghi rõ)...</span></label>
+                    </div>
+                    <div class="other-input-container" id="chuyenmon_other">
+                        <input type="text" name="submitted[thong_tin_nguoi_dien_phieu][chuyenmon][other]"
+                            placeholder="Nhập chuyên môn đào tạo chính khác">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>A4. Bằng cấp cao nhất</label>
+                    <div class="radio-options">
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][bangcap][select]" value="1"
+                                onclick="toggleOtherInput('bangcap', false)"><span>Trung cấp</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][bangcap][select]" value="2"
+                                onclick="toggleOtherInput('bangcap', false)"><span>Cao đẳng</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][bangcap][select]" value="3"
+                                onclick="toggleOtherInput('bangcap', false)"><span>Đại học</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][bangcap][select]" value="4"
+                                onclick="toggleOtherInput('bangcap', false)"><span>Cao học, CKI</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][bangcap][select]" value="5"
+                                onclick="toggleOtherInput('bangcap', false)"><span>Tiến sỹ, CKII</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][bangcap][select]" value="select_or_other"
+                                onclick="toggleOtherInput('bangcap', true)"><span>Khác (ghi rõ)...</span></label>
+                    </div>
+                    <div class="other-input-container" id="bangcap_other">
+                        <input type="text" name="submitted[thong_tin_nguoi_dien_phieu][bangcap][other]"
+                            placeholder="Nhập bằng cấp khác">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>A5. Số năm công tác trong ngành Y</label>
+                        <input type="number" step="0.5" name="submitted[thong_tin_nguoi_dien_phieu][namcongtac]"
+                            placeholder="Số năm (ví dụ: 5.5)">
+                    </div>
+                    <div class="form-group">
+                        <label>A6. Số năm công tác tại bệnh viện hiện nay</label>
+                        <input type="number" step="0.5" name="submitted[thong_tin_nguoi_dien_phieu][nambv]"
+                            placeholder="Số năm tại bệnh viện này">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>A7. Vị trí công tác hiện tại</label>
+                    <div class="radio-options">
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][vitri][select]" value="1"
+                                onclick="toggleOtherInput('vitri', false)"><span>Lãnh đạo bệnh viện</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][vitri][select]" value="2"
+                                onclick="toggleOtherInput('vitri', false)"><span>Trưởng khoa/phòng/trung tâm</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][vitri][select]" value="3"
+                                onclick="toggleOtherInput('vitri', false)"><span>Phó khoa/phòng</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][vitri][select]" value="7"
+                                onclick="toggleOtherInput('vitri', false)"><span>Điều dưỡng/Hộ sinh/KTV trưởng</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][vitri][select]" value="4"
+                                onclick="toggleOtherInput('vitri', false)"><span>Nhân viên biên chế/hợp đồng dài hạn</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][vitri][select]" value="5"
+                                onclick="toggleOtherInput('vitri', false)"><span>Hợp đồng ngắn hạn</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][vitri][select]" value="6"
+                                onclick="toggleOtherInput('vitri', false)"><span>Khác</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][vitri][select]" value="select_or_other"
+                                onclick="toggleOtherInput('vitri', true)"><span>Khác (ghi rõ)...</span></label>
+                    </div>
+                    <div class="other-input-container" id="vitri_other">
+                        <input type="text" name="submitted[thong_tin_nguoi_dien_phieu][vitri][other]"
+                            placeholder="Nhập vị trí khác">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>A8. Phạm vi hoạt động chuyên môn</label>
+                    <div class="radio-options">
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="1"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Khối hành chính</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="2"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Cận lâm sàng</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="3"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Nội</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="4"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Ngoại</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="5"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Sản</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="6"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Nhi</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="7"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Truyền nhiễm</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="8"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Chuyên khoa lẻ (Mắt, TMH, RHM...)</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="9"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Không trực tiếp KCB</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="10"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Dược</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="11"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Dự phòng</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="12"
+                                onclick="toggleOtherInput('phamvi', false)"><span>Khác</span></label>
+                        <label class="radio-tile"><input type="radio"
+                                name="submitted[thong_tin_nguoi_dien_phieu][phamvi][select]" value="select_or_other"
+                                onclick="toggleOtherInput('phamvi', true)"><span>Khác (ghi rõ)...</span></label>
+                    </div>
+                    <div class="other-input-container" id="phamvi_other">
+                        <input type="text" name="submitted[thong_tin_nguoi_dien_phieu][phamvi][other]"
+                            placeholder="Nhập phạm vi hoạt động khác">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label class="required">A9. Anh/Chị có được phân công kiêm nhiệm nhiều công việc không?</label>
+                        <div class="radio-options">
+                            <label class="radio-tile"><input type="radio"
+                                    name="submitted[thong_tin_nguoi_dien_phieu][kiemnhiem]" value="1"
+                                    required><span>Không kiêm nhiệm</span></label>
+                            <label class="radio-tile"><input type="radio"
+                                    name="submitted[thong_tin_nguoi_dien_phieu][kiemnhiem]" value="2"><span>Kiêm nhiệm 2 công việc</span></label>
+                            <label class="radio-tile"><input type="radio"
+                                    name="submitted[thong_tin_nguoi_dien_phieu][kiemnhiem]" value="3"><span>Kiêm nhiệm từ 3 công việc trở lên</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">A10. Trung bình trực mấy lần trong một tháng?</label>
+                        <input type="number" name="submitted[thong_tin_nguoi_dien_phieu][truc]" min="0" max="31"
+                            placeholder="Nhập số lần trực" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════ DỰNG CÁC PHẦN ĐÁNH GIÁ ĐỘNG ══════════ -->
+            <div id="evaluationSections"></div>
+
+            <!-- ══════════ Ý KIẾN ĐÓNG GÓP KHÁC ══════════ -->
+            <div class="card">
+                <div class="section-title">📢 Ý KIẾN HOẶC ĐỀ XUẤT KHÁC</div>
+                <div class="form-group">
+                    <label>G. Anh/Chị có ý kiến hoặc đề xuất nào khác với Bộ Y tế và lãnh đạo bệnh viện?</label>
+                    <textarea name="submitted[danh_gia][z3]" rows="4"
+                        placeholder="Nhập ý kiến đóng góp hoặc kiến nghị của Anh/Chị..."></textarea>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-bottom: 40px; color: var(--text-muted); font-size: 13px; font-weight: 500;">
+                Xin chân thành cảm ơn sự nhiệt tình cung cấp thông tin của Quý đồng nghiệp!
+            </p>
+
+            <!-- --- Nút gửi cố định ở dưới --- -->
+            <div class="bottom-action-bar">
+                <button type="submit" class="btn-submit">
+                    <span>💾 Gửi Kết Quả Khảo Sát</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- --- Modal Thông báo --- -->
+    <div class="modal" id="alertModal">
+        <div class="modal-content">
+            <div class="modal-title" id="mTitle">Thông báo</div>
+            <div class="modal-body" id="mBody">Nội dung...</div>
+            <button class="btn-modal-close" onclick="closeModal()">Đóng</button>
+        </div>
+    </div>
+
+    <script>
+        // Định nghĩa danh mục các câu hỏi khảo sát
+        const sections = [
+            {
+                code: 'a',
+                title: 'A. Sự hài lòng về môi trường làm việc',
+                questions: [
+                    { id: 'a1', text: 'A1. Phòng làm việc khang trang, sạch sẽ, thoáng mát' },
+                    { id: 'a2', text: 'A2. Trang thiết bị văn phòng, bàn ghế làm việc... đầy đủ, các thiết bị cũ, lạc hậu được thay thế kịp thời' },
+                    { id: 'a3', text: 'A3. Có bố trí phòng trực cho NVYT' },
+                    { id: 'a4', text: 'A4. Phân chia thời gian trực và làm việc ngoài giờ hành chính hợp lý' },
+                    { id: 'a5', text: 'A5. Các trang bị bảo hộ cho NVYT (quần áo, khẩu trang, găng tay..) đầy đủ, không bị cũ, nhàu nát, không bị hạn chế sử dụng' },
+                    { id: 'a6', text: 'A6. Môi trường học tập tạo điều kiện cho NVYT cập nhật kiến thức, nâng cao trình độ: thư viện, phòng đọc, tra cứu thông tin, truy cập internet...' },
+                    { id: 'a7', text: 'A7. Môi trường làm việc bảo đảm an toàn cho NVYT' },
+                    { id: 'a8', text: 'A8. Bệnh viện bảo đảm an ninh, trật tự cho NVYT làm việc' },
+                    { id: 'a9', text: 'A9. Người bệnh và người nhà có thái độ tôn trọng, hợp tác với NVYT trong quá trình điều trị' }
+                ]
+            },
+            {
+                code: 'b',
+                title: 'B. Sự hài lòng về lãnh đạo trực tiếp, đồng nghiệp',
+                questions: [
+                    { id: 'b1', text: 'B1. Lãnh đạo có năng lực xử lý, điều hành, giải quyết công việc hiệu quả' },
+                    { id: 'b2', text: 'B2. Lãnh đạo phân công công việc phù hợp với chuyên môn đào tạo của nhân viên' },
+                    { id: 'b3', text: 'B3. Lãnh đạo quan tâm, tôn trọng, đối xử bình đẳng với các NVYT' },
+                    { id: 'b4', text: 'B4. Lãnh đạo lắng nghe và tiếp thu ý kiến đóng góp NVYT' },
+                    { id: 'b5', text: 'B5. Lãnh đạo động viên, khích lệ nhân viên khi hoàn thành tốt nhiệm vụ, có tiến bộ trong công việc' },
+                    { id: 'b6', text: 'B6. Đồng nghiệp có ý thức hợp tác để hoàn thành nhiệm vụ chung' },
+                    { id: 'b7', text: 'B7. Môi trường làm việc thân thiện, đoàn kết' },
+                    { id: 'b8', text: 'B8. Đồng nghiệp chia sẻ kinh nghiệm, giúp đỡ nhau trong công việc' },
+                    { id: 'b9', text: 'B9. Đồng nghiệp quan tâm, giúp đỡ nhau trong cuộc sống' }
+                ]
+            },
+            {
+                code: 'c',
+                title: 'C. Sự hài lòng về quy chế nội bộ, tiền lương, phúc lợi',
+                questions: [
+                    { id: 'c1', text: 'C1. Các quy định, quy chế làm việc nội bộ của bệnh viện rõ ràng, thực tế và công khai' },
+                    { id: 'c2', text: 'C2. Môi trường làm việc tại khoa/phòng và bệnh viện dân chủ' },
+                    { id: 'c3', text: 'C3. Quy chế chi tiêu nội bộ công bằng, hợp lý, công khai' },
+                    { id: 'c4', text: 'C4. Việc phân phối quỹ phúc lợi công bằng, công khai' },
+                    { id: 'c5', text: 'C5. Mức lương tương xứng so với năng lực và cống hiến' },
+                    { id: 'c6', text: 'C6. Chế độ phụ cấp nghề và độc hại xứng đáng so với cống hiến' },
+                    { id: 'c7', text: 'C7. Thưởng và thu nhập tăng thêm ABC xứng đáng so với cống hiến' },
+                    { id: 'c8', text: 'C8. Cách phân chia thu nhập tăng thêm công bằng, khuyến khích nhân viên làm việc tích cực.' },
+                    { id: 'c9', text: 'C9. Bảo đảm đóng BHXH, BHYT, khám sức khỏe định kỳ và các hình thức hỗ trợ ốm đau, thai sản đầy đủ' },
+                    { id: 'c10', text: 'C10. Tổ chức tham quan, nghỉ dưỡng đầy đủ' },
+                    { id: 'c11', text: 'C11. Có phong trào thể thao, văn nghệ tích cực' },
+                    { id: 'c12', text: 'C12. Công đoàn bệnh viện hoạt động tích cực' }
+                ]
+            },
+            {
+                code: 'd',
+                title: 'D. Sự hài lòng về công việc, cơ hội học tập và thăng tiến',
+                questions: [
+                    { id: 'd1', text: 'D1. Khối lượng công việc được giao phù hợp' },
+                    { id: 'd2', text: 'D2. Công việc chuyên môn đáp ứng nguyện vọng bản thân' },
+                    { id: 'd3', text: 'D3. Bệnh viện tạo điều kiện cho NVYT nâng cao trình độ chuyên môn' },
+                    { id: 'd4', text: 'D4. Bệnh viện tạo điều kiện cho NVYT học tiếp các bậc cao hơn' },
+                    { id: 'd5', text: 'D5. Công khai các tiêu chuẩn cho các chức danh lãnh đạo' },
+                    { id: 'd6', text: 'D6. Bổ nhiệm các chức danh lãnh đạo dân chủ, công bằng' },
+                    { id: 'd7', text: 'D7. Có cơ hội thăng tiến khi nỗ lực làm việc' }
+                ]
+            },
+            {
+                code: 'e',
+                title: 'E. Sự hài lòng chung về bệnh viện',
+                questions: [
+                    { id: 'e1', text: 'E1. Cảm thấy tự hào khi được làm việc tại bệnh viện' },
+                    { id: 'e2', text: 'E2. Đạt được những thành công cá nhân khi làm việc tại bệnh viện' },
+                    { id: 'e3', text: 'E3. Tin tưởng vào sự phát triển của bệnh viện trong tương lai' },
+                    { id: 'e4', text: 'E4. Sẽ gắn bó làm việc tại khoa, phòng hiện tại lâu dài' },
+                    { id: 'e5', text: 'E5. Sẽ gắn bó làm việc tại bệnh viện lâu dài' },
+                    { id: 'e6', text: 'E6. Mức độ hài lòng nói chung về lãnh đạo bệnh viện' },
+                    { id: 'e7', text: 'E7. Tự đánh giá về mức độ hoàn thành công việc tại bệnh viện' }
+                ]
+            }
+        ];
+
+        // Khởi tạo các dropdown ngày tháng năm
+        function initDateTime() {
+            const dSelect = document.getElementById('ns_day');
+            const mSelect = document.getElementById('ns_month');
+            const ySelect = document.getElementById('ns_year');
+
+            const now = new Date();
+            const curDay = now.getDate();
+            const curMonth = now.getMonth() + 1;
+            const curYear = now.getFullYear();
+
+            for (let i = 1; i <= 31; i++) {
+                const opt = new Option(i, i);
+                if (i === curDay) opt.selected = true;
+                dSelect.add(opt);
+            }
+            for (let i = 1; i <= 12; i++) {
+                const opt = new Option(i, i);
+                if (i === curMonth) opt.selected = true;
+                mSelect.add(opt);
+            }
+            for (let i = curYear - 2; i <= curYear + 2; i++) {
+                const opt = new Option(i, i);
+                if (i === curYear) opt.selected = true;
+                ySelect.add(opt);
+            }
+        }
+
+        // Render động danh sách câu hỏi Likert
+        function renderLikertQuestions() {
+            const wrapper = document.getElementById('evaluationSections');
+
+            sections.forEach(sec => {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                const title = document.createElement('div');
+                title.className = 'section-title';
+                title.textContent = sec.title;
+                card.appendChild(title);
+
+                sec.questions.forEach(q => {
+                    const qDiv = document.createElement('div');
+                    qDiv.className = 'likert-card';
+                    qDiv.setAttribute('data-q', q.id);
+
+                    const label = document.createElement('div');
+                    label.className = 'likert-question required';
+                    label.textContent = q.text;
+                    qDiv.appendChild(label);
+
+                    const row = document.createElement('div');
+                    row.className = 'likert-row';
+
+                    // 5 point scale
+                    const scale = document.createElement('div');
+                    scale.className = 'scale-options';
+                    for (let score = 1; score <= 5; score++) {
+                        const opt = document.createElement('div');
+                        opt.className = 'scale-option';
+                        opt.textContent = score;
+                        opt.onclick = () => selectScore(q.id, score, opt);
+                        scale.appendChild(opt);
+                    }
+                    row.appendChild(scale);
+
+                    // Comment/More Textbox
+                    const commDiv = document.createElement('div');
+                    commDiv.className = 'comment-field';
+
+                    const commInput = document.createElement('input');
+                    commInput.type = 'text';
+                    commInput.name = `submitted[danh_gia][${sec.code}][${q.id}more]`;
+                    commInput.placeholder = 'Ghi nhận xét cụ thể hoặc lý do chưa hài lòng (nếu có)...';
+                    commDiv.appendChild(commInput);
+                    row.appendChild(commDiv);
+
+                    qDiv.appendChild(row);
+
+                    // Móc input ẩn để lưu điểm khi submit form
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = `submitted[danh_gia][${sec.code}][${q.id}]`;
+                    hiddenInput.id = `input_${q.id}`;
+                    hiddenInput.required = true;
+                    qDiv.appendChild(hiddenInput);
+
+                    card.appendChild(qDiv);
+                });
+
+                wrapper.appendChild(card);
+            });
+        }
+
+        // Xử lý click chọn điểm
+        function selectScore(qId, score, element) {
+            // Reset class selected của các option trong cùng câu hỏi
+            const siblings = element.parentNode.children;
+            for (let i = 0; i < siblings.length; i++) {
+                siblings[i].classList.remove('selected');
+            }
+            element.classList.add('selected');
+
+            // Lưu giá trị vào input ẩn
+            document.getElementById(`input_${qId}`).value = score;
+
+            // Xóa viền báo đỏ nếu có
+            element.closest('.likert-card').style.borderColor = '';
+        }
+
+        // Toggle input "Khác"
+        function toggleOtherInput(fieldName, show) {
+            const otherDiv = document.getElementById(`${fieldName}_other`);
+            const otherInput = otherDiv.querySelector('input');
+            if (show) {
+                otherDiv.style.display = 'block';
+                otherInput.required = true;
+                otherInput.focus();
+            } else {
+                otherDiv.style.display = 'none';
+                otherInput.required = false;
+                otherInput.value = '';
+            }
+        }
+
+        // Firebase Configuration (Thay đổi project ID ở đây)
+        const FIREBASE_PROJECT_ID = 'bato-his-survey';
+
+        // Xử lý gửi biểu mẫu và xuất JSON
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            // Kiểm tra xem tất cả các câu hỏi đánh giá đã có điểm chưa
+            let missingQuestions = [];
+            sections.forEach(sec => {
+                sec.questions.forEach(q => {
+                    const score = document.getElementById(`input_${q.id}`).value;
+                    if (!score) {
+                        missingQuestions.push(q.id);
+                        // Báo đỏ câu hỏi thiếu
+                        document.querySelector(`[data-q="${q.id}"]`).style.borderColor = 'var(--primary)';
+                    }
+                });
+            });
+
+            if (missingQuestions.length > 0) {
+                const firstMissing = document.querySelector(`[data-q="${missingQuestions[0]}"]`);
+                if (firstMissing) {
+                    firstMissing.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                showModal('Lỗi nhập liệu', 'Vui lòng hoàn thành điểm số đánh giá cho tất cả các câu hỏi được đánh dấu màu đỏ.');
+                return;
+            }
+
+            // Đọc campaignId từ tham số URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const campaignId = urlParams.get('campaignId') || '';
+
+            // Tạo payload
+            const formData = new FormData(document.getElementById('surveyForm'));
+            const jsonResult = {};
+
+            // Đổ toàn bộ form data vào json
+            formData.forEach((value, key) => {
+                jsonResult[key] = value;
+            });
+
+            // Bổ sung các giá trị mặc định của Drupal Drupal Webform
+            jsonResult['details[page_num]'] = '1';
+            jsonResult['details[page_count]'] = '1';
+            jsonResult['details[finished]'] = '0';
+            jsonResult['form_id'] = 'webform_client_form_1468';
+            jsonResult['op'] = 'Gửi đi';
+
+            // Tạo hàm tải file JSON dự phòng (fallback)
+            const fallbackDownload = () => {
+                const timestamp = new Date().toISOString().replace(/T/, '_').replace(/\..+/, '').replace(/:/g, '-');
+                const filename = `KhaoSat_NVYT_Nam_${timestamp}.json`;
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonResult, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", filename);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+            };
+
+            if (!campaignId) {
+                showModal('Lỗi gửi phiếu', 'Không tìm thấy thông tin Đợt khảo sát (campaignId) trong liên kết QR. Biểu mẫu sẽ tự động tải file JSON xuống điện thoại để gửi thủ công.');
+                fallbackDownload();
+                return;
+            }
+
+            // Chuẩn bị payload gửi Firestore
+            const firestorePayload = {
+                fields: {
+                    campaignId: { stringValue: campaignId },
+                    jsonData: { stringValue: JSON.stringify(jsonResult) },
+                    createdAt: { timestampValue: new Date().toISOString() }
+                }
+            };
+
+            // Hiển thị trạng thái đang gửi
+            const submitBtn = document.querySelector('.btn-submit');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>⏳ Đang gửi kết quả...</span>';
+
+            // Gửi qua Firebase REST API
+            const url = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/survey_responses`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(firestorePayload)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Lỗi phản hồi từ server');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showModal('Gửi thành công', 'Ý kiến khảo sát của bạn đã được gửi trực tuyến ẩn danh thành công. Xin chân thành cảm ơn!');
+                submitBtn.innerHTML = '<span>✅ Đã Gửi Thành Công</span>';
+                submitBtn.style.background = 'linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)';
+            })
+            .catch(error => {
+                console.error('Error submitting survey:', error);
+                showModal('Gửi thất bại', 'Không thể kết nối đến máy chủ. Hệ thống sẽ tự động tải file JSON khảo sát xuống điện thoại để bạn gửi thủ công cho quản trị viên.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+                fallbackDownload();
+            });
+        }
+
+        // Modal
+        function showModal(title, body) {
+            document.getElementById('mTitle').textContent = title;
+            document.getElementById('mBody').textContent = body;
+            document.getElementById('alertModal').classList.add('active');
+        }
+
+        // Modal close
+        function closeModal() {
+            document.getElementById('alertModal').classList.remove('active');
+        }
+
+        // Dark/Light Mode
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeBtn');
+            const currentTheme = body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                body.removeAttribute('data-theme');
+                btn.textContent = '🌙 Tối';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                btn.textContent = '☀️ Sáng';
+            }
+        }
+
+        // Khởi chạy khi load trang
+        window.onload = () => {
+            initDateTime();
+            renderLikertQuestions();
+        };
+    </script>
+</body>
+
+</html>
