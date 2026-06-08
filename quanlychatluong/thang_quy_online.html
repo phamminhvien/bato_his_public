@@ -924,7 +924,7 @@
         }
 
         // Firebase Configuration (Thay đổi project ID ở đây)
-        const FIREBASE_PROJECT_ID = 'bato-his-survey';
+        const FIREBASE_PROJECT_ID = 'bato-his';
 
         // Xử lý gửi biểu mẫu và xuất JSON
         function handleFormSubmit(e) {
@@ -1023,7 +1023,8 @@
                 return response.json();
             })
             .then(data => {
-                showModal('Gửi thành công', 'Ý kiến khảo sát của bạn đã được gửi trực tuyến ẩn danh thành công. Xin chân thành cảm ơn!');
+                showModal('Gửi thành công!',
+                    'Cảm ơn bạn đã dành thời gian tham gia khảo sát. Những ý kiến đóng góp của bạn là nguồn động lực giúp chúng tôi không ngừng nâng cao chất lượng dịch vụ. Kính chúc bạn cùng gia đình luôn mạnh khỏe, hạnh phúc và bình an.');
                 submitBtn.innerHTML = '<span>✅ Đã Gửi Thành Công</span>';
                 submitBtn.style.background = 'linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)';
             })
