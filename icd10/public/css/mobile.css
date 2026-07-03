@@ -43,6 +43,10 @@
     display: none; /* Hide dept badge on mobile to save space */
   }
 
+  .legend-container {
+    display: none; /* Hide legend on mobile to save space */
+  }
+
   .mobile-toggle {
     display: block;
   }
