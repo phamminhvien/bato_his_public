@@ -82,7 +82,4 @@
   color: var(--danger-color);
 }
 
-/* Hide legend container natively now that we have dropdown */
-.legend-container {
-  display: none !important;
-}
+/* The legend container is now visible again */

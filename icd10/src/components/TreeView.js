@@ -75,6 +75,13 @@ export class TreeView {
       return matchesQuery && matchesFilter;
     });
 
+    // Update search count badge
+    const searchCountEl = document.getElementById('search-count');
+    if (searchCountEl) {
+      searchCountEl.textContent = results.length;
+      searchCountEl.style.display = 'block';
+    }
+
     if (!this.virtualScroll) {
       this.virtualScroll = new VirtualScroll(this.container, {
         itemHeight: 65,
@@ -89,6 +96,12 @@ export class TreeView {
     this.container.innerHTML = '';
     const { chapters } = state;
     
+    // Hide search count badge
+    const searchCountEl = document.getElementById('search-count');
+    if (searchCountEl) {
+      searchCountEl.style.display = 'none';
+    }
+
     if (!chapters || chapters.length === 0) return;
 
     const fragment = document.createDocumentFragment();

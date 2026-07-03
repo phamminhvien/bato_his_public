@@ -49,6 +49,8 @@
     <main class="main-content">
       <div class="search-bar-container">
         <div class="search-wrapper">
+          <!-- Total count badge -->
+          <div id="search-count" class="badge" style="background-color: #6c757d; margin-left: 10px; display: none;">0</div>
           <!-- Active filter badge (shown inside the input area visually) -->
           <div id="active-filter" class="active-filter hidden">
             <span id="active-filter-text" class="badge"></span>
@@ -67,6 +69,15 @@
               <li data-filter="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"><span class="badge badge-blue">Các mã bệnh chỉ có hoặc chủ yếu có ở nam giới</span></li>
             </ul>
           </div>
+        </div>
+        
+        <div class="legend-container">
+          <span class="badge badge-red">Mã không được dùng làm bệnh chính</span>
+          <span class="badge badge-orange">Mã không khuyến khích dùng làm bệnh chính</span>
+          <span class="badge badge-brown">Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn</span>
+          <span class="badge badge-purple">Chỉ sử dụng mã hóa nguyên nhân tử vong</span>
+          <span class="badge badge-pink">Các mã bệnh chỉ có hoặc chủ yếu có ở nữ giới</span>
+          <span class="badge badge-blue">Các mã bệnh chỉ có hoặc chủ yếu có ở nam giới</span>
         </div>
       </div>
       <div class="tree-container" id="tree-content">
