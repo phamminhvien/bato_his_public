@@ -31,7 +31,7 @@ class App {
     }
 
     // 2. Initialize UI Components
-    this.sidebar = new Sidebar('sidebar-content');
+    this.sidebar = new Sidebar('sidebar-chapters');
     this.treeView = new TreeView('tree-content');
     this.selectedList = new SelectedList('selected-content', 'selected-count', 'progress-fill');
     this.toolbar = new Toolbar('footer-content');
