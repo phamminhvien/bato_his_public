@@ -44,15 +44,30 @@
   padding: 4px 8px;
 }
 
-/* Active Filter Badge inside Input */
-.active-filter {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
+/* Search Wrapper as Flex Container */
+.search-wrapper {
   display: flex;
   align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
   background: white;
+  position: relative;
+}
+.search-wrapper:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--secondary-color);
+}
+.search-input {
+  flex: 1;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent;
+}
+
+/* Active Filter Badge */
+.active-filter {
+  display: flex;
+  align-items: center;
   padding-left: 10px;
 }
 .clear-filter-btn {
@@ -65,11 +80,6 @@
 }
 .clear-filter-btn:hover {
   color: var(--danger-color);
-}
-
-/* Adjust input padding when filter is active to prevent text overlap */
-.search-wrapper.has-filter .search-input {
-  padding-right: 250px; /* Make room for the badge */
 }
 
 /* Hide legend container natively now that we have dropdown */
