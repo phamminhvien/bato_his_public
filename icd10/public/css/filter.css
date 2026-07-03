@@ -22,6 +22,10 @@
 .legend-badge {
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: normal; /* Allow long badges to wrap to next line */
+  text-align: left;
+  line-height: 1.4;
+  margin-bottom: 5px;
 }
 .legend-badge:hover {
   transform: scale(1.05);
