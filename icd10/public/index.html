@@ -40,9 +40,17 @@
 
     <!-- Main Content (Tree / Search) -->
     <main class="main-content">
-      <div class="search-bar-container">
-        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm ICD theo mã, tên tiếng Việt, tiếng Anh (không dấu)..." />
-      </div>
+        <div class="search-bar-container">
+          <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm theo mã, tên bệnh (tiếng Việt không dấu)..." />
+          <div class="legend-container">
+            <span class="badge badge-red">Mã không được dùng làm bệnh chính</span>
+            <span class="badge badge-orange">Mã không khuyến khích dùng làm bệnh chính</span>
+            <span class="badge badge-brown">Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn</span>
+            <span class="badge badge-purple">Chỉ sử dụng mã hóa nguyên nhân tử vong</span>
+            <span class="badge badge-pink">Các mã bệnh chỉ có hoặc chủ yếu có ở nữ giới</span>
+            <span class="badge badge-blue">Các mã bệnh chỉ có hoặc chủ yếu có ở nam giới</span>
+          </div>
+        </div>
       <div class="tree-container" id="tree-content">
         <!-- Tree View or Search Results render here -->
       </div>
