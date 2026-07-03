@@ -143,14 +143,16 @@ body {
   width: 20px;
   text-align: center;
   margin-right: 5px;
-  color: var(--text-muted);
+  color: var(--text-main);
   font-family: monospace;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 .icd-item {
   display: flex;
   align-items: flex-start;
   padding: 6px 0;
-  margin-left: 25px;
+  margin-left: 45px;
   border-bottom: 1px dashed var(--border-color);
 }
 .icd-item:hover {
