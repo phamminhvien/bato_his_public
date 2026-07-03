@@ -105,11 +105,41 @@ export class TreeView {
   renderGroups(block) {
     const fragment = document.createDocumentFragment();
     block.groups.forEach(group => {
+      // Find parent code (matches group id)
+      const parentCodeIndex = group.codes.findIndex(c => c.MA_BENH === group.id);
+      let parentCode = null;
+      let hasDetailWarning = false;
+      
+      if (parentCodeIndex !== -1) {
+        parentCode = group.codes[parentCodeIndex];
+        hasDetailWarning = !!parentCode["MA_KHONG_ĐUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"];
+      }
+
+      // TH2: If the group has only 1 code (no detailed codes)
+      if (group.codes.length === 1) {
+        const codeEl = this.createIcdElement(group.codes[0]);
+        codeEl.style.marginLeft = '20px'; // Align with group headers
+        fragment.appendChild(codeEl);
+        return; // Skip rendering group wrapper
+      }
+
+      // TH1: If there are detailed codes and parent has the warning
+      let codesToRender = group.codes;
+      let extraHtml = '';
+
+      if (hasDetailWarning && group.codes.length > 1) {
+        // Move warning to group header
+        extraHtml = `<span class="badge badge-brown" style="margin-left:8px;" title="Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn">Cần mã chi tiết hơn</span>`;
+        // Hide parent code from the list
+        codesToRender = group.codes.filter(c => c.MA_BENH !== group.id);
+      }
+
       const groupEl = this.createNode(
         `group-${group.id}`, 
         `Nhóm ${group.id}: ${group.name}`, 
-        () => this.renderCodes(group.codes),
-        { codes: group.codes }
+        () => this.renderCodes(codesToRender),
+        { codes: codesToRender },
+        extraHtml
       );
       fragment.appendChild(groupEl);
     });
@@ -124,7 +154,7 @@ export class TreeView {
     return fragment;
   }
 
-  createNode(id, text, getChildrenFunc, groupData = null) {
+  createNode(id, text, getChildrenFunc, groupData = null, extraHtml = '') {
     const el = document.createElement('div');
     el.className = 'tree-node';
     el.id = id;
@@ -138,7 +168,7 @@ export class TreeView {
       checkboxHtml = `<input type="checkbox" class="group-checkbox" style="margin-right:8px;" ${allSelected ? 'checked' : ''} title="Chọn tất cả mã trong nhóm này" />`;
     }
     
-    header.innerHTML = `<span class="toggle-icon">+</span> ${checkboxHtml} <span class="node-text">${text}</span>`;
+    header.innerHTML = `<span class="toggle-icon">+</span> ${checkboxHtml} <span class="node-text">${text}</span> ${extraHtml}`;
     
     const childrenContainer = document.createElement('div');
     childrenContainer.className = 'tree-node-children hidden';
