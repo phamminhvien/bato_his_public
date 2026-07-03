@@ -2,19 +2,23 @@ import { store, actions } from '../state/store.js';
 
 export class Sidebar {
   constructor(containerId) {
-    this.container = document.getElementById(containerId);
+    this.container = document.getElementById(containerId) || document.getElementById('sidebar-content');
     this.isRendered = false;
-    this.render();
+    
+    if (this.container) {
+      this.render();
+    }
     
     // Subscribe to state changes (if we need to highlight active chapter)
     store.subscribe((state) => {
-      if (state.chapters && state.chapters.length > 0 && !this.isRendered) {
+      if (state.chapters && state.chapters.length > 0 && !this.isRendered && this.container) {
         this.render();
       }
     });
   }
 
   render() {
+    if (!this.container) return;
     const { chapters } = store.getState();
     this.container.innerHTML = '';
     
