@@ -32,12 +32,22 @@
     justify-content: space-between;
     padding: 0 10px;
   }
-  .header h1 {
+  .header-titles {
+    margin: 0 10px;
+    overflow: hidden;
+  }
+  .header-titles h1 {
     font-size: 1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin: 0 10px;
+    margin: 0;
+  }
+  .header-titles .subtitle {
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .header .dept-badge {
     display: none; /* Hide dept badge on mobile to save space */

@@ -50,9 +50,19 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   z-index: 10;
 }
-.header h1 {
+.header-titles {
+  display: flex;
+  flex-direction: column;
+}
+.header-titles h1 {
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+}
+.header-titles .subtitle {
+  font-size: 0.85rem;
+  opacity: 0.9;
 }
 .header .dept-badge {
   margin-left: auto;
