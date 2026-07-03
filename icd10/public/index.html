@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lựa chọn Danh mục ICD-10</title>
+  <link rel="stylesheet" href="./css/style.css">
+  
+  <!-- SheetJS for Export/Import -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+  <!-- Import Maps for ES Modules -->
+  <script type="importmap">
+    {
+      "imports": {
+        "firebase/app": "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js",
+        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  
+  <div id="loader" class="loader-overlay">
+    <div class="loader-text">Đang tải dữ liệu, vui lòng chờ...</div>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- Header -->
+    <header class="header">
+      <h1>Hệ thống Chọn Danh mục ICD-10 (Thông tư 06/2026/TT-BYT)</h1>
+      <div id="dept-name" class="dept-badge">Khoa: ...</div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar-content">
+      <!-- Chapters render here -->
+    </aside>
+
+    <!-- Main Content (Tree / Search) -->
+    <main class="main-content">
+      <div class="search-bar-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm ICD theo mã, tên tiếng Việt, tiếng Anh (không dấu)..." />
+      </div>
+      <div class="tree-container" id="tree-content">
+        <!-- Tree View or Search Results render here -->
+      </div>
+    </main>
+
+    <!-- Right Sidebar (Selected) -->
+    <aside class="rightbar">
+      <div class="rightbar-header">
+        <span>Đã chọn</span>
+        <span id="selected-count">0 / 0 ICD</span>
+      </div>
+      <div class="search-bar-container" style="padding: 10px; border-bottom: 1px solid var(--border-color);">
+        <input type="text" id="selected-search" class="search-input" style="padding: 5px; font-size: 0.9rem;" placeholder="Lọc nhanh đã chọn..." />
+      </div>
+      <div class="selected-list" id="selected-content">
+        <!-- Selected items render here -->
+      </div>
+      
+      <div style="padding: 10px; border-top: 1px solid var(--border-color);">
+        <div class="progress-text">Tiến độ danh mục</div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Footer Toolbar -->
+    <footer class="footer" id="footer-content">
+      <!-- Buttons render here -->
+    </footer>
+
+  </div>
+
+  <!-- Main App Entry -->
+  <script type="module" src="../src/pages/App.js"></script>
+</body>
+</html>

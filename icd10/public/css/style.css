@@ -1,0 +1,312 @@
+:root {
+  --primary-color: #0056b3;
+  --primary-hover: #004494;
+  --secondary-color: #e3f2fd;
+  --text-main: #333333;
+  --text-muted: #666666;
+  --bg-main: #f5f7fa;
+  --bg-panel: #ffffff;
+  --border-color: #dee2e6;
+  --danger-color: #dc3545;
+  --success-color: #28a745;
+  
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  height: 100vh;
+  overflow: hidden; /* Prevent body scroll, layout handles it */
+}
+
+/* Layout */
+.app-container {
+  display: grid;
+  grid-template-columns: 250px 1fr 300px;
+  grid-template-rows: 60px calc(100vh - 120px) 60px;
+  grid-template-areas: 
+    "header header header"
+    "sidebar main rightbar"
+    "footer footer footer";
+  height: 100vh;
+}
+
+/* Header */
+.header {
+  grid-area: header;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.header .dept-badge {
+  margin-left: auto;
+  background: rgba(255,255,255,0.2);
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* Sidebar (Chapters) */
+.sidebar {
+  grid-area: sidebar;
+  background-color: var(--bg-panel);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  padding: 10px 0;
+}
+.chapter-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--secondary-color);
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.chapter-item:hover, .chapter-item.active {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+/* Main Content (Tree View) */
+.main-content {
+  grid-area: main;
+  background-color: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+}
+
+.search-bar-container {
+  padding: 15px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-color);
+}
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+}
+.search-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--secondary-color);
+}
+
+.tree-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  position: relative; /* for virtual scroll */
+}
+
+/* Tree Nodes */
+.tree-node {
+  margin-left: 20px;
+}
+.tree-node-header {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  cursor: pointer;
+}
+.tree-node-header:hover {
+  background-color: #f1f3f5;
+}
+.toggle-icon {
+  width: 20px;
+  text-align: center;
+  margin-right: 5px;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+.icd-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 6px 0;
+  margin-left: 25px;
+  border-bottom: 1px dashed var(--border-color);
+}
+.icd-item:hover {
+  background-color: #fff;
+}
+.icd-checkbox {
+  margin-right: 10px;
+  margin-top: 4px;
+}
+.icd-info {
+  flex: 1;
+}
+.icd-code {
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-right: 10px;
+}
+.icd-name {
+  font-size: 0.95rem;
+}
+.icd-en {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+/* Virtual Scroll Classes */
+.virtual-scroll-viewport {
+  overflow-y: auto;
+  height: 100%;
+  position: relative;
+}
+.virtual-scroll-spacer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.virtual-scroll-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Rightbar (Selected Items) */
+.rightbar {
+  grid-area: rightbar;
+  background-color: var(--bg-panel);
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+.rightbar-header {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.selected-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+.selected-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  margin-bottom: 5px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.selected-item .remove-btn {
+  background: none;
+  border: none;
+  color: var(--danger-color);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 5px;
+}
+.selected-item .remove-btn:hover {
+  opacity: 0.7;
+}
+
+/* Footer (Toolbar) */
+.footer {
+  grid-area: footer;
+  background-color: var(--bg-panel);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 10px;
+}
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+.btn:hover {
+  opacity: 0.9;
+}
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+.btn-success {
+  background-color: var(--success-color);
+  color: white;
+}
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+/* Progress Bar */
+.progress-container {
+  flex: 1;
+  margin: 0 20px;
+}
+.progress-text {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  text-align: right;
+  color: var(--text-muted);
+}
+.progress-bar-bg {
+  height: 8px;
+  background-color: var(--secondary-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--success-color);
+  width: 0%;
+  transition: width 0.3s;
+}
+
+/* Hidden class */
+.hidden {
+  display: none !important;
+}
+
+/* Loader */
+.loader-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.loader-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}

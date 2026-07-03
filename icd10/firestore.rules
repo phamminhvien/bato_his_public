@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Cho phép đọc/ghi vào collection departmentSelections
+    // Chú ý: Vì yêu cầu là không cần đăng nhập (Option 1) nên rule này mở cho public.
+    // Nếu triển khai thực tế, bạn nên áp dụng Authentication hoặc giới hạn domain nguồn.
+    match /departmentSelections/{departmentId} {
+      allow read, write: if true;
+    }
+  }
+}
