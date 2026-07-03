@@ -36,17 +36,19 @@ class App {
     this.selectedList = new SelectedList('selected-content', 'selected-count', 'progress-fill');
     this.toolbar = new Toolbar('footer-content');
 
-    // 3. Setup Search Input
     const searchInput = document.getElementById('search-input');
     searchInput.addEventListener('input', debounce((e) => {
       actions.setSearchQuery(e.target.value);
     }, 300));
 
-    // 4. Load Data
+    // 4. Setup Mobile Menu
+    this.setupMobileMenu();
+
+    // 5. Load Data
     const { flatData, chapters } = await IcdService.loadData();
     actions.setIcdData(flatData, chapters);
 
-    // 5. Load existing selections from Firebase if department is set
+    // 6. Load existing selections from Firebase if department is set
     if (dept) {
       try {
         const selected = await FirebaseService.loadSelections(dept);
@@ -61,10 +63,12 @@ class App {
       }
     }
 
-    // 6. Cập nhật giao diện khi dữ liệu thay đổi
+    // 7. Cập nhật giao diện khi dữ liệu thay đổi
     // (Bỏ auto-save để lưu thủ công qua nút Lưu trên Toolbar)
     store.subscribe((state) => {
-      // Các component tự subscribe vào store để cập nhật UI rồi
+      // Cập nhật số lượng trên mobile header
+      const countEl = document.getElementById('mobile-selected-count');
+      if (countEl) countEl.textContent = state.selectedCodes.size;
     });
 
     this.hideLoader();
@@ -76,6 +80,32 @@ class App {
 
   hideLoader() {
     document.getElementById('loader').classList.add('hidden');
+  }
+
+  setupMobileMenu() {
+    const btnSidebar = document.getElementById('btn-toggle-sidebar');
+    const btnRightbar = document.getElementById('btn-toggle-rightbar');
+    const sidebar = document.querySelector('.sidebar');
+    const rightbar = document.querySelector('.rightbar');
+    const overlay = document.getElementById('mobile-overlay');
+
+    const closeAll = () => {
+      sidebar.classList.remove('active');
+      rightbar.classList.remove('active');
+      overlay.classList.remove('active');
+    };
+
+    btnSidebar.addEventListener('click', () => {
+      sidebar.classList.add('active');
+      overlay.classList.add('active');
+    });
+
+    btnRightbar.addEventListener('click', () => {
+      rightbar.classList.add('active');
+      overlay.classList.add('active');
+    });
+
+    overlay.addEventListener('click', closeAll);
   }
 }
 

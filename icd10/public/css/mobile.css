@@ -1,0 +1,111 @@
+/* Add to the bottom of style.css */
+
+/* Mobile Toggle Buttons */
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+}
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 20;
+}
+
+/* Mobile Media Query */
+@media (max-width: 768px) {
+  .app-container {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "header"
+      "main"
+      "footer";
+  }
+
+  .header {
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+  .header h1 {
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 10px;
+  }
+  .header .dept-badge {
+    display: none; /* Hide dept badge on mobile to save space */
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+  .mobile-overlay.active {
+    display: block;
+  }
+
+  /* Sidebar Drawer */
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: -280px;
+    width: 250px;
+    height: calc(100vh - 60px);
+    z-index: 30;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+  }
+  .sidebar.active {
+    left: 0;
+  }
+
+  /* Rightbar Drawer */
+  .rightbar {
+    position: fixed;
+    top: 60px;
+    right: -320px;
+    width: 300px;
+    max-width: 90vw;
+    height: calc(100vh - 60px);
+    z-index: 30;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+  }
+  .rightbar.active {
+    right: 0;
+  }
+
+  /* Toolbar Scrolling */
+  .footer {
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: flex-start;
+    padding: 10px;
+  }
+  .footer .btn {
+    flex-shrink: 0;
+  }
+
+  /* Increase Touch Targets */
+  .tree-node-header {
+    padding: 12px 0;
+  }
+  .icd-item {
+    padding: 12px 0;
+  }
+  .icd-checkbox {
+    width: 24px;
+    height: 24px;
+    margin-right: 15px;
+  }
+  .toggle-icon {
+    width: 30px;
+    font-size: 1.5rem;
+  }
+}

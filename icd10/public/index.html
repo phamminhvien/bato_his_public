@@ -2,9 +2,10 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lựa chọn Danh mục ICD-10</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ICD-10 Selector</title>
   <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/mobile.css">
   
   <!-- SheetJS for Export/Import -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
@@ -29,8 +30,10 @@
     
     <!-- Header -->
     <header class="header">
-      <h1>Hệ thống Chọn Danh mục ICD-10 (Thông tư 06/2026/TT-BYT)</h1>
+      <button class="mobile-toggle" id="btn-toggle-sidebar">☰</button>
+      <h1>ICD-10 Thông tư 06</h1>
       <div id="dept-name" class="dept-badge">Khoa: ...</div>
+      <button class="mobile-toggle" id="btn-toggle-rightbar">🛒 <span id="mobile-selected-count">0</span></button>
     </header>
 
     <!-- Sidebar -->
@@ -81,6 +84,9 @@
     <footer class="footer" id="footer-content">
       <!-- Buttons render here -->
     </footer>
+    
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobile-overlay"></div>
 
   </div>
 
