@@ -166,6 +166,25 @@ body {
   color: var(--text-muted);
   display: block;
 }
+.icd-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.badge {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 500;
+  color: white;
+  white-space: nowrap;
+}
+.badge-red { background-color: #dc3545; }
+.badge-orange { background-color: #fd7e14; }
+.badge-purple { background-color: #6f42c1; }
+.badge-pink { background-color: #e83e8c; }
+.badge-blue { background-color: #0d6efd; }
 
 /* Virtual Scroll Classes */
 .virtual-scroll-viewport {
