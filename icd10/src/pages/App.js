@@ -112,49 +112,33 @@ class App {
 
   setupSearchFilter() {
     const searchInput = document.getElementById('search-input');
-    const dropdown = document.getElementById('filter-dropdown');
-    const searchWrapper = document.querySelector('.search-wrapper');
-    const activeFilterBadge = document.getElementById('active-filter');
-    const activeFilterText = document.getElementById('active-filter-text');
-    const clearFilterBtn = document.getElementById('clear-filter-btn');
+    const legendFilter = document.getElementById('legend-filter');
+    const legendBadges = legendFilter.querySelectorAll('.legend-badge');
 
-    // Show dropdown on focus
-    searchInput.addEventListener('focus', () => {
-      dropdown.classList.remove('hidden');
-    });
-
-    // Hide dropdown on blur with a slight delay to allow click on dropdown items
-    searchInput.addEventListener('blur', () => {
-      setTimeout(() => {
-        dropdown.classList.add('hidden');
-      }, 200);
-    });
-
-    // Handle dropdown item click
-    const filterItems = dropdown.querySelectorAll('.filter-list li');
-    filterItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const filterKey = item.getAttribute('data-filter');
-        const badgeHtml = item.innerHTML;
+    // Handle legend item click
+    legendBadges.forEach(badge => {
+      badge.addEventListener('click', () => {
+        const filterKey = badge.getAttribute('data-filter');
         
-        actions.setSearchFilter(filterKey);
-        
-        // Update UI
-        activeFilterText.innerHTML = badgeHtml;
-        activeFilterBadge.classList.remove('hidden');
-        searchWrapper.classList.add('has-filter');
-        dropdown.classList.add('hidden');
+        // If already active, deactivate it
+        if (badge.classList.contains('active-filter-badge')) {
+          badge.classList.remove('active-filter-badge');
+          actions.setSearchFilter(null);
+          
+          // Remove inactive class from all others
+          legendBadges.forEach(b => b.classList.remove('inactive-filter-badge'));
+        } else {
+          // Make this active, others inactive
+          legendBadges.forEach(b => {
+            b.classList.remove('active-filter-badge');
+            b.classList.add('inactive-filter-badge');
+          });
+          badge.classList.remove('inactive-filter-badge');
+          badge.classList.add('active-filter-badge');
+          
+          actions.setSearchFilter(filterKey);
+        }
       });
-    });
-
-    // Handle clear filter click
-    clearFilterBtn.addEventListener('click', () => {
-      actions.setSearchFilter(null);
-      
-      // Update UI
-      activeFilterBadge.classList.add('hidden');
-      searchWrapper.classList.remove('has-filter');
-      searchInput.focus();
     });
   }
 }

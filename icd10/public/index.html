@@ -51,33 +51,16 @@
         <div class="search-wrapper">
           <!-- Total count badge -->
           <div id="search-count" class="badge" style="background-color: #6c757d; margin-left: 10px; display: none;">0</div>
-          <!-- Active filter badge (shown inside the input area visually) -->
-          <div id="active-filter" class="active-filter hidden">
-            <span id="active-filter-text" class="badge"></span>
-            <button id="clear-filter-btn" class="clear-filter-btn">×</button>
-          </div>
           <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm theo mã, tên bệnh (tiếng Việt không dấu)...">
-          <!-- Dropdown that appears on focus -->
-          <div id="filter-dropdown" class="filter-dropdown hidden">
-            <div class="filter-dropdown-header">Chọn nhãn cảnh báo để lọc:</div>
-            <ul class="filter-list">
-              <li data-filter="MA_KHONG_ĐUOC_DUNG_LA_BENH_CHINH"><span class="badge badge-red">Mã không được dùng làm bệnh chính</span></li>
-              <li data-filter="MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"><span class="badge badge-orange">Mã không khuyến khích dùng làm bệnh chính</span></li>
-              <li data-filter="MA_KHONG_ĐUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"><span class="badge badge-brown">Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn</span></li>
-              <li data-filter="CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"><span class="badge badge-purple">Chỉ sử dụng mã hóa nguyên nhân tử vong</span></li>
-              <li data-filter="CAC_MA_BENH_CHI_CÓ_HOAC_CHU_YEU_CO_O_NU_GIOI"><span class="badge badge-pink">Các mã bệnh chỉ có hoặc chủ yếu có ở nữ giới</span></li>
-              <li data-filter="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"><span class="badge badge-blue">Các mã bệnh chỉ có hoặc chủ yếu có ở nam giới</span></li>
-            </ul>
-          </div>
         </div>
         
-        <div class="legend-container">
-          <span class="badge badge-red">Mã không được dùng làm bệnh chính</span>
-          <span class="badge badge-orange">Mã không khuyến khích dùng làm bệnh chính</span>
-          <span class="badge badge-brown">Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn</span>
-          <span class="badge badge-purple">Chỉ sử dụng mã hóa nguyên nhân tử vong</span>
-          <span class="badge badge-pink">Các mã bệnh chỉ có hoặc chủ yếu có ở nữ giới</span>
-          <span class="badge badge-blue">Các mã bệnh chỉ có hoặc chủ yếu có ở nam giới</span>
+        <div class="legend-container" id="legend-filter">
+          <span class="badge badge-red legend-badge" data-filter="MA_KHONG_ĐUOC_DUNG_LA_BENH_CHINH">Mã không được dùng làm bệnh chính</span>
+          <span class="badge badge-orange legend-badge" data-filter="MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH">Mã không khuyến khích dùng làm bệnh chính</span>
+          <span class="badge badge-brown legend-badge" data-filter="MA_KHONG_ĐUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON">Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn</span>
+          <span class="badge badge-purple legend-badge" data-filter="CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG">Chỉ sử dụng mã hóa nguyên nhân tử vong</span>
+          <span class="badge badge-pink legend-badge" data-filter="CAC_MA_BENH_CHI_CÓ_HOAC_CHU_YEU_CO_O_NU_GIOI">Các mã bệnh chỉ có hoặc chủ yếu có ở nữ giới</span>
+          <span class="badge badge-blue legend-badge" data-filter="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI">Các mã bệnh chỉ có hoặc chủ yếu có ở nam giới</span>
         </div>
       </div>
       <div class="tree-container" id="tree-content">
