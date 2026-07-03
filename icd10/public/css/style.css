@@ -167,7 +167,7 @@ body {
 }
 .icd-code {
   font-weight: bold;
-  color: var(--primary-color);
+  color: var(--text-main);
   margin-right: 10px;
 }
 .icd-name {
