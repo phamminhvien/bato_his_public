@@ -36,10 +36,12 @@ class App {
     this.selectedList = new SelectedList('selected-content', 'selected-count', 'progress-fill');
     this.toolbar = new Toolbar('footer-content');
 
+    // 3. Setup Search Input and Filter
     const searchInput = document.getElementById('search-input');
     searchInput.addEventListener('input', debounce((e) => {
       actions.setSearchQuery(e.target.value);
     }, 300));
+    this.setupSearchFilter();
 
     // 4. Setup Mobile Menu
     this.setupMobileMenu();
@@ -106,6 +108,54 @@ class App {
     });
 
     overlay.addEventListener('click', closeAll);
+  }
+
+  setupSearchFilter() {
+    const searchInput = document.getElementById('search-input');
+    const dropdown = document.getElementById('filter-dropdown');
+    const searchWrapper = document.querySelector('.search-wrapper');
+    const activeFilterBadge = document.getElementById('active-filter');
+    const activeFilterText = document.getElementById('active-filter-text');
+    const clearFilterBtn = document.getElementById('clear-filter-btn');
+
+    // Show dropdown on focus
+    searchInput.addEventListener('focus', () => {
+      dropdown.classList.remove('hidden');
+    });
+
+    // Hide dropdown on blur with a slight delay to allow click on dropdown items
+    searchInput.addEventListener('blur', () => {
+      setTimeout(() => {
+        dropdown.classList.add('hidden');
+      }, 200);
+    });
+
+    // Handle dropdown item click
+    const filterItems = dropdown.querySelectorAll('.filter-list li');
+    filterItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const filterKey = item.getAttribute('data-filter');
+        const badgeHtml = item.innerHTML;
+        
+        actions.setSearchFilter(filterKey);
+        
+        // Update UI
+        activeFilterText.innerHTML = badgeHtml;
+        activeFilterBadge.classList.remove('hidden');
+        searchWrapper.classList.add('has-filter');
+        dropdown.classList.add('hidden');
+      });
+    });
+
+    // Handle clear filter click
+    clearFilterBtn.addEventListener('click', () => {
+      actions.setSearchFilter(null);
+      
+      // Update UI
+      activeFilterBadge.classList.add('hidden');
+      searchWrapper.classList.remove('has-filter');
+      searchInput.focus();
+    });
   }
 }
 

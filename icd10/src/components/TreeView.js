@@ -16,8 +16,11 @@ export class TreeView {
   }
 
   handleStateChange(state) {
-    // Check if we need to switch to search mode
-    if (state.searchQuery && state.searchQuery.length >= 2) {
+    // Check if we need to switch to search mode (query >= 2 chars OR filter is active)
+    const hasQuery = state.searchQuery && state.searchQuery.length >= 2;
+    const hasFilter = !!state.searchFilter;
+    
+    if (hasQuery || hasFilter) {
       if (!this.isSearchMode) {
         this.container.innerHTML = '';
         this.isSearchMode = true;
@@ -55,8 +58,22 @@ export class TreeView {
   }
 
   renderSearchMode(state) {
-    const query = removeVietnameseTones(state.searchQuery);
-    const results = state.icdData.filter(item => item._searchIndex.includes(query));
+    const query = removeVietnameseTones(state.searchQuery || '');
+    const filterKey = state.searchFilter;
+    
+    const results = state.icdData.filter(item => {
+      let matchesQuery = true;
+      if (query.length >= 2) {
+        matchesQuery = item._searchIndex.includes(query);
+      }
+      
+      let matchesFilter = true;
+      if (filterKey) {
+        matchesFilter = !!item[filterKey];
+      }
+      
+      return matchesQuery && matchesFilter;
+    });
 
     if (!this.virtualScroll) {
       this.virtualScroll = new VirtualScroll(this.container, {

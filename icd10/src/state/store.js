@@ -32,6 +32,7 @@ export const store = new Store({
   chapters: [], // hierarchical structure
   selectedCodes: new Set(), // Set of selected ICD codes
   searchQuery: '',
+  searchFilter: null,
   isLoaded: false
 });
 
@@ -40,6 +41,7 @@ export const actions = {
   setDepartment: (id) => store.setState({ departmentId: id }),
   setIcdData: (data, chapters) => store.setState({ icdData: data, chapters, isLoaded: true }),
   setSearchQuery: (query) => store.setState({ searchQuery: query }),
+  setSearchFilter: (filterKey) => store.setState({ searchFilter: filterKey }),
   
   // Selection
   setSelectedCodes: (codesArray) => store.setState({ selectedCodes: new Set(codesArray) }),
