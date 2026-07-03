@@ -118,28 +118,27 @@ export class TreeView {
       // TH2: If the group has only 1 code (no detailed codes)
       if (group.codes.length === 1) {
         const codeEl = this.createIcdElement(group.codes[0]);
-        codeEl.style.marginLeft = '20px'; // Align with group headers
+        // Allow it to fall back to native margin-left (45px) to align with checkboxes
         fragment.appendChild(codeEl);
         return; // Skip rendering group wrapper
       }
 
       // TH1: If there are detailed codes and parent has the warning
       let codesToRender = group.codes;
-      let extraHtml = '';
+      let groupNameText = `Nhóm ${group.id}: ${group.name}`;
 
       if (hasDetailWarning && group.codes.length > 1) {
-        // Move warning to group header
-        extraHtml = `<span class="badge badge-brown" style="margin-left:8px;" title="Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn">Cần mã chi tiết hơn</span>`;
+        // Color the group text directly instead of adding a badge to reduce visual clutter
+        groupNameText = `<span style="color: #795548;" title="Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn">${groupNameText}</span>`;
         // Hide parent code from the list
         codesToRender = group.codes.filter(c => c.MA_BENH !== group.id);
       }
 
       const groupEl = this.createNode(
         `group-${group.id}`, 
-        `Nhóm ${group.id}: ${group.name}`, 
+        groupNameText, 
         () => this.renderCodes(codesToRender),
-        { codes: codesToRender },
-        extraHtml
+        { codes: codesToRender }
       );
       fragment.appendChild(groupEl);
     });
