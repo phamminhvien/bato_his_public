@@ -128,8 +128,8 @@ export class TreeView {
       let groupNameText = `Nhóm ${group.id}: ${group.name}`;
 
       if (hasDetailWarning && group.codes.length > 1) {
-        // Color the group text directly instead of adding a badge to reduce visual clutter
-        groupNameText = `<span style="color: #795548; font-weight: bold;" title="Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn">${groupNameText}</span>`;
+        // Only color and bold the group code (group.id) to reduce visual clutter
+        groupNameText = `Nhóm <span style="color: #795548; font-weight: bold;" title="Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn">${group.id}</span>: ${group.name}`;
         // Hide parent code from the list
         codesToRender = group.codes.filter(c => c.MA_BENH !== group.id);
       }
