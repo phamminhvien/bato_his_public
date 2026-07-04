@@ -6,7 +6,7 @@ export class IcdService {
    */
   static async loadData() {
     try {
-      const response = await fetch('./data/icd.json');
+      const response = await fetch('https://phamminhvien.github.io/bato_his_public_data/icd.json');
       if (!response.ok) throw new Error("Failed to load ICD data");
       
       const rawData = await response.json();
