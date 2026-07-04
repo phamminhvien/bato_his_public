@@ -65,12 +65,29 @@ class App {
       }
     }
 
-    // 7. Cập nhật giao diện khi dữ liệu thay đổi
-    // (Bỏ auto-save để lưu thủ công qua nút Lưu trên Toolbar)
+    // 7. Cập nhật giao diện và Auto-save
+    let lastSavedCodes = null;
+    const saveToFirebase = debounce(async (dept, codesSet) => {
+      try {
+        await FirebaseService.saveSelections(dept, Array.from(codesSet));
+        console.log("Auto-saved to Firebase.");
+      } catch (err) {
+        console.error("Auto-save failed", err);
+      }
+    }, 1000);
+
     store.subscribe((state) => {
       // Cập nhật số lượng trên mobile header
       const countEl = document.getElementById('mobile-selected-count');
       if (countEl) countEl.textContent = state.selectedCodes.size;
+
+      // Auto-save logic
+      if (state.autoSave && state.departmentId && state.isLoaded) {
+        if (lastSavedCodes !== state.selectedCodes) {
+          lastSavedCodes = state.selectedCodes;
+          saveToFirebase(state.departmentId, state.selectedCodes);
+        }
+      }
     });
 
     this.hideLoader();

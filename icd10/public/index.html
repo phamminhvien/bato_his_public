@@ -72,8 +72,13 @@
     <!-- Right Sidebar (Selected) -->
     <aside class="rightbar">
       <div class="rightbar-header">
-        <span>Đã chọn</span>
-        <span id="selected-count">0 / 0 ICD</span>
+        <div style="display: flex; flex-direction: column;">
+          <span>Đã chọn</span>
+          <span id="selected-count" style="font-weight: normal; font-size: 0.85rem; color: var(--text-muted);">0 / 0 ICD</span>
+        </div>
+        <button id="btn-view-details" class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem;" title="Xem chi tiết toàn màn hình">
+          🔍 Xem chi tiết
+        </button>
       </div>
       <div class="search-bar-container" style="padding: 10px; border-bottom: 1px solid var(--border-color);">
         <input type="text" id="selected-search" class="search-input" style="padding: 5px; font-size: 0.9rem;" placeholder="Lọc nhanh đã chọn..." />
@@ -98,6 +103,19 @@
     <!-- Mobile Overlay -->
     <div class="mobile-overlay" id="mobile-overlay"></div>
 
+  </div>
+
+  <!-- Detail Modal -->
+  <div id="detail-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Chi tiết Danh sách đã chọn</h2>
+        <button id="btn-close-modal" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-selected-list">
+        <!-- Selected items rendered here -->
+      </div>
+    </div>
   </div>
 
   <!-- Main App Entry -->

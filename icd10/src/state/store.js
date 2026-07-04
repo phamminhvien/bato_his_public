@@ -33,7 +33,8 @@ export const store = new Store({
   selectedCodes: new Set(), // Set of selected ICD codes
   searchQuery: '',
   searchFilter: null,
-  isLoaded: false
+  isLoaded: false,
+  autoSave: true // Auto-save enabled by default
 });
 
 // Actions
@@ -42,6 +43,7 @@ export const actions = {
   setIcdData: (data, chapters) => store.setState({ icdData: data, chapters, isLoaded: true }),
   setSearchQuery: (query) => store.setState({ searchQuery: query }),
   setSearchFilter: (filterKey) => store.setState({ searchFilter: filterKey }),
+  setAutoSave: (value) => store.setState({ autoSave: value }),
   
   // Selection
   setSelectedCodes: (codesArray) => store.setState({ selectedCodes: new Set(codesArray) }),
