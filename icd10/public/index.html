@@ -42,10 +42,10 @@
 
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div style="padding: 10px 15px; font-weight: bold; background: var(--bg-main); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+      <div class="sidebar-header">
         Quy tắc Cảnh báo
       </div>
-      <div class="legend-container" id="legend-filter" style="margin: 0 10px 10px 10px; flex-direction: column;">
+      <div class="legend-container" id="legend-filter">
         <span class="badge badge-red legend-badge" data-filter="MA_KHONG_ĐUOC_DUNG_LA_BENH_CHINH">Mã không được dùng làm bệnh chính</span>
         <span class="badge badge-orange legend-badge" data-filter="MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH">Mã không khuyến khích dùng làm bệnh chính</span>
         <span class="badge badge-brown legend-badge" data-filter="MA_KHONG_ĐUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON">Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn</span>
@@ -54,6 +54,9 @@
         <span class="badge badge-blue legend-badge" data-filter="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI">Các mã bệnh chỉ có hoặc chủ yếu có ở nam giới</span>
       </div>
       
+      <div class="sidebar-header">
+        Danh mục Chương
+      </div>
       <div id="sidebar-chapters">
         <!-- Chapters render here -->
       </div>

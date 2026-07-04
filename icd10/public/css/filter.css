@@ -22,13 +22,15 @@
 .legend-badge {
   cursor: pointer;
   transition: all 0.2s ease;
-  white-space: normal; /* Allow long badges to wrap to next line */
+  white-space: normal;
   text-align: left;
   line-height: 1.4;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
+  border-radius: 4px;
 }
 .legend-badge:hover {
-  transform: scale(1.05);
+  filter: brightness(1.1);
+  transform: translateX(4px);
 }
 .legend-badge.inactive-filter-badge {
   opacity: 0.4;
@@ -36,5 +38,6 @@
 }
 .legend-badge.active-filter-badge {
   box-shadow: 0 0 0 2px var(--text-main);
-  transform: scale(1.05);
+  transform: translateX(4px);
+  font-weight: bold;
 }
