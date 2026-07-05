@@ -63,7 +63,7 @@ export class Toolbar {
         <div class="footer-right">
           <div class="status-left">
             <div class="pulse-indicator" style="margin-right: 8px;"></div>
-            ICD-10 Selector - <strong style="color: var(--success-color); margin-left: 4px;">Trung tâm Y tế huyện Ba Tơ</strong>
+            <span>ICD-10 Selector v1.0 &copy; <a href="https://www.facebook.com/profile.php?id=61576498303401" target="_blank" style="color: var(--primary-color); text-decoration: none;" title="Trung tâm Y tế Ba Tơ"><b>Trung tâm Y tế Ba Tơ</b></a></span>
           </div>
           
           <div class="status-right" style="opacity: 0.9;">
