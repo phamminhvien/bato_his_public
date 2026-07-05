@@ -16,19 +16,49 @@ class App {
   async init() {
     this.showLoader();
     
-    // 1. Determine Department from URL
+    // 1. Determine Department from URL or LocalStorage
     const urlParams = new URLSearchParams(window.location.search);
-    const dept = urlParams.get('dept');
+    let dept = urlParams.get('dept');
     
+    if (!dept) {
+      dept = localStorage.getItem('selectedDept');
+    }
+    if (!dept && DEPARTMENTS.length > 0) {
+      dept = DEPARTMENTS[0].id;
+    }
+
+    // Populate dropdown
+    const deptSelect = document.getElementById('dept-select');
+    deptSelect.innerHTML = '';
+    DEPARTMENTS.forEach(d => {
+      const option = document.createElement('option');
+      option.value = d.id;
+      option.textContent = d.name;
+      deptSelect.appendChild(option);
+    });
+
     if (dept) {
       actions.setDepartment(dept);
-      const departmentInfo = DEPARTMENTS.find(d => d.id === dept);
-      const displayName = departmentInfo ? departmentInfo.name : dept;
-      document.getElementById('dept-name').textContent = `Khoa: ${displayName}`;
-    } else {
-      document.getElementById('dept-name').textContent = `Chưa chọn khoa`;
-      console.warn("No department specified. Use ?dept=K01 in URL.");
+      localStorage.setItem('selectedDept', dept);
+      deptSelect.value = dept;
     }
+
+    // Listen to dropdown changes
+    deptSelect.addEventListener('change', async (e) => {
+      const newDept = e.target.value;
+      actions.setDepartment(newDept);
+      localStorage.setItem('selectedDept', newDept);
+      
+      this.showLoader();
+      try {
+        actions.setSelectedCodes([]); // Clear current
+        const selected = await FirebaseService.loadSelections(newDept);
+        actions.setSelectedCodes(selected);
+      } catch (err) {
+        console.error("Error changing department:", err);
+      }
+      this.hideLoader();
+    });
 
     // 2. Initialize UI Components
     this.sidebar = new Sidebar('sidebar-chapters');
@@ -50,16 +80,11 @@ class App {
     const { flatData, chapters } = await IcdService.loadData();
     actions.setIcdData(flatData, chapters);
 
-    // 6. Load existing selections from Firebase if department is set
+    // 6. Load existing selections from Firebase for initial department
     if (dept) {
       try {
         const selected = await FirebaseService.loadSelections(dept);
         actions.setSelectedCodes(selected);
-        
-        // Listen to changes from other tabs/users in realtime (optional)
-        // FirebaseService.listenSelections(dept, (selections) => {
-        //   actions.setSelectedCodes(selections);
-        // });
       } catch (e) {
         console.error("Could not load from Firebase", e);
       }
