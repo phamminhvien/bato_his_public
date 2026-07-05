@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, onSnapshot, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { firebaseConfig } from './config.js';
 
 let app;
@@ -55,9 +55,40 @@ export class FirebaseService {
   }
 
   /**
+   * Update selections diff using arrayUnion and arrayRemove
+   * @param {string} departmentId 
+   * @param {string[]} addedCodes 
+   * @param {string[]} removedCodes 
+   */
+  static async updateSelectionDiff(departmentId, addedCodes, removedCodes) {
+    if (!db) return;
+    try {
+      const docRef = doc(db, 'ICDdepartmentSelections', departmentId);
+      
+      // Ensure document exists first by merging updatedAt
+      await setDoc(docRef, {
+        department: departmentId,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+
+      // Run arrayUnion and arrayRemove
+      if (addedCodes && addedCodes.length > 0) {
+        await setDoc(docRef, { selected: arrayUnion(...addedCodes) }, { merge: true });
+      }
+      if (removedCodes && removedCodes.length > 0) {
+        await setDoc(docRef, { selected: arrayRemove(...removedCodes) }, { merge: true });
+      }
+    } catch (error) {
+      console.error("Error updating diff in Firestore:", error);
+      throw error;
+    }
+  }
+
+  /**
    * Listen to selections (realtime)
    * @param {string} departmentId 
    * @param {Function} callback 
+   * @returns {Function} unsubscribe function
    */
   static listenSelections(departmentId, callback) {
     if (!db) return () => {};
@@ -65,7 +96,11 @@ export class FirebaseService {
     return onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         callback(docSnap.data().selected || []);
+      } else {
+        callback([]);
       }
+    }, (error) => {
+      console.error("Error listening to Firestore:", error);
     });
   }
 }

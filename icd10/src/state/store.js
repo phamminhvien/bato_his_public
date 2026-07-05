@@ -1,3 +1,5 @@
+import { FirebaseService } from '../firebase/index.js';
+
 export class Store {
   constructor(initialState = {}) {
     this.state = initialState;
@@ -48,25 +50,39 @@ export const actions = {
   // Selection
   setSelectedCodes: (codesArray) => store.setState({ selectedCodes: new Set(codesArray) }),
   toggleCode: (code, isSelected) => {
-    const current = new Set(store.getState().selectedCodes);
+    const state = store.getState();
+    const current = new Set(state.selectedCodes);
     if (isSelected) {
       current.add(code);
+      if (state.autoSave && state.departmentId) FirebaseService.updateSelectionDiff(state.departmentId, [code], []);
     } else {
       current.delete(code);
+      if (state.autoSave && state.departmentId) FirebaseService.updateSelectionDiff(state.departmentId, [], [code]);
     }
     store.setState({ selectedCodes: current });
   },
   removeCode: (code) => {
-    const current = new Set(store.getState().selectedCodes);
+    const state = store.getState();
+    const current = new Set(state.selectedCodes);
     current.delete(code);
+    if (state.autoSave && state.departmentId) FirebaseService.updateSelectionDiff(state.departmentId, [], [code]);
     store.setState({ selectedCodes: current });
   },
   toggleCodesBulk: (codesArray, isSelected) => {
-    const current = new Set(store.getState().selectedCodes);
+    const state = store.getState();
+    const current = new Set(state.selectedCodes);
+    const added = [];
+    const removed = [];
     codesArray.forEach(code => {
-      if (isSelected) current.add(code);
-      else current.delete(code);
+      if (isSelected) {
+        current.add(code);
+        added.push(code);
+      } else {
+        current.delete(code);
+        removed.push(code);
+      }
     });
+    if (state.autoSave && state.departmentId) FirebaseService.updateSelectionDiff(state.departmentId, added, removed);
     store.setState({ selectedCodes: current });
   }
 };

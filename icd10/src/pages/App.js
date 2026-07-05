@@ -87,12 +87,14 @@ class App {
     const { flatData, chapters } = await IcdService.loadData();
     actions.setIcdData(flatData, chapters);
 
-    // 6. Load existing selections from Firebase for initial department
+    // 6. Listen to real-time selections from Firebase
+    let unsubscribeSnapshot = null;
     if (dept) {
       try {
         isSwitchingDept = true;
-        const selected = await FirebaseService.loadSelections(dept);
-        actions.setSelectedCodes(selected);
+        unsubscribeSnapshot = FirebaseService.listenSelections(dept, (serverCodes) => {
+          actions.setSelectedCodes(serverCodes);
+        });
         isSwitchingDept = false;
       } catch (e) {
         console.error("Could not load from Firebase", e);
@@ -100,34 +102,21 @@ class App {
       }
     }
 
-    // 7. Cập nhật giao diện và Auto-save
-    let lastSavedCodes = null;
-    const saveToFirebase = debounce(async (dept, codesSet) => {
-      try {
-        await FirebaseService.saveSelections(dept, Array.from(codesSet));
-        console.log("Auto-saved to Firebase.");
-      } catch (err) {
-        console.error("Auto-save failed", err);
-      }
-    }, 1000);
-
+    // 7. Handle Department Changes
     store.subscribe((state) => {
       // Cập nhật số lượng trên mobile header
       const countEl = document.getElementById('mobile-selected-count');
       if (countEl) countEl.textContent = state.selectedCodes.size;
 
-      // Do not auto-save if we are currently switching departments/loading
-      if (isSwitchingDept) {
-        lastSavedCodes = state.selectedCodes;
-        return;
-      }
-
-      // Auto-save logic
-      if (state.autoSave && state.departmentId && state.isLoaded) {
-        if (lastSavedCodes !== state.selectedCodes) {
-          lastSavedCodes = state.selectedCodes;
-          saveToFirebase(state.departmentId, state.selectedCodes);
-        }
+      // Handle subscription change when department changes
+      if (state.departmentId && state.departmentId !== dept) {
+        dept = state.departmentId;
+        if (unsubscribeSnapshot) unsubscribeSnapshot();
+        isSwitchingDept = true;
+        unsubscribeSnapshot = FirebaseService.listenSelections(dept, (serverCodes) => {
+          actions.setSelectedCodes(serverCodes);
+        });
+        isSwitchingDept = false;
       }
     });
 
