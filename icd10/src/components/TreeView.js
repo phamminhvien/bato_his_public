@@ -61,8 +61,19 @@ export class TreeView {
       const codesStr = cb.getAttribute('data-codes');
       if (codesStr) {
         const codes = codesStr.split(',');
-        const allSelected = codes.length > 0 && codes.every(c => state.selectedCodes.has(c));
-        cb.checked = allSelected;
+        const total = codes.length;
+        const selectedCount = codes.filter(c => state.selectedCodes.has(c)).length;
+        
+        if (selectedCount === 0) {
+          cb.checked = false;
+          cb.indeterminate = false;
+        } else if (selectedCount === total) {
+          cb.checked = true;
+          cb.indeterminate = false;
+        } else {
+          cb.checked = false;
+          cb.indeterminate = true;
+        }
       }
     });
   }
@@ -203,7 +214,9 @@ export class TreeView {
     
     let checkboxHtml = '';
     if (groupData) {
-      const allSelected = groupData.codes.length > 0 && groupData.codes.every(c => store.getState().selectedCodes.has(c.id));
+      const total = groupData.codes.length;
+      const selectedCount = groupData.codes.filter(c => store.getState().selectedCodes.has(c.id)).length;
+      const allSelected = total > 0 && selectedCount === total;
       const codesList = groupData.codes.map(c => c.id).join(',');
       checkboxHtml = `<input type="checkbox" class="group-checkbox" data-codes="${codesList}" style="margin-right:8px;" ${allSelected ? 'checked' : ''} title="Chọn tất cả mã trong nhóm này" />`;
     }
@@ -218,6 +231,13 @@ export class TreeView {
     // Group checkbox logic
     if (groupData) {
       const groupCb = header.querySelector('.group-checkbox');
+      
+      const total = groupData.codes.length;
+      const selectedCount = groupData.codes.filter(c => store.getState().selectedCodes.has(c.id)).length;
+      if (selectedCount > 0 && selectedCount < total) {
+        groupCb.indeterminate = true;
+      }
+      
       groupCb.addEventListener('click', (e) => {
         e.stopPropagation(); // prevent expand/collapse
       });
