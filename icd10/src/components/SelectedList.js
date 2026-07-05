@@ -269,7 +269,7 @@ export class SelectedList {
 
       // Filter by warning
       if (this.modalWarningFilter) {
-        const hasAnyWarning = 
+        const hasAnyWarning =
           item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"] ||
           item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"] ||
           item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"] ||
@@ -300,7 +300,7 @@ export class SelectedList {
     const statsEl = document.getElementById('modal-stats');
     if (statsEl) {
       const total = rowData.length;
-      const warningCount = rowData.filter(item => 
+      const warningCount = rowData.filter(item =>
         item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"] ||
         item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"] ||
         item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"] ||
@@ -314,10 +314,10 @@ export class SelectedList {
     // Update Title
     const titleEl = document.getElementById('modal-title');
     if (titleEl) {
-      const depName = state.departmentId ? 
-         (DEPARTMENTS.find(d => d.id === state.departmentId)?.name || state.departmentId)
-         : 'Tất cả';
-      titleEl.textContent = `Danh mục ICD-10 [${depName}]`;
+      const depName = state.departmentId ?
+        (DEPARTMENTS.find(d => d.id === state.departmentId)?.name || state.departmentId)
+        : 'Tất cả';
+      titleEl.textContent = `Danh mục ICD-10 ${depName}`;
     }
 
     // 3. Sort Data
