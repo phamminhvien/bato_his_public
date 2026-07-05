@@ -62,7 +62,7 @@ export const actions = {
   setLeaderboard: (data) => store.setState({ leaderboard: data }),
   
   // Selection
-  setSelectedCodes: (codes, metadata = {}) => store.setState({ selectedCodes: new Set(codes), selectedMetadata: metadata }),
+  setSelectedCodes: (codes, metadata = {}, removedMetadata = {}) => store.setState({ selectedCodes: new Set(codes), selectedMetadata: metadata, removedMetadata: removedMetadata }),
   setUserInfo: (user) => store.setState({ currentUser: user }),
   toggleCode: (code, isSelected) => {
     const state = store.getState();

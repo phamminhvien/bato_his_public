@@ -63,40 +63,53 @@ export class TreeView {
       const icdItem = cb.closest('.icd-item');
       if (icdItem) {
         let badge = icdItem.querySelector('.user-blame-badge');
-        if (isChecked) {
-          const metadata = state.selectedMetadata[cb.value];
-          if (metadata && (metadata.name || metadata.displayName)) {
-            const nameToUse = metadata.displayName || metadata.name;
-            const displayStr = nameToUse.split('@')[0];
-            if (!badge) {
-              badge = document.createElement('span');
-              badge.className = 'user-blame-badge';
-              icdItem.appendChild(badge);
-              
-              // Animate addition always
-              icdItem.classList.add('shake');
-              setTimeout(() => icdItem.classList.remove('shake'), 400);
-              badge.classList.add('flash-active');
-              setTimeout(() => badge.classList.remove('flash-active'), 3000);
-            }
-            badge.textContent = `👤 ${displayStr}`;
-            badge.title = `Được chọn bởi: ${metadata.email}`;
-          } else if (badge && !badge.classList.contains('removing')) {
-            badge.remove();
+        let metadata = null;
+        let isRemoved = false;
+        
+        if (isChecked && state.selectedMetadata[cb.value]) {
+          metadata = state.selectedMetadata[cb.value];
+        } else if (!isChecked && state.removedMetadata && state.removedMetadata[cb.value]) {
+          metadata = state.removedMetadata[cb.value];
+          isRemoved = true;
+        }
+
+        if (metadata && (metadata.name || metadata.displayName)) {
+          const nameToUse = metadata.displayName || metadata.name;
+          const displayStr = nameToUse.split('@')[0];
+          const timeStr = metadata.timestamp ? new Date(metadata.timestamp).toLocaleString('vi-VN') : '';
+          const actionLabel = isRemoved ? 'Xóa bởi' : 'Thêm bởi';
+          
+          if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'user-blame-badge';
+            icdItem.appendChild(badge);
+            
+            icdItem.classList.add('shake');
+            setTimeout(() => icdItem.classList.remove('shake'), 400);
+            badge.classList.add('flash-active');
+            setTimeout(() => badge.classList.remove('flash-active'), 3000);
+          } else if (badge.dataset.isRemoved !== String(isRemoved)) {
+            icdItem.classList.add('shake');
+            setTimeout(() => icdItem.classList.remove('shake'), 400);
+            badge.classList.add('flash-active');
+            setTimeout(() => badge.classList.remove('flash-active'), 3000);
           }
-        } else if (badge && !badge.classList.contains('removing')) {
-          // Animate removal
-          badge.classList.add('removing');
-          badge.classList.add('flash-active');
-          badge.style.textDecoration = 'line-through';
-          badge.style.opacity = '0.5';
           
-          icdItem.classList.add('shake');
-          setTimeout(() => icdItem.classList.remove('shake'), 400);
+          badge.dataset.isRemoved = String(isRemoved);
+          if (isRemoved) {
+             badge.classList.add('badge-removed');
+             badge.style.textDecoration = 'line-through';
+             badge.style.color = '#dc3545'; // danger color
+          } else {
+             badge.classList.remove('badge-removed');
+             badge.style.textDecoration = 'none';
+             badge.style.color = 'var(--text-muted)';
+          }
           
-          setTimeout(() => {
-            if (badge.parentNode) badge.remove();
-          }, 2000);
+          badge.textContent = `👤 ${displayStr}`;
+          badge.title = `${actionLabel}: ${nameToUse}\n${timeStr}`;
+        } else if (badge) {
+          badge.remove();
         }
       }
     });
@@ -358,11 +371,29 @@ export class TreeView {
     
     // User attribution badge
     const state = store.getState();
-    const metadata = state.selectedMetadata[item.id];
+    let metadata = null;
+    let isRemoved = false;
+    
+    if (isChecked && state.selectedMetadata[item.id]) {
+      metadata = state.selectedMetadata[item.id];
+    } else if (!isChecked && state.removedMetadata && state.removedMetadata[item.id]) {
+      metadata = state.removedMetadata[item.id];
+      isRemoved = true;
+    }
+
     let userBadgeHtml = '';
-    if (isChecked && metadata && metadata.name) {
-      const displayStr = metadata.name.split('@')[0];
-      userBadgeHtml = `<span class="user-blame-badge" title="Được chọn bởi: ${metadata.email}">👤 ${displayStr}</span>`;
+    if (metadata && (metadata.name || metadata.displayName)) {
+      const nameToUse = metadata.displayName || metadata.name;
+      const displayStr = nameToUse.split('@')[0];
+      const timeStr = metadata.timestamp ? new Date(metadata.timestamp).toLocaleString('vi-VN') : '';
+      const actionLabel = isRemoved ? 'Xóa bởi' : 'Thêm bởi';
+      
+      let badgeStyle = '';
+      if (isRemoved) {
+         badgeStyle = 'text-decoration: line-through; color: #dc3545;';
+      }
+      
+      userBadgeHtml = `<span class="user-blame-badge ${isRemoved ? 'badge-removed' : ''}" data-is-removed="${isRemoved}" style="${badgeStyle}" title="${actionLabel}: ${nameToUse}\n${timeStr}">👤 ${displayStr}</span>`;
     }
     
     el.innerHTML = `

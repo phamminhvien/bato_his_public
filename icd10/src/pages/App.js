@@ -107,9 +107,9 @@ class App {
     if (dept) {
       try {
         isSwitchingDept = true;
-        unsubscribeSnapshot = FirebaseService.listenSelections(dept, (serverCodes, metadata) => {
+        unsubscribeSnapshot = FirebaseService.listenSelections(dept, (serverCodes, metadata, metaRemoved) => {
           console.log(`🔥 [Real-time Sync] Nhận dữ liệu từ Khoa ${dept}:`, serverCodes);
-          actions.setSelectedCodes(serverCodes, metadata);
+          actions.setSelectedCodes(serverCodes, metadata, metaRemoved);
         });
         isSwitchingDept = false;
       } catch (e) {
@@ -129,9 +129,9 @@ class App {
         dept = state.departmentId;
         if (unsubscribeSnapshot) unsubscribeSnapshot();
         isSwitchingDept = true;
-        unsubscribeSnapshot = FirebaseService.listenSelections(dept, (serverCodes, metadata) => {
+        unsubscribeSnapshot = FirebaseService.listenSelections(dept, (serverCodes, metadata, metaRemoved) => {
           console.log(`🔥 [Real-time Sync] Nhận dữ liệu từ Khoa ${dept}:`, serverCodes);
-          actions.setSelectedCodes(serverCodes, metadata);
+          actions.setSelectedCodes(serverCodes, metadata, metaRemoved);
         });
         isSwitchingDept = false;
       }

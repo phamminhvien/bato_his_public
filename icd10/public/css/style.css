@@ -1060,10 +1060,11 @@ input:checked+.slider:before {
   overflow: hidden;
   text-overflow: ellipsis;
   user-select: none;
-  opacity: 0.15;
+  opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s ease;
   margin-left: auto;
+  margin-right: 15px;
   align-self: center;
   flex-shrink: 0;
 }

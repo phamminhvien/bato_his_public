@@ -174,10 +174,11 @@ export class FirebaseService {
     return onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
-        const meta = data.metadata_added || data.metadata || {};
-        callback(data.selected || [], meta);
+        const metaAdded = data.metadata_added || data.metadata || {};
+        const metaRemoved = data.metadata_removed || {};
+        callback(data.selected || [], metaAdded, metaRemoved);
       } else {
-        callback([], {});
+        callback([], {}, {});
       }
     }, (error) => {
       console.error("Error listening to Firestore:", error);
