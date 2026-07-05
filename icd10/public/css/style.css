@@ -547,6 +547,10 @@ input:checked + .slider:before {
   text-align: left;
   vertical-align: top;
 }
+.data-table td {
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
 .data-table th {
   background-color: var(--bg-main);
   font-weight: bold;
