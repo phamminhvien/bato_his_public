@@ -299,7 +299,7 @@ export class TreeView {
     checkbox.addEventListener('change', (e) => {
       const checked = e.target.checked;
       if (checked) {
-        const isWarning = item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"] || item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"] || item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"] || item["CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"] || item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"] || item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"];
+        const isWarning = item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"] || item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"];
         if (isWarning) {
           playWarningSound();
           triggerHaptic('warning');
