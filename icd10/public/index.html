@@ -29,6 +29,9 @@
   <!-- SheetJS for Export/Import -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <!-- Import Maps for ES Modules -->
   <script type="importmap">
     {
@@ -62,6 +65,8 @@
         <option value="">Đang tải...</option>
       </select>
       <div class="header-controls" style="margin-left: 15px; display: flex; gap: 10px;">
+        <button id="btn-show-chart" title="Thống kê Tỷ trọng Nhóm bệnh" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">📊</button>
+        <button id="btn-show-leaderboard" title="Bảng Xếp Hạng Khoa" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">🏆</button>
         <button id="btn-toggle-sound" title="Bật/Tắt Âm Thanh" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">🔊</button>
         <button id="btn-toggle-theme" title="Chế độ Tối/Sáng" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">🌙</button>
       </div>
@@ -202,7 +207,34 @@
     </div>
   </div>
 
-  <!-- Main App Entry -->
+  <!-- Chart Modal -->
+  <div id="chart-modal" class="modal hidden">
+    <div class="modal-content" style="max-width: 800px; height: 80vh; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <h2>📊 Thống Kê Các Nhóm Bệnh Đã Chọn</h2>
+        <button class="close-btn" id="close-chart-modal">&times;</button>
+      </div>
+      <div class="modal-body" style="flex: 1; position: relative;">
+        <canvas id="bubbleChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaderboard Modal -->
+  <div id="leaderboard-modal" class="modal hidden">
+    <div class="modal-content" style="max-width: 600px; max-height: 80vh; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <h2>🏆 Đường Đua ICD-10 Các Khoa</h2>
+        <button class="close-btn" id="close-leaderboard-modal">&times;</button>
+      </div>
+      <div class="modal-body" style="overflow-y: auto;">
+        <ul id="leaderboard-list" class="leaderboard-list">
+          <!-- Leaderboard items go here -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="../src/pages/App.js"></script>
 </body>
 

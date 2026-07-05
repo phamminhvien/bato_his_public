@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, setDoc, getDoc, onSnapshot, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, onSnapshot, arrayUnion, arrayRemove, collection } from 'firebase/firestore';
 import { firebaseConfig } from './config.js';
 
 let app;
@@ -103,6 +103,31 @@ export class FirebaseService {
       }
     }, (error) => {
       console.error("Error listening to Firestore:", error);
+    });
+  }
+
+  /**
+   * Listen to all departments for Leaderboard
+   * @param {Function} callback 
+   * @returns {Function} unsubscribe function
+   */
+  static listenAllDepartments(callback) {
+    if (!db) return () => {};
+    const colRef = collection(db, 'ICDdepartmentSelections');
+    return onSnapshot(colRef, (snapshot) => {
+      const allDepts = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        allDepts.push({
+          id: doc.id,
+          count: data.selected ? data.selected.length : 0,
+          updatedAt: data.updatedAt
+        });
+      });
+      allDepts.sort((a, b) => b.count - a.count);
+      callback(allDepts);
+    }, (error) => {
+      console.error("Error listening to all departments:", error);
     });
   }
 }

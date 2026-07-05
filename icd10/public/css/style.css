@@ -868,3 +868,46 @@ input:checked+.slider:before {
 .shake {
   animation: shake 0.3s ease-in-out;
 }
+
+/* --- Leaderboard & Chart --- */
+.leaderboard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.leaderboard-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.2s;
+}
+
+.leaderboard-item:hover {
+  background-color: var(--bg-hover);
+}
+
+.lb-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.lb-rank {
+  font-size: 1.5rem;
+  width: 30px;
+  text-align: center;
+}
+
+.rank-num {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text-muted);
+}
+
+.lb-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+}

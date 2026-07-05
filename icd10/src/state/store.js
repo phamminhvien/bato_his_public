@@ -36,7 +36,8 @@ export const store = new Store({
   searchQuery: '',
   searchFilter: null,
   isLoaded: false,
-  autoSave: true // Auto-save enabled by default
+  autoSave: true, // Auto-save enabled by default
+  leaderboard: [] // Leaderboard data
 });
 
 // Actions
@@ -46,6 +47,7 @@ export const actions = {
   setSearchQuery: (query) => store.setState({ searchQuery: query }),
   setSearchFilter: (filterKey) => store.setState({ searchFilter: filterKey }),
   setAutoSave: (value) => store.setState({ autoSave: value }),
+  setLeaderboard: (data) => store.setState({ leaderboard: data }),
   
   // Selection
   setSelectedCodes: (codesArray) => store.setState({ selectedCodes: new Set(codesArray) }),
