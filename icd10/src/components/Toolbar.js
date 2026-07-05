@@ -31,15 +31,27 @@ export class Toolbar {
           </div>
           
           <!-- Auth Menu -->
-          <div class="auth-profile-menu" id="auth-menu">
-            <button class="auth-menu-item" id="btn-login-menu">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
-              Đăng nhập Google
-            </button>
-            <button class="auth-menu-item logout" id="btn-logout-menu" style="display: none;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-              Đăng xuất
-            </button>
+          <div class="auth-profile-menu" id="auth-menu" style="padding: 0;">
+            <!-- Preferences Section -->
+            <div style="display: flex; gap: 4px; padding: 8px; border-bottom: 1px solid var(--border-color);">
+              <button class="auth-menu-item" id="btn-toggle-theme" style="flex: 1; justify-content: center; font-size: 0.8rem; padding: 6px;" title="Chế độ Tối/Sáng">
+                🌙 Tối
+              </button>
+              <button class="auth-menu-item" id="btn-toggle-sound" style="flex: 1; justify-content: center; font-size: 0.8rem; padding: 6px;" title="Bật/Tắt Âm Thanh">
+                🔊 Âm thanh
+              </button>
+            </div>
+            
+            <div style="padding: 8px; display: flex; flex-direction: column; gap: 4px;">
+              <button class="auth-menu-item" id="btn-login-menu">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                Đăng nhập Google
+              </button>
+              <button class="auth-menu-item logout" id="btn-logout-menu" style="display: none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Đăng xuất
+              </button>
+            </div>
           </div>
         </div>
         

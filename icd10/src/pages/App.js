@@ -36,26 +36,36 @@ class App {
     const isDarkMode = localStorage.getItem('theme') === 'dark';
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
-      btnTheme.textContent = '☀️';
+      if (btnTheme) btnTheme.innerHTML = '☀️ Sáng';
+    } else {
+      if (btnTheme) btnTheme.innerHTML = '🌙 Tối';
     }
-    btnTheme.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const dark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-      btnTheme.textContent = dark ? '☀️' : '🌙';
-    });
+    if (btnTheme) {
+      btnTheme.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.body.classList.toggle('dark-mode');
+        const dark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+        btnTheme.innerHTML = dark ? '☀️ Sáng' : '🌙 Tối';
+      });
+    }
 
     const btnSound = document.getElementById('btn-toggle-sound');
     const isMuted = localStorage.getItem('isMuted') === 'true';
     if (isMuted) {
-      btnSound.textContent = '🔇';
+      if (btnSound) btnSound.innerHTML = '🔇 Tắt âm';
+    } else {
+      if (btnSound) btnSound.innerHTML = '🔊 Âm thanh';
     }
-    btnSound.addEventListener('click', () => {
-      const currentlyMuted = localStorage.getItem('isMuted') === 'true';
-      const newMuted = !currentlyMuted;
-      localStorage.setItem('isMuted', newMuted);
-      btnSound.textContent = newMuted ? '🔇' : '🔊';
-    });
+    if (btnSound) {
+      btnSound.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const currentlyMuted = localStorage.getItem('isMuted') === 'true';
+        const newMuted = !currentlyMuted;
+        localStorage.setItem('isMuted', newMuted);
+        btnSound.innerHTML = newMuted ? '🔇 Tắt âm' : '🔊 Âm thanh';
+      });
+    }
     DEPARTMENTS.forEach(d => {
       const option = document.createElement('option');
       option.value = d.id;
@@ -281,7 +291,7 @@ class App {
           userAvatar.style.display = 'block';
         }
         
-        if (userName) userName.textContent = user.displayName || user.email;
+        if (userName) userName.textContent = user.email;
         if (userRoleBadge) {
           userRoleBadge.textContent = 'Đang kiểm tra quyền...';
           userRoleBadge.style.display = 'block';
