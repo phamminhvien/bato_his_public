@@ -602,6 +602,25 @@ input:checked+.slider:before {
   display: none !important;
 }
 
+/* Mobile Overlay */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1040;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
 /* Loader */
 .loader-overlay {
   position: fixed;
@@ -1024,8 +1043,38 @@ input:checked+.slider:before {
       "footer";
   }
 
-  .sidebar { display: none; }
-  .rightbar { display: none; }
+  /* Off-canvas Sidebars */
+  .sidebar, .rightbar {
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 70px; /* Leave space for bottom nav */
+    width: 85%;
+    max-width: 350px;
+    background: var(--bg-panel);
+    z-index: 1050;
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  }
+
+  .sidebar {
+    left: 0;
+    transform: translateX(-110%);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .rightbar {
+    right: 0;
+    transform: translateX(110%);
+  }
+
+  .rightbar.active {
+    transform: translateX(0);
+  }
 
   /* Bottom Navigation Bar */
   .header-actions {
