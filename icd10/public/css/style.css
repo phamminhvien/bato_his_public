@@ -88,6 +88,7 @@ body {
   padding: 0 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
+  min-width: 0; /* Prevent grid blowout */
 }
 
 .header-titles {
@@ -268,6 +269,7 @@ body {
   background-color: var(--bg-main);
   display: flex;
   flex-direction: column;
+  min-width: 0; /* Prevent grid blowout */
 }
 
 .search-bar-container {
@@ -1140,10 +1142,12 @@ input:checked+.slider:before {
 
 .auth-profile-menu {
   position: absolute;
-  bottom: calc(var(--footer-height) + 5px);
-  left: 10px;
-  width: calc(var(--sidebar-width) - 20px);
+  top: 100%;
+  right: 0;
+  width: 250px;
+  margin-top: 8px;
   background: var(--bg-panel);
+  color: var(--text-main);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
