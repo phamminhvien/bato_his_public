@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ICD-10 Selector</title>
+  <link rel="icon" href="./assets/favicon-ttyt-bato.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="./assets/favicon-ttyt-bato.ico" type="image/x-icon">
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/mobile.css">
   <link rel="stylesheet" href="./css/filter.css">
@@ -32,9 +34,12 @@
     <!-- Header -->
     <header class="header">
       <button class="mobile-toggle" id="btn-toggle-sidebar">☰</button>
-      <div class="header-titles">
-        <h1>Trung tâm Y tế Ba Tơ</h1>
-        <div class="subtitle">Tùy chỉnh danh mục ICD-10 Thông tư 06</div>
+      <div class="header-titles" style="display: flex; align-items: center; gap: 12px;">
+        <img src="./assets/logo.png" alt="Logo" style="height: 45px; width: auto; object-fit: contain;">
+        <div>
+          <h1 style="margin: 0; line-height: 1.2;">Trung tâm Y tế Ba Tơ</h1>
+          <div class="subtitle" style="margin-top: 2px;">Tùy chỉnh danh mục ICD-10 Thông tư 06</div>
+        </div>
       </div>
       <select id="dept-select" class="dept-dropdown">
         <option value="">Đang tải...</option>
