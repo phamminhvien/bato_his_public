@@ -56,7 +56,35 @@ export class TreeView {
   updateCheckboxes(state) {
     const checkboxes = this.container.querySelectorAll('.icd-checkbox');
     checkboxes.forEach(cb => {
-      cb.checked = state.selectedCodes.has(cb.value);
+      const isChecked = state.selectedCodes.has(cb.value);
+      cb.checked = isChecked;
+      
+      // Dynamically update user attribution badge
+      const icdInfo = cb.nextElementSibling;
+      if (icdInfo && icdInfo.classList.contains('icd-info')) {
+        const titleRow = icdInfo.firstElementChild;
+        if (titleRow && titleRow.style.display === 'flex') {
+          let badge = titleRow.querySelector('.user-blame-badge');
+          if (isChecked) {
+            const metadata = state.selectedMetadata[cb.value];
+            if (metadata && (metadata.name || metadata.displayName)) {
+              const nameToUse = metadata.displayName || metadata.name;
+              const displayStr = nameToUse.split('@')[0];
+              if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'user-blame-badge';
+                titleRow.appendChild(badge);
+              }
+              badge.textContent = `👤 ${displayStr}`;
+              badge.title = `Được chọn bởi: ${metadata.email}`;
+            } else if (badge) {
+              badge.remove();
+            }
+          } else if (badge) {
+            badge.remove();
+          }
+        }
+      }
     });
 
     const groupCheckboxes = this.container.querySelectorAll('.group-checkbox');

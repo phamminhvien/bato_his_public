@@ -130,7 +130,7 @@ export class FirebaseService {
           addedCodes.forEach(code => {
             updates.metadata[code] = {
               email: user.email,
-              name: user.name || user.email,
+              name: user.displayName || user.name || user.email,
               timestamp: Date.now()
             };
           });
