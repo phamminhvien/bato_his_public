@@ -30,7 +30,7 @@
 
   .header {
     justify-content: flex-start;
-    padding: 0 10px;
+    padding: 0 130px 0 10px; /* Leave space on the right for the absolute auth button */
     gap: 10px;
   }
   .header-titles {
@@ -39,9 +39,10 @@
     display: flex;
     align-items: center;
     flex: 1;
+    min-width: 0;
   }
   .header-logo {
-    display: block; /* Keep logo */
+    display: block; /* Show logo */
   }
   .header-text {
     align-items: flex-start;
@@ -60,16 +61,28 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .header-actions {
+    gap: 0px;
+  }
+  .header-actions .action-label {
+    display: none !important;
+  }
+  .header-actions .action-icon {
+    font-size: 1.5rem;
+  }
+  .header .dept-badge {
+    display: none; /* Hide dept badge on mobile to save space */
+  }
   
-  /* Fix dropdown cutoff */
-  #department-select {
+  /* Fix dropdown cutoff and hide label text */
+  .dept-dropdown-label {
+    display: none; /* Hide 'Khoa / Phong' text on mobile */
+  }
+  
+  #dept-select {
     min-width: 0 !important;
     width: 100%;
     margin-top: 5px;
-  }
-  
-  .header .dept-badge {
-    display: none; /* Hide dept badge on mobile to save space */
   }
 
   .mobile-toggle {

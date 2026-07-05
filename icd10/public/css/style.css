@@ -1253,7 +1253,36 @@ kbd {
 
 @media (max-width: 1024px) {
   .footer-status-bar {
-    display: none; /* Hide on mobile to save space, rely on bottom nav */
+    position: fixed;
+    top: 6px;
+    right: 10px;
+    z-index: 1050;
+    width: auto;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .footer-right {
+    display: none;
+  }
+  .auth-profile-btn {
+    margin: 0;
+    padding: 4px 10px 4px 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    color: white;
+  }
+  .auth-profile-btn:hover {
+    background: rgba(255,255,255,0.25);
+  }
+  .auth-profile-menu {
+    bottom: auto;
+    top: 100%;
+    margin-top: 5px;
+    right: 0;
+    left: auto;
+    width: 250px;
+    color: var(--text-main);
   }
 
   .app-container {
