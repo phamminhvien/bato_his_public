@@ -16,13 +16,11 @@ class App {
   async init() {
     this.showLoader();
     
-    // 1. Determine Department from URL or LocalStorage
-    const urlParams = new URLSearchParams(window.location.search);
-    let dept = urlParams.get('dept');
+    let isSwitchingDept = false;
     
-    if (!dept) {
-      dept = localStorage.getItem('selectedDept');
-    }
+    // 1. Determine Department from LocalStorage or Default
+    let dept = localStorage.getItem('selectedDept');
+    
     if (!dept && DEPARTMENTS.length > 0) {
       dept = DEPARTMENTS[0].id;
     }
@@ -45,18 +43,19 @@ class App {
 
     // Listen to dropdown changes
     deptSelect.addEventListener('change', async (e) => {
+      isSwitchingDept = true;
       const newDept = e.target.value;
       actions.setDepartment(newDept);
       localStorage.setItem('selectedDept', newDept);
       
       this.showLoader();
       try {
-        actions.setSelectedCodes([]); // Clear current
         const selected = await FirebaseService.loadSelections(newDept);
         actions.setSelectedCodes(selected);
       } catch (err) {
         console.error("Error changing department:", err);
       }
+      isSwitchingDept = false;
       this.hideLoader();
     });
 
@@ -83,10 +82,13 @@ class App {
     // 6. Load existing selections from Firebase for initial department
     if (dept) {
       try {
+        isSwitchingDept = true;
         const selected = await FirebaseService.loadSelections(dept);
         actions.setSelectedCodes(selected);
+        isSwitchingDept = false;
       } catch (e) {
         console.error("Could not load from Firebase", e);
+        isSwitchingDept = false;
       }
     }
 
@@ -105,6 +107,12 @@ class App {
       // Cập nhật số lượng trên mobile header
       const countEl = document.getElementById('mobile-selected-count');
       if (countEl) countEl.textContent = state.selectedCodes.size;
+
+      // Do not auto-save if we are currently switching departments/loading
+      if (isSwitchingDept) {
+        lastSavedCodes = state.selectedCodes;
+        return;
+      }
 
       // Auto-save logic
       if (state.autoSave && state.departmentId && state.isLoaded) {
