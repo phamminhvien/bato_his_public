@@ -1,4 +1,5 @@
 import { store } from '../state/store.js';
+import { DEPARTMENTS } from '../utils/departments.js';
 
 export class LeaderboardModal {
   constructor() {
@@ -11,7 +12,7 @@ export class LeaderboardModal {
 
     this.btnOpen.addEventListener('click', () => this.open());
     this.closeBtn.addEventListener('click', () => this.close());
-    
+
     this.modal.addEventListener('click', (e) => {
       if (e.target === this.modal) this.close();
     });
@@ -34,10 +35,11 @@ export class LeaderboardModal {
   }
 
   renderList() {
+    debugger;
     const leaderboard = store.getState().leaderboard || [];
-    
+
     this.listContainer.innerHTML = '';
-    
+
     if (leaderboard.length === 0) {
       this.listContainer.innerHTML = '<li style="padding: 20px; text-align: center;">Chưa có dữ liệu. Đang tải...</li>';
       return;
@@ -53,14 +55,13 @@ export class LeaderboardModal {
       const li = document.createElement('li');
       li.className = 'leaderboard-item';
       
-      let deptName = dept.id;
-      // You could lookup from DEPARTMENTS array, but we just show the ID for simplicity
-      // Or we can import DEPARTMENTS
+      const deptObj = DEPARTMENTS.find(d => d.id === dept.id);
+      const deptName = deptObj ? deptObj.name : `Khoa ${dept.id}`;
       
       li.innerHTML = `
         <div class="lb-left">
           <span class="lb-rank">${icon}</span>
-          <span class="lb-name">Khoa ${deptName}</span>
+          <span class="lb-name">${deptName}</span>
         </div>
         <div class="lb-right">
           <span class="badge badge-blue">${dept.count} mã</span>
