@@ -1258,22 +1258,37 @@ kbd {
     right: 10px;
     z-index: 1050;
     width: auto;
+    height: auto;
     background: transparent;
     border: none;
     padding: 0;
+  }
+  .footer-left {
+    width: auto;
+    height: auto;
+    border: none;
+    padding: 0;
+    position: static;
   }
   .footer-right {
     display: none;
   }
   .auth-profile-btn {
     margin: 0;
-    padding: 4px 10px 4px 4px;
+    padding: 4px 4px 4px 10px;
     background: rgba(255,255,255,0.15);
     border-radius: 20px;
     color: white;
   }
   .auth-profile-btn:hover {
     background: rgba(255,255,255,0.25);
+  }
+  .auth-profile-btn > div:first-child {
+    flex-direction: row-reverse;
+  }
+  .auth-profile-btn > div:first-child > div:last-child {
+    align-items: flex-end !important;
+    text-align: right;
   }
   .auth-profile-menu {
     bottom: auto;
