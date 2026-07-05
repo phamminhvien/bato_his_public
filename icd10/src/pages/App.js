@@ -28,6 +28,32 @@ class App {
     // Populate dropdown
     const deptSelect = document.getElementById('dept-select');
     deptSelect.innerHTML = '';
+
+    // Initialize Theme and Sound
+    const btnTheme = document.getElementById('btn-toggle-theme');
+    const isDarkMode = localStorage.getItem('theme') === 'dark';
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+      btnTheme.textContent = '☀️';
+    }
+    btnTheme.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const dark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+      btnTheme.textContent = dark ? '☀️' : '🌙';
+    });
+
+    const btnSound = document.getElementById('btn-toggle-sound');
+    const isMuted = localStorage.getItem('isMuted') === 'true';
+    if (isMuted) {
+      btnSound.textContent = '🔇';
+    }
+    btnSound.addEventListener('click', () => {
+      const currentlyMuted = localStorage.getItem('isMuted') === 'true';
+      const newMuted = !currentlyMuted;
+      localStorage.setItem('isMuted', newMuted);
+      btnSound.textContent = newMuted ? '🔇' : '🔊';
+    });
     DEPARTMENTS.forEach(d => {
       const option = document.createElement('option');
       option.value = d.id;

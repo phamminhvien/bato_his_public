@@ -1,4 +1,5 @@
 import { store, actions } from '../state/store.js';
+import { playSuccessSound, playWarningSound, triggerHaptic } from '../utils/interaction.js';
 import { VirtualScroll } from '../hooks/useVirtualScroll.js';
 import { removeVietnameseTones } from '../utils/helpers.js';
 
@@ -222,6 +223,10 @@ export class TreeView {
       });
       groupCb.addEventListener('change', (e) => {
         const checked = e.target.checked;
+        if (checked) {
+          playSuccessSound();
+          triggerHaptic('success');
+        }
         const codeIds = groupData.codes.map(c => c.id);
         actions.toggleCodesBulk(codeIds, checked);
       });
@@ -296,7 +301,20 @@ export class TreeView {
     
     const checkbox = el.querySelector('input');
     checkbox.addEventListener('change', (e) => {
-      actions.toggleCode(item.id, e.target.checked);
+      const checked = e.target.checked;
+      if (checked) {
+        const isWarning = item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"] || item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"] || item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"] || item["CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"] || item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"] || item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"];
+        if (isWarning) {
+          playWarningSound();
+          triggerHaptic('warning');
+          el.classList.add('shake');
+          setTimeout(() => el.classList.remove('shake'), 300);
+        } else {
+          playSuccessSound();
+          triggerHaptic('success');
+        }
+      }
+      actions.toggleCode(item.id, checked);
     });
     
     return el;
