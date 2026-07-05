@@ -54,19 +54,36 @@ body {
 
 .header-titles {
   display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-logo {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+  background-color: white;
+  border-radius: 50%;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.header-text {
+  display: flex;
   flex-direction: column;
 }
 
-.header-titles h1 {
+.header-text h1 {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 0;
   line-height: 1.2;
 }
 
-.header-titles .subtitle {
+.header-text .subtitle {
   font-size: 0.85rem;
   opacity: 0.9;
+  margin-top: 2px;
 }
 
 .header .dept-dropdown {
