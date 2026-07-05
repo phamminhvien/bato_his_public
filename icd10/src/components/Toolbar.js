@@ -21,9 +21,8 @@ export class Toolbar {
           <span>ICD-10 Selector v1.0 &copy; <b>Trung tâm Y tế Ba Tơ</b></span>
         </div>
         
-        <div class="status-right">
-          <span class="hotkey-badge"><kbd>Ctrl</kbd> + <kbd>F</kbd> Tìm kiếm</span>
-          <span class="hotkey-badge"><kbd>Esc</kbd> Đóng cửa sổ</span>
+        <div class="status-right" style="opacity: 0.8;">
+          <span>Tác giả: <b>Vien Pham</b></span>
         </div>
       </div>
       
