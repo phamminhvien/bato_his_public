@@ -1,8 +1,9 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSy_DUMMY_KEY_FOR_PUBLIC_ACCESS", // API Key không bắt buộc với Firestore Public
+  apiKey: "AIzaSyAx-ru7Ostf4chBit8to_WKB3Z9giIG3iU",
   authDomain: "bato-his.firebaseapp.com",
   projectId: "bato-his",
-  storageBucket: "bato-his.appspot.com",
-  messagingSenderId: "",
-  appId: ""
+  storageBucket: "bato-his.firebasestorage.app",
+  messagingSenderId: "262891897314",
+  appId: "1:262891897314:web:8806a90d8b1f946f31f9bb",
+  measurementId: "G-6WGCD0Y6SP"
 };
