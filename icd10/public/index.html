@@ -111,7 +111,7 @@
   <div id="detail-modal" class="modal-overlay hidden">
     <div class="modal-content modal-content-large">
       <div class="modal-header" style="flex-wrap: wrap; gap: 10px;">
-        <h2>Chi tiết Danh sách đã chọn</h2>
+        <h2 id="modal-title">Danh mục ICD-10</h2>
         
         <div class="modal-actions" style="display: flex; gap: 8px; margin-left: auto;">
           <div class="column-toggle-wrapper">
@@ -126,6 +126,23 @@
         </div>
       </div>
       <div class="modal-body" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        <div class="modal-toolbar" style="padding: 15px; border-bottom: 1px solid var(--border-color); display: flex; gap: 15px; align-items: center; background: #f8f9fa; flex-wrap: wrap;">
+           <div class="modal-stats" id="modal-stats" style="font-size: 0.95rem; flex: 1; color: var(--text-main);">
+              Tổng số: <b>0</b> mã
+           </div>
+           <input type="text" id="modal-search" class="search-input" style="width: 300px; padding: 6px 12px; font-size: 0.9rem;" placeholder="Tìm kiếm theo mã, tên bệnh...">
+           <select id="modal-warning-filter" class="search-input" style="width: 250px; padding: 6px; font-size: 0.9rem; cursor: pointer;">
+              <option value="">-- Tất cả cảnh báo --</option>
+              <option value="HAS_WARNING">⚠️ Có bất kỳ cảnh báo nào</option>
+              <option value="NO_WARNING">✅ Không có cảnh báo</option>
+              <option value="MA_KHONG_DUOC_DUNG_LA_BENH_CHINH">Cấm làm bệnh chính</option>
+              <option value="MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH">Không khuyến khích bệnh chính</option>
+              <option value="MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON">Cần mã chi tiết hơn</option>
+              <option value="CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG">Chỉ dùng tử vong</option>
+              <option value="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI">Nữ giới</option>
+              <option value="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI">Nam giới</option>
+           </select>
+        </div>
         <div class="table-responsive" style="flex: 1; overflow: auto;">
           <table class="data-table" id="modal-selected-table">
             <thead>

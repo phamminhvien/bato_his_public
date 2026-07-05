@@ -1,5 +1,6 @@
 import { store, actions } from '../state/store.js';
 import { removeVietnameseTones } from '../utils/helpers.js';
+import { DEPARTMENTS } from '../utils/departments.js';
 
 export const TABLE_COLUMNS = [
   { id: 'STT', label: 'STT', defaultVisible: true },
@@ -48,6 +49,24 @@ export class SelectedList {
 
     // Modal state
     this.sortConfig = { key: 'MA_BENH', direction: 'asc' };
+    this.modalSearchQuery = '';
+    this.modalWarningFilter = '';
+
+    const modalSearchInput = document.getElementById('modal-search');
+    if (modalSearchInput) {
+      modalSearchInput.addEventListener('input', (e) => {
+        this.modalSearchQuery = removeVietnameseTones(e.target.value);
+        this.renderModalTable(store.getState());
+      });
+    }
+
+    const modalWarningSelect = document.getElementById('modal-warning-filter');
+    if (modalWarningSelect) {
+      modalWarningSelect.addEventListener('change', (e) => {
+        this.modalWarningFilter = e.target.value;
+        this.renderModalTable(store.getState());
+      });
+    }
     const savedCols = localStorage.getItem('visibleColumns');
     if (savedCols) {
       this.visibleColumns = new Set(JSON.parse(savedCols));
@@ -245,7 +264,61 @@ export class SelectedList {
     const icdMap = new Map();
     state.icdData.forEach(item => icdMap.set(item.id, item));
 
-    let rowData = selectedArray.map(code => icdMap.get(code)).filter(item => item);
+    let rowData = selectedArray.map(code => icdMap.get(code)).filter(item => {
+      if (!item) return false;
+
+      // Filter by warning
+      if (this.modalWarningFilter) {
+        const hasAnyWarning = 
+          item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"] ||
+          item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"] ||
+          item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"] ||
+          item["CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"] ||
+          item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"] ||
+          item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"];
+
+        if (this.modalWarningFilter === 'HAS_WARNING' && !hasAnyWarning) return false;
+        if (this.modalWarningFilter === 'NO_WARNING' && hasAnyWarning) return false;
+        if (this.modalWarningFilter !== 'HAS_WARNING' && this.modalWarningFilter !== 'NO_WARNING') {
+          if (!item[this.modalWarningFilter]) return false;
+        }
+      }
+
+      // Filter by search query
+      if (this.modalSearchQuery) {
+        const maBenh = removeVietnameseTones(item.MA_BENH || '');
+        const tenBenh = removeVietnameseTones(item.TEN_BENH || '');
+        if (!maBenh.includes(this.modalSearchQuery) && !tenBenh.includes(this.modalSearchQuery)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    // Update stats
+    const statsEl = document.getElementById('modal-stats');
+    if (statsEl) {
+      const total = rowData.length;
+      const warningCount = rowData.filter(item => 
+        item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"] ||
+        item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"] ||
+        item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"] ||
+        item["CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"] ||
+        item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"] ||
+        item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"]
+      ).length;
+      statsEl.innerHTML = `Tổng số: <b style="color:var(--primary-color)">${total}</b> mã | Có cảnh báo: <b style="color:#d97706">${warningCount}</b>`;
+    }
+
+    // Update Title
+    const titleEl = document.getElementById('modal-title');
+    if (titleEl) {
+      const depName = state.departmentId ? 
+         (DEPARTMENTS.find(d => d.id === state.departmentId)?.name || state.departmentId)
+         : 'Tất cả';
+      titleEl.textContent = `Danh mục ICD-10 [${depName}]`;
+    }
 
     // 3. Sort Data
     rowData.sort((a, b) => {
