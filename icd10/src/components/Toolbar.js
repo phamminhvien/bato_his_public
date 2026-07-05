@@ -18,13 +18,13 @@ export class Toolbar {
         </div>
         
         <div class="status-center">
-          <span>ICD-10 Selector v1.0 &copy; <a href="https://www.facebook.com/profile.php?id=61576498303401" target="_blank" style="color: inherit; text-decoration: none;" title="Trung tâm Y tế Ba Tơ"><b>Trung tâm Y tế Ba Tơ</b></a></span>
+          <span>ICD-10 Selector v1.0 &copy; <a href="https://www.facebook.com/profile.php?id=61576498303401" target="_blank" style="color: var(--primary-color); text-decoration: none;" title="Trung tâm Y tế Ba Tơ"><b>Trung tâm Y tế Ba Tơ</b></a></span>
         </div>
         
         <div class="status-right" style="opacity: 0.9;">
-          <span style="display: flex; align-items: center; gap: 5px;" title="Developer">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted);"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-            <a href="https://www.facebook.com/phamminhvien" target="_blank" style="color: var(--primary-color); text-decoration: none; font-weight: bold;">Vien Pham</a>
+          <span style="display: flex; align-items: center; gap: 5px;" title="Author">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted);"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path></svg>
+            <a href="https://www.facebook.com/phamminhvien" target="_blank" style="color: #E88FA1; text-decoration: none; font-weight: bold; text-shadow: 0 0 1px rgba(0,0,0,0.1);">Vien Pham</a>
           </span>
         </div>
       </div>
