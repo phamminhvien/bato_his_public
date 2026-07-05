@@ -17,7 +17,7 @@ const TABLE_COLUMNS = [
   { id: 'SECOND_SUB_DIVISION_NAME', label: 'SECOND SUB-DIVISION NAME', defaultVisible: false },
   { id: 'TEN_TIEU_KHOI_CAP_2', label: 'TÊN TIỂU KHỐI CẤP 2', defaultVisible: false },
   { id: 'MA_NHOM_BENH_3_KY_TU', label: 'MÃ NHÓM BỆNH 3 KÝ TỰ', defaultVisible: true },
-  { id: '_3_CHARACTER_SUB_CATEGORY_NAME', label: '3-CHARACTER SUB-CATEGORY NAME', defaultVisible: false },
+  { id: 'THREE_CHARACTER_SUB_CATEGORY_NAME', label: '3-CHARACTER SUB-CATEGORY NAME', defaultVisible: false },
   { id: 'TEN_NHOM_BENH_3_KY_TU', label: 'TÊN NHÓM BỆNH 3 KÝ TỰ', defaultVisible: false },
   { id: 'MA_BENH', label: 'MÃ BỆNH', defaultVisible: true },
   { id: 'MA_BENH_KHONG_DAU', label: 'MÃ BỆNH KHÔNG DẤU', defaultVisible: false },
@@ -171,11 +171,11 @@ export class SelectedList {
       el.className = 'selected-item';
       
       let labels = '';
-      if (item["MA_KHONG_ĐUOC_DUNG_LA_BENH_CHINH"]) labels += `<span class="badge badge-red" title="Mã không được dùng làm bệnh chính">Cấm làm bệnh chính</span>`;
+      if (item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"]) labels += `<span class="badge badge-red" title="Mã không được dùng làm bệnh chính">Cấm làm bệnh chính</span>`;
       if (item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"]) labels += `<span class="badge badge-orange" title="Mã không khuyến khích dùng làm bệnh chính">K.khuyến khích bệnh chính</span>`;
-      if (item["MA_KHONG_ĐUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"]) labels += `<span class="badge badge-brown" title="Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn">Cần mã chi tiết hơn</span>`;
+      if (item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"]) labels += `<span class="badge badge-brown" title="Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn">Cần mã chi tiết hơn</span>`;
       if (item["CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"]) labels += `<span class="badge badge-purple" title="Chỉ sử dụng mã hóa nguyên nhân tử vong">Chỉ dùng tử vong</span>`;
-      if (item["CAC_MA_BENH_CHI_CÓ_HOAC_CHU_YEU_CO_O_NU_GIOI"] || item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"]) labels += `<span class="badge badge-pink" title="Các mã bệnh chỉ có hoặc chủ yếu có ở nữ giới">Nữ giới</span>`;
+      if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"]) labels += `<span class="badge badge-pink" title="Các mã bệnh chỉ có hoặc chủ yếu có ở nữ giới">Nữ giới</span>`;
       if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"]) labels += `<span class="badge badge-blue" title="Các mã bệnh chỉ có hoặc chủ yếu có ở nam giới">Nam giới</span>`;
       const badgesHtml = labels ? `<div class="icd-badges">${labels}</div>` : '';
 
@@ -283,11 +283,11 @@ export class SelectedList {
           td.appendChild(btn);
         } else if (col.id === 'WARNINGS') {
           let labels = '';
-          if (item["MA_KHONG_ĐUOC_DUNG_LA_BENH_CHINH"]) labels += `<span class="badge badge-red" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">MÃ KHÔNG ĐƯỢC DÙNG LÀ BỆNH CHÍNH</span>`;
+          if (item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"]) labels += `<span class="badge badge-red" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">MÃ KHÔNG ĐƯỢC DÙNG LÀ BỆNH CHÍNH</span>`;
           if (item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"]) labels += `<span class="badge badge-orange" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">MÃ KHÔNG KHUYẾN KHÍCH DÙNG LÀ BỆNH CHÍNH</span>`;
-          if (item["MA_KHONG_ĐUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"]) labels += `<span class="badge badge-brown" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">MÃ KHÔNG ĐƯỢC SỬ DỤNG VÌ CÓ MÃ 4 HOẶC 5 KÝ TỰ CỤ THỂ HƠN</span>`;
+          if (item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"]) labels += `<span class="badge badge-brown" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">MÃ KHÔNG ĐƯỢC SỬ DỤNG VÌ CÓ MÃ 4 HOẶC 5 KÝ TỰ CỤ THỂ HƠN</span>`;
           if (item["CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"]) labels += `<span class="badge badge-purple" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">CHỈ SỬ DỤNG MÃ HÓA NGUYÊN NHÂN TỬ VONG</span>`;
-          if (item["CAC_MA_BENH_CHI_CÓ_HOAC_CHU_YEU_CO_O_NU_GIOI"] || item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"]) labels += `<span class="badge badge-pink" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NỮ GIỚI</span>`;
+          if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"]) labels += `<span class="badge badge-pink" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NỮ GIỚI</span>`;
           if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"]) labels += `<span class="badge badge-blue" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NAM GIỚI</span>`;
           td.innerHTML = labels;
         } else {
