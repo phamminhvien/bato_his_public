@@ -93,6 +93,7 @@ class App {
       try {
         isSwitchingDept = true;
         unsubscribeSnapshot = FirebaseService.listenSelections(dept, (serverCodes) => {
+          console.log(`🔥 [Real-time Sync] Nhận dữ liệu từ Khoa ${dept}:`, serverCodes);
           actions.setSelectedCodes(serverCodes);
         });
         isSwitchingDept = false;
@@ -114,6 +115,7 @@ class App {
         if (unsubscribeSnapshot) unsubscribeSnapshot();
         isSwitchingDept = true;
         unsubscribeSnapshot = FirebaseService.listenSelections(dept, (serverCodes) => {
+          console.log(`🔥 [Real-time Sync] Nhận dữ liệu từ Khoa ${dept}:`, serverCodes);
           actions.setSelectedCodes(serverCodes);
         });
         isSwitchingDept = false;

@@ -73,9 +73,11 @@ export class FirebaseService {
 
       // Run arrayUnion and arrayRemove
       if (addedCodes && addedCodes.length > 0) {
+        console.log(`⬆️ [Firebase Push] Thêm mã:`, addedCodes);
         await setDoc(docRef, { selected: arrayUnion(...addedCodes) }, { merge: true });
       }
       if (removedCodes && removedCodes.length > 0) {
+        console.log(`⬇️ [Firebase Push] Xóa mã:`, removedCodes);
         await setDoc(docRef, { selected: arrayRemove(...removedCodes) }, { merge: true });
       }
     } catch (error) {
