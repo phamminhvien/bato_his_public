@@ -1,19 +1,70 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, getDoc, onSnapshot, arrayUnion, arrayRemove, collection } from 'firebase/firestore';
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { firebaseConfig } from './config.js';
 
 let app;
 let db;
+let auth;
 
 try {
   app = initializeApp(firebaseConfig);
   db = getFirestore(app);
+  auth = getAuth(app);
   console.log("Firebase initialized with Project ID:", firebaseConfig.projectId);
 } catch (error) {
   console.error("Error initializing Firebase:", error);
 }
 
 export class FirebaseService {
+  /**
+   * Firebase Auth
+   */
+  static async loginWithGoogle() {
+    if (!auth) return null;
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      return result.user;
+    } catch (error) {
+      console.error("Error logging in:", error);
+      throw error;
+    }
+  }
+
+  static async logout() {
+    if (!auth) return;
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  }
+
+  static onAuthChange(callback) {
+    if (!auth) return;
+    onAuthStateChanged(auth, callback);
+  }
+
+  /**
+   * Fetch user role from whitelist collection
+   * @param {string} email 
+   */
+  static async getUserRole(email) {
+    if (!db || !email) return null;
+    try {
+      const docRef = doc(db, 'whitelist', email.toLowerCase());
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return docSnap.data(); // expected: { role: 'admin'|'super_admin', maKhoa: '...' }
+      }
+      return null;
+    } catch (error) {
+      console.error("Error fetching user role:", error);
+      return null;
+    }
+  }
+
   /**
    * Save selected ICD codes for a department
    * @param {string} departmentId 

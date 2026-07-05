@@ -15,6 +15,7 @@ class App {
   }
 
   async init() {
+    this.setupAuth();
     this.showLoader();
     
     let isSwitchingDept = false;
@@ -224,6 +225,73 @@ class App {
           actions.setSearchFilter(filterKey);
         }
       });
+    });
+  }
+
+  setupAuth() {
+    const btnLogin = document.getElementById('btn-login');
+    const userProfile = document.getElementById('user-profile');
+    const userAvatar = document.getElementById('user-avatar');
+    const userName = document.getElementById('user-name');
+    const userRoleBadge = document.getElementById('user-role-badge');
+    const btnLogout = document.getElementById('btn-logout');
+
+    if (btnLogin) {
+      btnLogin.addEventListener('click', async () => {
+        try {
+          await FirebaseService.loginWithGoogle();
+        } catch (err) {
+          alert("Đăng nhập thất bại: " + err.message);
+        }
+      });
+    }
+
+    if (btnLogout) {
+      btnLogout.addEventListener('click', async () => {
+        await FirebaseService.logout();
+      });
+    }
+
+    FirebaseService.onAuthChange(async (user) => {
+      if (user) {
+        // Logged in
+        if (btnLogin) btnLogin.style.display = 'none';
+        if (userProfile) userProfile.style.display = 'flex';
+        if (userAvatar) userAvatar.src = user.photoURL || '';
+        if (userName) userName.textContent = user.displayName || user.email;
+        if (userRoleBadge) userRoleBadge.textContent = 'Đang kiểm tra quyền...';
+        
+        // Fetch role
+        const roleData = await FirebaseService.getUserRole(user.email);
+        
+        const currentUser = {
+          email: user.email,
+          name: user.displayName,
+          avatar: user.photoURL,
+          role: roleData ? roleData.role : null,
+          maKhoa: roleData ? roleData.maKhoa : null
+        };
+        
+        if (userRoleBadge) {
+          if (currentUser.role === 'super_admin') {
+            userRoleBadge.textContent = 'Super Admin';
+            userRoleBadge.style.color = '#ff9800';
+          } else if (currentUser.role === 'admin') {
+            userRoleBadge.textContent = 'Admin Khoa ' + (currentUser.maKhoa || '');
+            userRoleBadge.style.color = 'var(--primary-color)';
+          } else {
+            userRoleBadge.textContent = 'Guest';
+            userRoleBadge.style.color = 'var(--text-muted)';
+          }
+        }
+        
+        actions.setUserInfo(currentUser);
+      } else {
+        // Logged out
+        if (btnLogin) btnLogin.style.display = 'flex';
+        if (userProfile) userProfile.style.display = 'none';
+        actions.setUserInfo(null);
+      }
     });
   }
 }

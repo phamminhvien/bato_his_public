@@ -18,9 +18,12 @@ export class TreeView {
   }
 
   handleStateChange(state) {
-    // Force re-render if department changed
-    if (this.currentDept !== state.departmentId) {
+    const canEdit = store.canEditCurrentDepartment();
+    
+    // Force re-render if department changed or edit permission changed
+    if (this.currentDept !== state.departmentId || this.canEdit !== canEdit) {
       this.currentDept = state.departmentId;
+      this.canEdit = canEdit;
       this.isTreeRendered = false;
     }
 
@@ -212,8 +215,10 @@ export class TreeView {
     const header = document.createElement('div');
     header.className = 'tree-node-header';
     
+    const canEdit = store.canEditCurrentDepartment();
+    
     let checkboxHtml = '';
-    if (groupData) {
+    if (groupData && canEdit) {
       const total = groupData.codes.length;
       const selectedCount = groupData.codes.filter(c => store.getState().selectedCodes.has(c.id)).length;
       const allSelected = total > 0 && selectedCount === total;
@@ -229,23 +234,24 @@ export class TreeView {
     let isLoaded = false;
     
     // Group checkbox logic
-    if (groupData) {
+    if (groupData && canEdit) {
       const groupCb = header.querySelector('.group-checkbox');
-      
-      const total = groupData.codes.length;
-      const selectedCount = groupData.codes.filter(c => store.getState().selectedCodes.has(c.id)).length;
-      if (selectedCount > 0 && selectedCount < total) {
-        groupCb.indeterminate = true;
+      if (groupCb) {
+        const total = groupData.codes.length;
+        const selectedCount = groupData.codes.filter(c => store.getState().selectedCodes.has(c.id)).length;
+        if (selectedCount > 0 && selectedCount < total) {
+          groupCb.indeterminate = true;
+        }
+        
+        groupCb.addEventListener('click', (e) => {
+          e.stopPropagation(); // prevent expand/collapse
+        });
+        groupCb.addEventListener('change', (e) => {
+          const checked = e.target.checked;
+          const codeIds = groupData.codes.map(c => c.id);
+          actions.toggleCodesBulk(codeIds, checked);
+        });
       }
-      
-      groupCb.addEventListener('click', (e) => {
-        e.stopPropagation(); // prevent expand/collapse
-      });
-      groupCb.addEventListener('change', (e) => {
-        const checked = e.target.checked;
-        const codeIds = groupData.codes.map(c => c.id);
-        actions.toggleCodesBulk(codeIds, checked);
-      });
     }
 
     header.addEventListener('click', (e) => {
@@ -305,8 +311,11 @@ export class TreeView {
       tooltipHtml = `<span class="has-tooltip tooltip-icon" data-tooltip="HƯỚNG DẪN MÃ HÓA BỔ SUNG CỦA WHO 2019:&#10;&#10;${safeText}">?</span>`;
     }
     
+    const canEdit = store.canEditCurrentDepartment();
+    const checkboxHtml = canEdit ? `<input type="checkbox" class="icd-checkbox" value="${item.id}" ${isChecked ? 'checked' : ''} />` : '';
+    
     el.innerHTML = `
-      <input type="checkbox" class="icd-checkbox" value="${item.id}" ${isChecked ? 'checked' : ''} />
+      ${checkboxHtml}
       <div class="icd-info">
         <span class="icd-code">${item.MA_BENH}</span>
         <span class="icd-name">${item.TEN_BENH || ''} ${tooltipHtml}</span>
@@ -315,20 +324,22 @@ export class TreeView {
       </div>
     `;
     
-    const checkbox = el.querySelector('input');
-    checkbox.addEventListener('change', (e) => {
-      const checked = e.target.checked;
-      if (checked) {
-        const isWarning = item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"] || item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"];
-        if (isWarning) {
-          playWarningSound();
-          triggerHaptic('warning');
-          el.classList.add('shake');
-          setTimeout(() => el.classList.remove('shake'), 300);
+    if (canEdit) {
+      const checkbox = el.querySelector('input');
+      checkbox.addEventListener('change', (e) => {
+        const checked = e.target.checked;
+        if (checked) {
+          const isWarning = item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"] || item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"];
+          if (isWarning) {
+            playWarningSound();
+            triggerHaptic('warning');
+            el.classList.add('shake');
+            setTimeout(() => el.classList.remove('shake'), 300);
+          }
         }
-      }
-      actions.toggleCode(item.id, checked);
-    });
+        actions.toggleCode(item.id, checked);
+      });
+    }
     
     return el;
   }

@@ -198,18 +198,23 @@ export class SelectedList {
       if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"]) labels += `<span class="badge badge-blue has-tooltip" data-tooltip="Các mã bệnh chỉ có hoặc chủ yếu có ở nam giới">Nam giới</span>`;
       const badgesHtml = labels ? `<div class="icd-badges">${labels}</div>` : '';
 
+      const canEdit = store.canEditCurrentDepartment();
+      const removeBtnHtml = canEdit ? `<button class="remove-btn" title="Xóa" style="margin-left: 10px;">&times;</button>` : '';
+
       el.innerHTML = `
         <div class="selected-info" style="flex: 1;">
           <strong>${item.MA_BENH}</strong><br>
           <small>${item.TEN_BENH}</small>
           ${badgesHtml}
         </div>
-        <button class="remove-btn" title="Xóa" style="margin-left: 10px;">&times;</button>
+        ${removeBtnHtml}
       `;
 
-      el.querySelector('.remove-btn').addEventListener('click', () => {
-        actions.removeCode(code);
-      });
+      if (canEdit) {
+        el.querySelector('.remove-btn').addEventListener('click', () => {
+          actions.removeCode(code);
+        });
+      }
 
       fragment.appendChild(el);
     });
@@ -352,14 +357,21 @@ export class SelectedList {
         }
 
         if (col.id === 'ACTIONS') {
-          const btn = document.createElement('button');
-          btn.className = 'btn btn-outline';
-          btn.style.padding = '2px 8px';
-          btn.style.color = '#dc3545';
-          btn.style.borderColor = '#dc3545';
-          btn.textContent = 'Xóa';
-          btn.addEventListener('click', () => actions.removeCode(item.id));
-          td.appendChild(btn);
+          const canEdit = store.canEditCurrentDepartment();
+          if (canEdit) {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-outline';
+            btn.style.padding = '2px 8px';
+            btn.style.color = '#dc3545';
+            btn.style.borderColor = '#dc3545';
+            btn.textContent = 'Xóa';
+            btn.addEventListener('click', () => actions.removeCode(item.id));
+            td.appendChild(btn);
+          } else {
+            td.textContent = '🔒';
+            td.style.textAlign = 'center';
+            td.title = 'Chỉ Admin mới có quyền xóa';
+          }
         } else if (col.id === 'WARNINGS') {
           let labels = '';
           if (item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"]) labels += `<span class="badge badge-red" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">MÃ KHÔNG ĐƯỢC DÙNG LÀ BỆNH CHÍNH</span>`;
