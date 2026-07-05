@@ -73,13 +73,11 @@ export class TreeView {
               badge.className = 'user-blame-badge';
               icdItem.appendChild(badge);
               
-              // Animate addition
-              if (metadata.email && state.currentUser && metadata.email !== state.currentUser.email) {
-                icdItem.classList.add('shake');
-                setTimeout(() => icdItem.classList.remove('shake'), 400);
-                badge.classList.add('flash-active');
-                setTimeout(() => badge.classList.remove('flash-active'), 3000);
-              }
+              // Animate addition always
+              icdItem.classList.add('shake');
+              setTimeout(() => icdItem.classList.remove('shake'), 400);
+              badge.classList.add('flash-active');
+              setTimeout(() => badge.classList.remove('flash-active'), 3000);
             }
             badge.textContent = `👤 ${displayStr}`;
             badge.title = `Được chọn bởi: ${metadata.email}`;
