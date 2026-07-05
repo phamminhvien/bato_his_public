@@ -297,7 +297,15 @@ class App {
           userAvatar.style.display = 'block';
         }
         
-        if (userName) userName.textContent = user.email;
+        if (userName) userName.textContent = user.displayName || 'Người dùng';
+        
+        const emailContainer = document.getElementById('auth-menu-email-container');
+        const emailSpan = document.getElementById('auth-menu-email');
+        if (emailContainer && emailSpan) {
+          emailSpan.textContent = user.email;
+          emailContainer.style.display = 'block';
+        }
+
         if (userRoleBadge) {
           userRoleBadge.textContent = 'Đang kiểm tra quyền...';
           userRoleBadge.style.display = 'block';
@@ -339,6 +347,9 @@ class App {
         if (userName) userName.textContent = 'guest';
         if (userRoleBadge) userRoleBadge.style.display = 'none';
         
+        const emailContainer = document.getElementById('auth-menu-email-container');
+        if (emailContainer) emailContainer.style.display = 'none';
+
         actions.setUserInfo(null);
       }
     });

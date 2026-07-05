@@ -32,6 +32,11 @@ export class Toolbar {
           
           <!-- Auth Menu -->
           <div class="auth-profile-menu" id="auth-menu" style="padding: 0;">
+            <!-- Profile Info (Shows Email when logged in) -->
+            <div id="auth-menu-email-container" style="display: none; padding: 10px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; text-align: center; word-break: break-all;">
+              <span id="auth-menu-email"></span>
+            </div>
+            
             <!-- Preferences Section -->
             <div style="display: flex; gap: 4px; padding: 8px; border-bottom: 1px solid var(--border-color);">
               <button class="auth-menu-item" id="btn-toggle-theme" style="flex: 1; justify-content: center; font-size: 0.8rem; padding: 6px;" title="Chế độ Tối/Sáng">
@@ -58,8 +63,7 @@ export class Toolbar {
         <div class="footer-right">
           <div class="status-left">
             <div class="pulse-indicator" style="margin-right: 8px;"></div>
-            <span class="status-text">Hệ thống Máy chủ <b style="color: var(--success-color);">Trực tuyến</b></span>
-            <span class="sync-text" style="opacity: 0.7; margin-left: 5px;">(Đồng bộ thời gian thực)</span>
+            ICD-10 Selector - <strong style="color: var(--success-color); margin-left: 4px;">Trung tâm Y tế huyện Ba Tơ</strong>
           </div>
           
           <div class="status-right" style="opacity: 0.9;">
