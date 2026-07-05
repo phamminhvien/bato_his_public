@@ -142,6 +142,21 @@ body {
   border-radius: 4px;
 }
 
+.mobile-toggle-cart {
+  display: none; /* Hide on desktop, rightbar is already visible */
+}
+
+/* Sidebar Hamburger Toggle */
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
 .action-btn:hover {
   background: rgba(255, 255, 255, 0.15);
 }
@@ -999,7 +1014,7 @@ input:checked+.slider:before {
   background-color: var(--bg-hover);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .app-container {
     grid-template-columns: 1fr;
     grid-template-rows: 60px calc(100vh - 120px) 60px;
@@ -1029,6 +1044,14 @@ input:checked+.slider:before {
 
   .action-btn {
     color: var(--text-muted) !important;
+  }
+  
+  .mobile-toggle-cart {
+    display: flex; /* Show on mobile */
+  }
+
+  .mobile-toggle {
+    display: block; /* Show hamburger menu */
   }
   
   .action-btn:hover {
