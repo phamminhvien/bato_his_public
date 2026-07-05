@@ -60,52 +60,45 @@ export class TreeView {
       cb.checked = isChecked;
       
       // Dynamically update user attribution badge
-      const icdInfo = cb.nextElementSibling;
-      if (icdInfo && icdInfo.classList.contains('icd-info')) {
-        const titleRow = icdInfo.firstElementChild;
-        if (titleRow && titleRow.style.display === 'flex') {
-          let badge = titleRow.querySelector('.user-blame-badge');
-          if (isChecked) {
-            const metadata = state.selectedMetadata[cb.value];
-            if (metadata && (metadata.name || metadata.displayName)) {
-              const nameToUse = metadata.displayName || metadata.name;
-              const displayStr = nameToUse.split('@')[0];
-              if (!badge) {
-                badge = document.createElement('span');
-                badge.className = 'user-blame-badge';
-                titleRow.appendChild(badge);
-                
-                // Animate addition
-                const icdItem = cb.closest('.icd-item');
-                if (icdItem && metadata.email && state.currentUser && metadata.email !== state.currentUser.email) {
-                  icdItem.classList.add('shake');
-                  setTimeout(() => icdItem.classList.remove('shake'), 400);
-                  badge.classList.add('flash-active');
-                  setTimeout(() => badge.classList.remove('flash-active'), 3000);
-                }
+      const icdItem = cb.closest('.icd-item');
+      if (icdItem) {
+        let badge = icdItem.querySelector('.user-blame-badge');
+        if (isChecked) {
+          const metadata = state.selectedMetadata[cb.value];
+          if (metadata && (metadata.name || metadata.displayName)) {
+            const nameToUse = metadata.displayName || metadata.name;
+            const displayStr = nameToUse.split('@')[0];
+            if (!badge) {
+              badge = document.createElement('span');
+              badge.className = 'user-blame-badge';
+              icdItem.appendChild(badge);
+              
+              // Animate addition
+              if (metadata.email && state.currentUser && metadata.email !== state.currentUser.email) {
+                icdItem.classList.add('shake');
+                setTimeout(() => icdItem.classList.remove('shake'), 400);
+                badge.classList.add('flash-active');
+                setTimeout(() => badge.classList.remove('flash-active'), 3000);
               }
-              badge.textContent = `👤 ${displayStr}`;
-              badge.title = `Được chọn bởi: ${metadata.email}`;
-            } else if (badge && !badge.classList.contains('removing')) {
-              badge.remove();
             }
+            badge.textContent = `👤 ${displayStr}`;
+            badge.title = `Được chọn bởi: ${metadata.email}`;
           } else if (badge && !badge.classList.contains('removing')) {
-            // Animate removal
-            badge.classList.add('removing');
-            badge.classList.add('flash-active');
-            badge.style.textDecoration = 'line-through';
-            badge.style.opacity = '0.5';
-            
-            const icdItem = cb.closest('.icd-item');
-            if (icdItem) {
-              icdItem.classList.add('shake');
-              setTimeout(() => icdItem.classList.remove('shake'), 400);
-            }
-            
-            setTimeout(() => {
-              if (badge.parentNode) badge.remove();
-            }, 2000);
+            badge.remove();
           }
+        } else if (badge && !badge.classList.contains('removing')) {
+          // Animate removal
+          badge.classList.add('removing');
+          badge.classList.add('flash-active');
+          badge.style.textDecoration = 'line-through';
+          badge.style.opacity = '0.5';
+          
+          icdItem.classList.add('shake');
+          setTimeout(() => icdItem.classList.remove('shake'), 400);
+          
+          setTimeout(() => {
+            if (badge.parentNode) badge.remove();
+          }, 2000);
         }
       }
     });
@@ -379,12 +372,12 @@ export class TreeView {
       <div class="icd-info">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span class="icd-code">${item.MA_BENH}</span>
-          ${userBadgeHtml}
         </div>
         <span class="icd-name">${item.TEN_BENH || ''} ${tooltipHtml}</span>
         <span class="icd-en">${item.DISEASE_NAME_WHO_2019_ENGLISH || ''}</span>
         ${badgesHtml}
       </div>
+      ${userBadgeHtml}
     `;
     
     if (canEdit) {

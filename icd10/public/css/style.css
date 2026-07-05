@@ -1063,6 +1063,9 @@ input:checked+.slider:before {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s ease;
+  margin-left: auto;
+  align-self: center;
+  flex-shrink: 0;
 }
 
 .icd-item:hover .user-blame-badge,
