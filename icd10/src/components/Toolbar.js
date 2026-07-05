@@ -12,10 +12,10 @@ export class Toolbar {
     this.container.innerHTML = `
       <div style="flex: 1;"></div>
       <input type="file" id="import-file" accept=".json" class="hidden" />
-      <button class="btn btn-primary" id="btn-import">Nhập từ JSON</button>
+      <button class="btn btn-primary" id="btn-import" style="display: none;">Nhập từ JSON</button>
       <div style="width: 20px;"></div>
       
-      <div class="auto-save-container" style="display: flex; align-items: center; gap: 8px; margin-right: 15px;">
+      <div class="auto-save-container" style="display: none; align-items: center; gap: 8px; margin-right: 15px;">
         <span style="font-size: 0.9rem; font-weight: bold; color: var(--text-muted);">Lưu tự động</span>
         <label class="switch">
           <input type="checkbox" id="toggle-autosave" checked>
