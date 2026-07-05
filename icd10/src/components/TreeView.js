@@ -223,10 +223,6 @@ export class TreeView {
       });
       groupCb.addEventListener('change', (e) => {
         const checked = e.target.checked;
-        if (checked) {
-          playSuccessSound();
-          triggerHaptic('success');
-        }
         const codeIds = groupData.codes.map(c => c.id);
         actions.toggleCodesBulk(codeIds, checked);
       });
@@ -309,9 +305,6 @@ export class TreeView {
           triggerHaptic('warning');
           el.classList.add('shake');
           setTimeout(() => el.classList.remove('shake'), 300);
-        } else {
-          playSuccessSound();
-          triggerHaptic('success');
         }
       }
       actions.toggleCode(item.id, checked);
