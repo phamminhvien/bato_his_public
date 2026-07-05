@@ -61,9 +61,7 @@
           <div class="subtitle">Xây dựng Danh mục ICD-10 Thông tư 06/2026</div>
         </div>
       </a>
-      <select id="dept-select" class="dept-dropdown">
-        <option value="">Đang tải...</option>
-      </select>
+      <div style="flex: 1;"></div>
       <div class="header-controls" style="margin-left: 15px; display: flex; gap: 10px;">
         <button id="btn-show-dashboard" title="Bảng Điều Khiển Bệnh Viện" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">📈</button>
         <button id="btn-toggle-sound" title="Bật/Tắt Âm Thanh" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">🔊</button>
@@ -96,7 +94,13 @@
 
     <!-- Main Content (Tree / Search) -->
     <main class="main-content">
-      <div class="search-bar-container">
+      <div class="search-bar-container" style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <label for="dept-select" style="font-weight: bold; white-space: nowrap; color: var(--primary-color);">🏥 Khoa / Phòng:</label>
+          <select id="dept-select" class="dept-dropdown" style="flex: 1; margin: 0; max-width: none;">
+            <option value="">Đang tải...</option>
+          </select>
+        </div>
         <div class="search-wrapper">
           <!-- Total count badge -->
           <div id="search-count" class="badge" style="background-color: #6c757d; margin-left: 10px; display: none;">0
