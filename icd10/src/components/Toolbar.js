@@ -10,20 +10,30 @@ export class Toolbar {
 
   render() {
     this.container.innerHTML = `
-      <div style="flex: 1;"></div>
+      <div class="footer-status-bar">
+        <div class="status-left">
+          <div class="pulse-indicator"></div>
+          <span class="status-text">Hệ thống Máy chủ <b style="color: var(--success-color);">Trực tuyến</b></span>
+          <span class="sync-text" style="opacity: 0.7;">(Đồng bộ thời gian thực)</span>
+        </div>
+        
+        <div class="status-center">
+          <span>ICD-10 Selector v1.0 &copy; <b>Trung tâm Y tế Ba Tơ</b></span>
+        </div>
+        
+        <div class="status-right">
+          <span class="hotkey-badge"><kbd>Ctrl</kbd> + <kbd>F</kbd> Tìm kiếm</span>
+          <span class="hotkey-badge"><kbd>Esc</kbd> Đóng cửa sổ</span>
+        </div>
+      </div>
+      
+      <!-- Hidden functional buttons -->
       <input type="file" id="import-file" accept=".json" class="hidden" />
       <button class="btn btn-primary" id="btn-import" style="display: none;">Nhập từ JSON</button>
-      <div style="width: 20px;"></div>
-      
-      <div class="auto-save-container" style="display: none; align-items: center; gap: 8px; margin-right: 15px;">
-        <span style="font-size: 0.9rem; font-weight: bold; color: var(--text-muted);">Lưu tự động</span>
-        <label class="switch">
-          <input type="checkbox" id="toggle-autosave" checked>
-          <span class="slider round"></span>
-        </label>
+      <div class="auto-save-container" style="display: none;">
+        <input type="checkbox" id="toggle-autosave" checked>
       </div>
-
-      <button class="btn btn-primary" id="btn-save" style="background-color: #ff9800; border-color: #ff9800; display: none;">Lưu kết quả</button>
+      <button class="btn btn-primary" id="btn-save" style="display: none;">Lưu kết quả</button>
     `;
 
     document.getElementById('btn-save').addEventListener('click', async () => {
