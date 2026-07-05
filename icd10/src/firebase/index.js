@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, setDoc, getDoc, onSnapshot, arrayUnion, arrayRemove, collection, deleteField } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, onSnapshot, arrayUnion, arrayRemove, collection, deleteField, updateDoc } from 'firebase/firestore';
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { firebaseConfig } from './config.js';
 
@@ -117,8 +117,10 @@ export class FirebaseService {
     try {
       const docRef = doc(db, 'ICDdepartmentSelections', departmentId);
       
+      // Ensure doc exists before updateDoc
+      await setDoc(docRef, { department: departmentId }, { merge: true });
+
       const updates = {
-        department: departmentId,
         updatedAt: new Date().toISOString()
       };
 
@@ -126,26 +128,31 @@ export class FirebaseService {
         console.log(`⬆️ [Firebase Push] Thêm mã:`, addedCodes);
         updates.selected = arrayUnion(...addedCodes);
         if (user) {
-          updates.metadata = {};
           addedCodes.forEach(code => {
-            updates.metadata[code] = {
+            updates[`metadata_added.${code}`] = {
               email: user.email,
               name: user.displayName || user.name || user.email,
               timestamp: Date.now()
             };
+            updates[`metadata_removed.${code}`] = deleteField();
           });
         }
       } else if (removedCodes && removedCodes.length > 0) {
         console.log(`⬇️ [Firebase Push] Xóa mã:`, removedCodes);
         updates.selected = arrayRemove(...removedCodes);
-        // We can optionally clear the metadata
-        updates.metadata = {};
-        removedCodes.forEach(code => {
-          updates.metadata[code] = deleteField();
-        });
+        if (user) {
+          removedCodes.forEach(code => {
+            updates[`metadata_removed.${code}`] = {
+              email: user.email,
+              name: user.displayName || user.name || user.email,
+              timestamp: Date.now()
+            };
+            updates[`metadata_added.${code}`] = deleteField();
+          });
+        }
       }
       
-      await setDoc(docRef, updates, { merge: true });
+      await updateDoc(docRef, updates);
       
     } catch (error) {
       console.error("Error updating diff in Firestore:", error);
@@ -165,7 +172,7 @@ export class FirebaseService {
     return onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
-        callback(data.selected || [], data.metadata || {});
+        callback(data.selected || [], data.metadata_added || {});
       } else {
         callback([], {});
       }
