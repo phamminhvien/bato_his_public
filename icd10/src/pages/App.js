@@ -31,40 +31,10 @@ class App {
     const deptSelect = document.getElementById('dept-select');
     deptSelect.innerHTML = '';
 
-    // Initialize Theme and Sound
-    const btnTheme = document.getElementById('btn-toggle-theme');
+    // Initialize Theme
     const isDarkMode = localStorage.getItem('theme') === 'dark';
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
-      if (btnTheme) btnTheme.innerHTML = '☀️ Sáng';
-    } else {
-      if (btnTheme) btnTheme.innerHTML = '🌙 Tối';
-    }
-    if (btnTheme) {
-      btnTheme.addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.body.classList.toggle('dark-mode');
-        const dark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('theme', dark ? 'dark' : 'light');
-        btnTheme.innerHTML = dark ? '☀️ Sáng' : '🌙 Tối';
-      });
-    }
-
-    const btnSound = document.getElementById('btn-toggle-sound');
-    const isMuted = localStorage.getItem('isMuted') === 'true';
-    if (isMuted) {
-      if (btnSound) btnSound.innerHTML = '🔇 Tắt âm';
-    } else {
-      if (btnSound) btnSound.innerHTML = '🔊 Âm thanh';
-    }
-    if (btnSound) {
-      btnSound.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const currentlyMuted = localStorage.getItem('isMuted') === 'true';
-        const newMuted = !currentlyMuted;
-        localStorage.setItem('isMuted', newMuted);
-        btnSound.innerHTML = newMuted ? '🔇 Tắt âm' : '🔊 Âm thanh';
-      });
     }
     DEPARTMENTS.forEach(d => {
       const option = document.createElement('option');
@@ -121,6 +91,7 @@ class App {
     // 4. Setup Mobile Menu & Modals
     this.setupMobileMenu();
     new DashboardModal();
+    this.setupAuth();
 
     // 4.5 Listen to all departments for leaderboard
     FirebaseService.listenAllDepartments((data) => {
@@ -247,6 +218,41 @@ class App {
     const userAvatar = document.getElementById('user-avatar');
     const userName = document.getElementById('user-name');
     const userRoleBadge = document.getElementById('user-role-badge');
+    const btnTheme = document.getElementById('btn-toggle-theme');
+    const btnSound = document.getElementById('btn-toggle-sound');
+
+    // Initialize Theme and Sound buttons
+    const isDarkMode = localStorage.getItem('theme') === 'dark';
+    if (isDarkMode) {
+      if (btnTheme) btnTheme.innerHTML = '☀️ Sáng';
+    } else {
+      if (btnTheme) btnTheme.innerHTML = '🌙 Tối';
+    }
+    if (btnTheme) {
+      btnTheme.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.body.classList.toggle('dark-mode');
+        const dark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+        btnTheme.innerHTML = dark ? '☀️ Sáng' : '🌙 Tối';
+      });
+    }
+
+    const isMuted = localStorage.getItem('isMuted') === 'true';
+    if (isMuted) {
+      if (btnSound) btnSound.innerHTML = '🔇 Tắt âm';
+    } else {
+      if (btnSound) btnSound.innerHTML = '🔊 Âm thanh';
+    }
+    if (btnSound) {
+      btnSound.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const currentlyMuted = localStorage.getItem('isMuted') === 'true';
+        const newMuted = !currentlyMuted;
+        localStorage.setItem('isMuted', newMuted);
+        btnSound.innerHTML = newMuted ? '🔇 Tắt âm' : '🔊 Âm thanh';
+      });
+    }
 
     if (btnAuthProfile && authMenu) {
       btnAuthProfile.addEventListener('click', (e) => {
