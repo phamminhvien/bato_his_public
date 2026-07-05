@@ -8,6 +8,7 @@ export class TreeView {
     this.virtualScroll = null;
     this.isSearchMode = false;
     this.isTreeRendered = false;
+    this.currentDept = null;
     
     // Subscribe to state changes
     this.unsubscribe = store.subscribe((state) => {
@@ -16,6 +17,12 @@ export class TreeView {
   }
 
   handleStateChange(state) {
+    // Force re-render if department changed
+    if (this.currentDept !== state.departmentId) {
+      this.currentDept = state.departmentId;
+      this.isTreeRendered = false;
+    }
+
     // Check if we need to switch to search mode (query >= 2 chars OR filter is active)
     const hasQuery = state.searchQuery && state.searchQuery.length >= 2;
     const hasFilter = !!state.searchFilter;
