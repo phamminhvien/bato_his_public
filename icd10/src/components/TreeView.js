@@ -44,23 +44,25 @@ export class TreeView {
         this.renderTreeMode(state);
       } else {
         // Just update checkboxes without full re-render
-        this.updateCheckboxes(state.selectedCodes);
+        this.updateCheckboxes(state);
       }
     }
   }
 
-  updateCheckboxes(selectedCodes) {
+  updateCheckboxes(state) {
     const checkboxes = this.container.querySelectorAll('.icd-checkbox');
     checkboxes.forEach(cb => {
-      cb.checked = selectedCodes.has(cb.value);
+      cb.checked = state.selectedCodes.has(cb.value);
     });
-    
-    // Attempt to update group checkboxes if rendered
+
     const groupCheckboxes = this.container.querySelectorAll('.group-checkbox');
     groupCheckboxes.forEach(cb => {
-      // We don't have the codes easily here unless we store them. 
-      // It's acceptable for now to let it just act as a trigger button.
-      // But let's leave this blank.
+      const codesStr = cb.getAttribute('data-codes');
+      if (codesStr) {
+        const codes = codesStr.split(',');
+        const allSelected = codes.length > 0 && codes.every(c => state.selectedCodes.has(c));
+        cb.checked = allSelected;
+      }
     });
   }
 
@@ -201,7 +203,8 @@ export class TreeView {
     let checkboxHtml = '';
     if (groupData) {
       const allSelected = groupData.codes.length > 0 && groupData.codes.every(c => store.getState().selectedCodes.has(c.id));
-      checkboxHtml = `<input type="checkbox" class="group-checkbox" style="margin-right:8px;" ${allSelected ? 'checked' : ''} title="Chọn tất cả mã trong nhóm này" />`;
+      const codesList = groupData.codes.map(c => c.id).join(',');
+      checkboxHtml = `<input type="checkbox" class="group-checkbox" data-codes="${codesList}" style="margin-right:8px;" ${allSelected ? 'checked' : ''} title="Chọn tất cả mã trong nhóm này" />`;
     }
     
     header.innerHTML = `<span class="toggle-icon">+</span> ${checkboxHtml} <span class="node-text">${text}</span> ${extraHtml}`;
