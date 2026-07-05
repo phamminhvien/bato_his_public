@@ -626,11 +626,14 @@ input:checked + .slider:before {
 /* Custom Tooltip */
 .custom-tooltip {
   position: relative;
+  cursor: help;
+}
+
+.tooltip-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-left: 5px;
-  cursor: help;
   color: var(--primary-color);
   font-weight: bold;
   font-size: 0.85rem;
