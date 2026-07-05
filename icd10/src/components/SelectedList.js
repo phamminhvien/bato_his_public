@@ -226,6 +226,9 @@ export class SelectedList {
       if (col.id !== 'ACTIONS' && col.id !== 'WARNINGS') {
         th.addEventListener('click', () => this.handleSort(col.id));
       }
+      if (col.id === 'MA_BENH') {
+        th.classList.add('col-ma-benh');
+      }
       this.tableHeader.appendChild(th);
     });
 
@@ -271,6 +274,9 @@ export class SelectedList {
         if (!this.visibleColumns.has(col.id) && col.id !== 'MA_BENH' && col.id !== 'ACTIONS') return;
 
         const td = document.createElement('td');
+        if (col.id === 'MA_BENH') {
+          td.classList.add('col-ma-benh');
+        }
         
         if (col.id === 'ACTIONS') {
           const btn = document.createElement('button');

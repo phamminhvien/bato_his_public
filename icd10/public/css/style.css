@@ -572,9 +572,9 @@ input:checked + .slider:before {
   background-color: #f1f3f5;
 }
 
-/* Sticky first column (MA_BENH) */
-.data-table th:nth-child(2),
-.data-table td:nth-child(2) {
+/* Sticky MA_BENH column */
+.data-table th.col-ma-benh,
+.data-table td.col-ma-benh {
   position: sticky;
   left: 0;
   background-color: white;
@@ -583,7 +583,7 @@ input:checked + .slider:before {
   color: var(--primary-color);
   border-right: 2px solid var(--border-color);
 }
-.data-table th:nth-child(2) {
+.data-table th.col-ma-benh {
   z-index: 15;
   background-color: var(--bg-main);
 }
