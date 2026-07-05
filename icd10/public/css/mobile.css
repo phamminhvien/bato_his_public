@@ -29,12 +29,22 @@
   }
 
   .header {
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 0 10px;
+    gap: 10px;
   }
   .header-titles {
-    margin: 0 10px;
+    margin: 0;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  .header-logo {
+    display: block; /* Keep logo */
+  }
+  .header-text {
+    align-items: flex-start;
   }
   .header-titles h1 {
     font-size: 1rem;
@@ -42,6 +52,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
+    text-align: left;
   }
   .header-titles .subtitle {
     font-size: 0.75rem;
@@ -49,6 +60,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  
+  /* Fix dropdown cutoff */
+  #department-select {
+    min-width: 0 !important;
+    width: 100%;
+    margin-top: 5px;
+  }
+  
   .header .dept-badge {
     display: none; /* Hide dept badge on mobile to save space */
   }
