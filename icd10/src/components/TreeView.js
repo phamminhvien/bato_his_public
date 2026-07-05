@@ -275,11 +275,17 @@ export class TreeView {
     
     const badgesHtml = labels ? `<div class="icd-badges">${labels}</div>` : '';
     
+    let tooltipHtml = '';
+    if (item["HUONG_DAN_MA_HOA_BO_SUNG_CUA_WHO_2019"]) {
+      const safeText = item["HUONG_DAN_MA_HOA_BO_SUNG_CUA_WHO_2019"].replace(/"/g, '&quot;');
+      tooltipHtml = `<span class="custom-tooltip" data-tooltip="${safeText}">?</span>`;
+    }
+    
     el.innerHTML = `
       <input type="checkbox" class="icd-checkbox" value="${item.id}" ${isChecked ? 'checked' : ''} />
       <div class="icd-info">
         <span class="icd-code">${item.MA_BENH}</span>
-        <span class="icd-name">${item.TEN_BENH || ''}</span>
+        <span class="icd-name">${item.TEN_BENH || ''} ${tooltipHtml}</span>
         <span class="icd-en">${item.DISEASE_NAME_WHO_2019_ENGLISH || ''}</span>
         ${badgesHtml}
       </div>
