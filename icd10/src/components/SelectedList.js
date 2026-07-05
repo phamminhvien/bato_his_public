@@ -21,7 +21,7 @@ const TABLE_COLUMNS = [
   { id: 'TEN_NHOM_BENH_3_KY_TU', label: 'TÊN NHÓM BỆNH 3 KÝ TỰ', defaultVisible: false },
   { id: 'MA_BENH', label: 'MÃ BỆNH', defaultVisible: true },
   { id: 'MA_BENH_KHONG_DAU', label: 'MÃ BỆNH KHÔNG DẤU', defaultVisible: false },
-  { id: 'DISEASE_NAME_WHO_2019_ENGLISH', label: 'DISEASE NAME WHO 2019 (ENGLISH)', defaultVisible: true },
+  { id: 'DISEASE_NAME_WHO_2019_ENGLISH', label: 'DISEASE NAME WHO 2019 (ENGLISH)', defaultVisible: false },
   { id: 'ADDITIONAL_CODING_GUIDANCE_WHO_2019_ENGLISH', label: 'ADDITIONAL CODING GUIDANCE WHO 2019 (ENGLISH)', defaultVisible: false },
   { id: 'TEN_BENH', label: 'TÊN BỆNH', defaultVisible: true },
   { id: 'HUONG_DAN_MA_HOA_BO_SUNG_CUA_WHO_2019', label: 'HƯỚNG DẪN MÃ HÓA BỔ SUNG CỦA WHO 2019', defaultVisible: false },
