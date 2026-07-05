@@ -185,8 +185,11 @@ class App {
     });
 
     btnRightbar.addEventListener('click', () => {
-      rightbar.classList.add('active');
-      overlay.classList.add('active');
+      // Instead of opening the Rightbar, directly open the Detail Modal on Mobile
+      const btnViewDetails = document.getElementById('btn-view-details');
+      if (btnViewDetails) {
+        btnViewDetails.click();
+      }
     });
 
     overlay.addEventListener('click', closeAll);
