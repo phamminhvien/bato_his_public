@@ -326,13 +326,19 @@ class App {
           if (currentUser.role === 'super_admin') {
             userRoleBadge.textContent = 'Super Admin';
             userRoleBadge.style.color = '#ff9800';
+            userRoleBadge.title = 'Toàn quyền chỉnh sửa hệ thống';
           } else if (currentUser.role === 'admin') {
-            userRoleBadge.textContent = 'Admin Khoa ' + (currentUser.maKhoa || '');
+            const deptObj = DEPARTMENTS.find(d => d.id === currentUser.maKhoa);
+            const deptName = deptObj ? deptObj.name : currentUser.maKhoa;
+            userRoleBadge.textContent = 'Admin: ' + deptName;
             userRoleBadge.style.color = 'var(--primary-color)';
+            userRoleBadge.title = 'Quản trị viên ' + deptName;
           } else {
             userRoleBadge.textContent = 'Guest (Chỉ xem)';
             userRoleBadge.style.color = 'var(--text-muted)';
+            userRoleBadge.title = 'Khách viếng thăm (Chỉ xem)';
           }
+          userRoleBadge.style.display = 'block';
         }
         
         actions.setUserInfo(currentUser);

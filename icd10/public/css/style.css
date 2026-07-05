@@ -1139,7 +1139,7 @@ input:checked+.slider:before {
   width: 100%;
 }
 
-#user-name {
+#user-name, #user-role-badge {
   max-width: 150px;
   white-space: nowrap;
   overflow: hidden;
