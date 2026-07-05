@@ -109,13 +109,35 @@
 
   <!-- Detail Modal -->
   <div id="detail-modal" class="modal-overlay hidden">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-content modal-content-large">
+      <div class="modal-header" style="flex-wrap: wrap; gap: 10px;">
         <h2>Chi tiết Danh sách đã chọn</h2>
-        <button id="btn-close-modal" class="btn-close">&times;</button>
+        
+        <div class="modal-actions" style="display: flex; gap: 8px; margin-left: auto;">
+          <div class="column-toggle-wrapper">
+            <button id="btn-toggle-columns" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">⚙ Tùy chỉnh cột</button>
+            <div id="column-toggle-menu" class="column-toggle-menu hidden">
+              <!-- Checkboxes for columns will be rendered here -->
+            </div>
+          </div>
+          <button class="btn btn-success" id="btn-export-excel" style="padding: 6px 12px; font-size: 0.85rem;">Xuất Excel</button>
+          <button class="btn btn-outline" id="btn-export-json" style="padding: 6px 12px; font-size: 0.85rem;">Xuất JSON</button>
+          <button id="btn-close-modal" class="btn-close" style="margin-left: 10px;">&times;</button>
+        </div>
       </div>
-      <div class="modal-body" id="modal-selected-list">
-        <!-- Selected items rendered here -->
+      <div class="modal-body" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        <div class="table-responsive" style="flex: 1; overflow: auto;">
+          <table class="data-table" id="modal-selected-table">
+            <thead>
+              <tr id="modal-table-header">
+                <!-- Headers rendered dynamically -->
+              </tr>
+            </thead>
+            <tbody id="modal-table-body">
+              <!-- Rows rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

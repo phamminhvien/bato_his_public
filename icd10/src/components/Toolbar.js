@@ -10,8 +10,6 @@ export class Toolbar {
 
   render() {
     this.container.innerHTML = `
-      <button class="btn btn-success" id="btn-export-excel">Xuất Excel</button>
-      <button class="btn btn-outline" id="btn-export-json">Xuất JSON</button>
       <div style="flex: 1;"></div>
       <input type="file" id="import-file" accept=".json" class="hidden" />
       <button class="btn btn-primary" id="btn-import">Nhập từ JSON</button>
