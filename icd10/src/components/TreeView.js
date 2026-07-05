@@ -83,14 +83,20 @@ export class TreeView {
             badge = document.createElement('span');
             badge.className = 'user-blame-badge';
             icdItem.appendChild(badge);
+            const isLocalUser = metadata.email && state.currentUser && metadata.email === state.currentUser.email;
             
-            icdItem.classList.add('shake');
-            setTimeout(() => icdItem.classList.remove('shake'), 400);
+            if (!isLocalUser) {
+              icdItem.classList.add('shake');
+              setTimeout(() => icdItem.classList.remove('shake'), 400);
+            }
             badge.classList.add('flash-active');
             setTimeout(() => badge.classList.remove('flash-active'), 3000);
           } else if (badge.dataset.isRemoved !== String(isRemoved)) {
-            icdItem.classList.add('shake');
-            setTimeout(() => icdItem.classList.remove('shake'), 400);
+            const isLocalUser = metadata.email && state.currentUser && metadata.email === state.currentUser.email;
+            if (!isLocalUser) {
+              icdItem.classList.add('shake');
+              setTimeout(() => icdItem.classList.remove('shake'), 400);
+            }
             badge.classList.add('flash-active');
             setTimeout(() => badge.classList.remove('flash-active'), 3000);
           }
