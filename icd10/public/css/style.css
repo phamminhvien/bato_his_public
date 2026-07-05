@@ -122,6 +122,55 @@ body {
   margin-top: 2px;
 }
 
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.action-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.action-label {
+  font-size: 0.7rem;
+  margin-top: 4px;
+  display: none; /* Hidden on desktop by default */
+  opacity: 0.9;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: var(--danger-color);
+  color: white;
+  border-radius: 10px;
+  padding: 2px 6px;
+  font-size: 0.65rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
 .dept-dropdown {
   background: var(--bg-main);
   padding: 8px 35px 8px 12px;
@@ -951,10 +1000,61 @@ input:checked+.slider:before {
 }
 
 @media (max-width: 768px) {
+  .app-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px calc(100vh - 120px) 60px;
+    grid-template-areas:
+      "header"
+      "main"
+      "footer";
+  }
+
+  .sidebar { display: none; }
+  .rightbar { display: none; }
+
+  /* Bottom Navigation Bar */
+  .header-actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border-color);
+    padding: 10px 0;
+    margin: 0;
+    justify-content: space-around;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  }
+
+  .action-btn {
+    color: var(--text-muted) !important;
+  }
+  
+  .action-btn:hover {
+    background: transparent;
+    color: var(--primary-color) !important;
+  }
+
+  .action-icon {
+    font-size: 1.5rem;
+    filter: none;
+  }
+
+  /* Emulate dark mode for footer icons */
+  .dark-mode .header-actions {
+    background: var(--bg-panel);
+  }
+
+  .action-label {
+    display: block; /* Show labels on mobile */
+  }
+
   .dashboard-layout {
     flex-direction: column;
     overflow-y: auto;
   }
+  
   .dashboard-col {
     min-height: 400px;
   }

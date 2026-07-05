@@ -61,13 +61,27 @@
           <div class="subtitle">Xây dựng Danh mục ICD-10 Thông tư 06/2026</div>
         </div>
       </a>
-      <div style="flex: 1;"></div>
-      <div class="header-controls" style="margin-left: 15px; display: flex; gap: 10px;">
-        <button id="btn-show-dashboard" title="Bảng Điều Khiển Bệnh Viện" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">📈</button>
-        <button id="btn-toggle-sound" title="Bật/Tắt Âm Thanh" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">🔊</button>
-        <button id="btn-toggle-theme" title="Chế độ Tối/Sáng" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">🌙</button>
+      <div class="header-actions">
+        <button id="btn-show-dashboard" class="action-btn" title="Bảng Điều Khiển Bệnh Viện">
+          <span class="action-icon">📈</span>
+          <span class="action-label">Dashboard</span>
+        </button>
+        <button id="btn-toggle-sound" class="action-btn" title="Bật/Tắt Âm Thanh">
+          <span class="action-icon">🔊</span>
+          <span class="action-label">Âm thanh</span>
+        </button>
+        <button id="btn-toggle-theme" class="action-btn" title="Chế độ Tối/Sáng">
+          <span class="action-icon">🌙</span>
+          <span class="action-label">Giao diện</span>
+        </button>
+        <button class="action-btn mobile-toggle-cart" id="btn-toggle-rightbar" title="Giỏ hàng">
+          <span class="action-icon" style="position: relative;">
+            🛒
+            <span id="mobile-selected-count" class="cart-badge">0</span>
+          </span>
+          <span class="action-label">Đã chọn</span>
+        </button>
       </div>
-      <button class="mobile-toggle" id="btn-toggle-rightbar">🛒 <span id="mobile-selected-count">0</span></button>
     </header>
 
     <!-- Sidebar -->
