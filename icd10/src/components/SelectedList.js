@@ -25,7 +25,7 @@ const TABLE_COLUMNS = [
   { id: 'ADDITIONAL_CODING_GUIDANCE_WHO_2019_ENGLISH', label: 'ADDITIONAL CODING GUIDANCE WHO 2019 (ENGLISH)', defaultVisible: false },
   { id: 'TEN_BENH', label: 'TÊN BỆNH', defaultVisible: true },
   { id: 'HUONG_DAN_MA_HOA_BO_SUNG_CUA_WHO_2019', label: 'HƯỚNG DẪN MÃ HÓA BỔ SUNG CỦA WHO 2019', defaultVisible: false },
-  { id: 'WARNINGS', label: 'Quy tắc cảnh báo', defaultVisible: true },
+  { id: 'WARNINGS', label: 'Cảnh báo', defaultVisible: true },
   { id: 'ACTIONS', label: 'Thao tác', defaultVisible: true }
 ];
 
@@ -34,10 +34,10 @@ export class SelectedList {
     this.container = document.getElementById(containerId);
     this.countEl = document.getElementById(countId);
     this.progressFillEl = document.getElementById(progressId);
-    
+
     // Quick search for selected list
     this.searchQuery = '';
-    
+
     const searchInput = document.getElementById('selected-search');
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
@@ -66,7 +66,7 @@ export class SelectedList {
     this.modalOverlay = document.getElementById('detail-modal');
     this.tableHeader = document.getElementById('modal-table-header');
     this.tableBody = document.getElementById('modal-table-body');
-    
+
     const btnViewDetails = document.getElementById('btn-view-details');
     const btnCloseModal = document.getElementById('btn-close-modal');
 
@@ -93,7 +93,7 @@ export class SelectedList {
   setupColumnToggle() {
     const btnToggle = document.getElementById('btn-toggle-columns');
     const menu = document.getElementById('column-toggle-menu');
-    
+
     if (!btnToggle || !menu) return;
 
     btnToggle.addEventListener('click', (e) => {
@@ -139,11 +139,11 @@ export class SelectedList {
   updateStats(state) {
     const total = state.icdData.length;
     const selectedCount = state.selectedCodes.size;
-    
+
     if (this.countEl) {
       this.countEl.textContent = `${selectedCount} / ${total} ICD`;
     }
-    
+
     if (this.progressFillEl && total > 0) {
       const percentage = (selectedCount / total) * 100;
       this.progressFillEl.style.width = `${percentage}%`;
@@ -153,12 +153,12 @@ export class SelectedList {
   renderList(state) {
     this.container.innerHTML = '';
     const selectedArray = Array.from(state.selectedCodes);
-    
+
     const icdMap = new Map();
     state.icdData.forEach(item => icdMap.set(item.id, item));
 
     const fragment = document.createDocumentFragment();
-    
+
     selectedArray.forEach(code => {
       const item = icdMap.get(code);
       if (!item) return;
@@ -169,7 +169,7 @@ export class SelectedList {
 
       const el = document.createElement('div');
       el.className = 'selected-item';
-      
+
       let labels = '';
       if (item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"]) labels += `<span class="badge badge-red" title="Mã không được dùng làm bệnh chính">Cấm làm bệnh chính</span>`;
       if (item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"]) labels += `<span class="badge badge-orange" title="Mã không khuyến khích dùng làm bệnh chính">K.khuyến khích bệnh chính</span>`;
@@ -210,7 +210,7 @@ export class SelectedList {
 
   renderModalTable(state) {
     if (!this.tableHeader || !this.tableBody) return;
-    
+
     // 1. Render Headers
     this.tableHeader.innerHTML = '';
     TABLE_COLUMNS.forEach(col => {
@@ -222,7 +222,7 @@ export class SelectedList {
         text += this.sortConfig.direction === 'asc' ? ' ▲' : ' ▼';
       }
       th.textContent = text;
-      
+
       if (col.id !== 'ACTIONS' && col.id !== 'WARNINGS') {
         th.addEventListener('click', () => this.handleSort(col.id));
       }
@@ -235,7 +235,7 @@ export class SelectedList {
     // 2. Render Body
     this.tableBody.innerHTML = '';
     const selectedArray = Array.from(state.selectedCodes);
-    
+
     if (selectedArray.length === 0) {
       const colSpan = this.tableHeader.children.length;
       this.tableBody.innerHTML = `<tr><td colspan="${colSpan}" style="text-align: center; padding: 40px; color: var(--text-muted);">Chưa có mã ICD nào được chọn.</td></tr>`;
@@ -251,7 +251,7 @@ export class SelectedList {
     rowData.sort((a, b) => {
       const key = this.sortConfig.key;
       const dir = this.sortConfig.direction === 'asc' ? 1 : -1;
-      
+
       let valA = a[key] || '';
       let valB = b[key] || '';
 
@@ -277,7 +277,7 @@ export class SelectedList {
         if (col.id === 'MA_BENH') {
           td.classList.add('col-ma-benh');
         }
-        
+
         if (col.id === 'ACTIONS') {
           const btn = document.createElement('button');
           btn.className = 'btn btn-outline';
