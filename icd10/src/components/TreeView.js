@@ -314,10 +314,22 @@ export class TreeView {
     const canEdit = store.canEditCurrentDepartment();
     const checkboxHtml = canEdit ? `<input type="checkbox" class="icd-checkbox" value="${item.id}" ${isChecked ? 'checked' : ''} />` : '';
     
+    // User attribution badge
+    const state = store.getState();
+    const metadata = state.selectedMetadata[item.id];
+    let userBadgeHtml = '';
+    if (isChecked && metadata && metadata.name) {
+      const displayStr = metadata.name.split('@')[0];
+      userBadgeHtml = `<span class="user-blame-badge" title="Được chọn bởi: ${metadata.email}">👤 ${displayStr}</span>`;
+    }
+    
     el.innerHTML = `
       ${checkboxHtml}
       <div class="icd-info">
-        <span class="icd-code">${item.MA_BENH}</span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="icd-code">${item.MA_BENH}</span>
+          ${userBadgeHtml}
+        </div>
         <span class="icd-name">${item.TEN_BENH || ''} ${tooltipHtml}</span>
         <span class="icd-en">${item.DISEASE_NAME_WHO_2019_ENGLISH || ''}</span>
         ${badgesHtml}

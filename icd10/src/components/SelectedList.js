@@ -201,10 +201,18 @@ export class SelectedList {
       const canEdit = store.canEditCurrentDepartment();
       const removeBtnHtml = canEdit ? `<button class="remove-btn" title="Xóa" style="margin-left: 10px;">&times;</button>` : '';
 
+      const metadata = state.selectedMetadata[item.id];
+      let blameHtml = '';
+      if (metadata && metadata.name) {
+        const displayStr = metadata.name.split('@')[0];
+        blameHtml = `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;" title="${metadata.email}">👤 ${displayStr}</div>`;
+      }
+
       el.innerHTML = `
         <div class="selected-info" style="flex: 1;">
           <strong>${item.MA_BENH}</strong><br>
           <small>${item.TEN_BENH}</small>
+          ${blameHtml}
           ${badgesHtml}
         </div>
         ${removeBtnHtml}
@@ -381,6 +389,14 @@ export class SelectedList {
           if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"]) labels += `<span class="badge badge-pink" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NỮ GIỚI</span>`;
           if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"]) labels += `<span class="badge badge-blue" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NAM GIỚI</span>`;
           td.innerHTML = labels;
+        } else if (col.id === 'MA_BENH') {
+          const metadata = state.selectedMetadata[item.id];
+          let html = `<strong>${item[col.id] || ''}</strong>`;
+          if (metadata && metadata.name) {
+            const displayStr = metadata.name.split('@')[0];
+            html += `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;" title="${metadata.email}">👤 ${displayStr}</div>`;
+          }
+          td.innerHTML = html;
         } else {
           td.textContent = item[col.id] || '';
         }

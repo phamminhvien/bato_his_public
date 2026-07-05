@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, setDoc, getDoc, onSnapshot, arrayUnion, arrayRemove, collection } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, onSnapshot, arrayUnion, arrayRemove, collection, deleteField } from 'firebase/firestore';
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { firebaseConfig } from './config.js';
 
@@ -106,12 +106,13 @@ export class FirebaseService {
   }
 
   /**
-   * Update selections diff using arrayUnion and arrayRemove
+   * Update selections diff using arrayUnion and arrayRemove with metadata
    * @param {string} departmentId 
    * @param {string[]} addedCodes 
    * @param {string[]} removedCodes 
+   * @param {Object} user 
    */
-  static async updateSelectionDiff(departmentId, addedCodes, removedCodes) {
+  static async updateSelectionDiff(departmentId, addedCodes, removedCodes, user = null) {
     if (!db) return;
     try {
       const docRef = doc(db, 'ICDdepartmentSelections', departmentId);
@@ -124,9 +125,24 @@ export class FirebaseService {
       if (addedCodes && addedCodes.length > 0) {
         console.log(`⬆️ [Firebase Push] Thêm mã:`, addedCodes);
         updates.selected = arrayUnion(...addedCodes);
+        if (user) {
+          updates.metadata = {};
+          addedCodes.forEach(code => {
+            updates.metadata[code] = {
+              email: user.email,
+              name: user.name || user.email,
+              timestamp: Date.now()
+            };
+          });
+        }
       } else if (removedCodes && removedCodes.length > 0) {
         console.log(`⬇️ [Firebase Push] Xóa mã:`, removedCodes);
         updates.selected = arrayRemove(...removedCodes);
+        // We can optionally clear the metadata
+        updates.metadata = {};
+        removedCodes.forEach(code => {
+          updates.metadata[code] = deleteField();
+        });
       }
       
       await setDoc(docRef, updates, { merge: true });
@@ -148,9 +164,10 @@ export class FirebaseService {
     const docRef = doc(db, 'ICDdepartmentSelections', departmentId);
     return onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
-        callback(docSnap.data().selected || []);
+        const data = docSnap.data();
+        callback(data.selected || [], data.metadata || {});
       } else {
-        callback([]);
+        callback([], {});
       }
     }, (error) => {
       console.error("Error listening to Firestore:", error);
