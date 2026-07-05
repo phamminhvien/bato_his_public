@@ -21,8 +21,8 @@ export class Toolbar {
           <span>ICD-10 Selector v1.0 &copy; <b>Trung tâm Y tế Ba Tơ</b></span>
         </div>
         
-        <div class="status-right" style="opacity: 0.8;">
-          <span>Tác giả: <b>Vien Pham</b></span>
+        <div class="status-right" style="opacity: 0.9;">
+          <span>Author: <a href="https://www.facebook.com/phamminhvien" target="_blank" style="color: var(--primary-color); text-decoration: none; font-weight: bold;">Vien Pham</a></span>
         </div>
       </div>
       
