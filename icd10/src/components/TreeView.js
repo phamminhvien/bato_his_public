@@ -74,14 +74,37 @@ export class TreeView {
                 badge = document.createElement('span');
                 badge.className = 'user-blame-badge';
                 titleRow.appendChild(badge);
+                
+                // Animate addition
+                const icdItem = cb.closest('.icd-item');
+                if (icdItem && metadata.email && state.currentUser && metadata.email !== state.currentUser.email) {
+                  icdItem.classList.add('shake');
+                  setTimeout(() => icdItem.classList.remove('shake'), 400);
+                  badge.classList.add('flash-active');
+                  setTimeout(() => badge.classList.remove('flash-active'), 3000);
+                }
               }
               badge.textContent = `👤 ${displayStr}`;
               badge.title = `Được chọn bởi: ${metadata.email}`;
-            } else if (badge) {
+            } else if (badge && !badge.classList.contains('removing')) {
               badge.remove();
             }
-          } else if (badge) {
-            badge.remove();
+          } else if (badge && !badge.classList.contains('removing')) {
+            // Animate removal
+            badge.classList.add('removing');
+            badge.classList.add('flash-active');
+            badge.style.textDecoration = 'line-through';
+            badge.style.opacity = '0.5';
+            
+            const icdItem = cb.closest('.icd-item');
+            if (icdItem) {
+              icdItem.classList.add('shake');
+              setTimeout(() => icdItem.classList.remove('shake'), 400);
+            }
+            
+            setTimeout(() => {
+              if (badge.parentNode) badge.remove();
+            }, 2000);
           }
         }
       }

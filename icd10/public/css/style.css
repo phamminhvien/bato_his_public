@@ -1060,6 +1060,15 @@ input:checked+.slider:before {
   overflow: hidden;
   text-overflow: ellipsis;
   user-select: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.icd-item:hover .user-blame-badge,
+.user-blame-badge.flash-active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .footer {
