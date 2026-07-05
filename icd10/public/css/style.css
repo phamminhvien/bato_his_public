@@ -55,16 +55,16 @@ body {
 .header-titles {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .header-logo {
-  height: 40px;
-  width: 40px;
+  height: 36px;
+  width: 36px;
   object-fit: contain;
   background-color: white;
   border-radius: 50%;
-  padding: 2px;
+  padding: 3px;
   flex-shrink: 0;
 }
 
