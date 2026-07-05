@@ -1,7 +1,7 @@
 import { store, actions } from '../state/store.js';
 import { removeVietnameseTones } from '../utils/helpers.js';
 
-const TABLE_COLUMNS = [
+export const TABLE_COLUMNS = [
   { id: 'STT', label: 'STT', defaultVisible: true },
   { id: 'STT_CHUONG', label: 'STT CHƯƠNG', defaultVisible: false },
   { id: 'PHAM_VI_MA_NHOM_BENH', label: 'PHẠM VI MÃ NHÓM BỆNH', defaultVisible: false },

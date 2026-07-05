@@ -1,5 +1,7 @@
 import { store } from '../state/store.js';
 
+import { TABLE_COLUMNS } from '../components/SelectedList.js';
+
 export class ExportService {
   /**
    * Trích xuất dữ liệu từ các mã đã chọn
@@ -9,18 +11,39 @@ export class ExportService {
     const selectedCodes = state.selectedCodes;
     const icdData = state.icdData;
     
-    // Filter out only selected items
+    // Get visible columns from localStorage, or default
+    const savedCols = localStorage.getItem('visibleColumns');
+    let visibleSet;
+    if (savedCols) {
+      visibleSet = new Set(JSON.parse(savedCols));
+    } else {
+      visibleSet = new Set(TABLE_COLUMNS.filter(c => c.defaultVisible).map(c => c.id));
+    }
+    
     const data = icdData.filter(item => selectedCodes.has(item.id));
     
-    // Transform to export format
-    return data.map(item => ({
-      "ICD": item.MA_BENH,
-      "Tên tiếng Việt": item.TEN_BENH || '',
-      "Tên tiếng Anh": item.DISEASE_NAME_WHO_2019_ENGLISH || '',
-      "Chương": item.TEN_CHUONG || '',
-      "Khối": item.TEN_KHOI || '',
-      "Ghi chú": item.HUONG_DAN_MA_HOA_BO_SUNG_CUA_WHO_2019 || ''
-    }));
+    return data.map(item => {
+      const row = {};
+      TABLE_COLUMNS.forEach(col => {
+         if (col.id === 'ACTIONS') return;
+         
+         if (visibleSet.has(col.id) || col.id === 'MA_BENH') {
+            if (col.id === 'WARNINGS') {
+                let w = [];
+                if (item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"]) w.push("MÃ KHÔNG ĐƯỢC DÙNG LÀ BỆNH CHÍNH");
+                if (item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"]) w.push("MÃ KHÔNG KHUYẾN KHÍCH DÙNG LÀ BỆNH CHÍNH");
+                if (item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"]) w.push("MÃ KHÔNG ĐƯỢC SỬ DỤNG VÌ CÓ MÃ 4 HOẶC 5 KÝ TỰ CỤ THỂ HƠN");
+                if (item["CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"]) w.push("CHỈ SỬ DỤNG MÃ HÓA NGUYÊN NHÂN TỬ VONG");
+                if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"]) w.push("CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NỮ GIỚI");
+                if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"]) w.push("CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NAM GIỚI");
+                row[col.label] = w.join(", ");
+            } else {
+                row[col.label] = item[col.id] || '';
+            }
+         }
+      });
+      return row;
+    });
   }
 
   /**
@@ -63,7 +86,10 @@ export class ExportService {
    * Export to JSON
    */
   static exportJSON(departmentId) {
-    const data = Array.from(store.getState().selectedCodes);
+    const state = store.getState();
+    const selectedCodes = state.selectedCodes;
+    const data = state.icdData.filter(item => selectedCodes.has(item.id));
+    
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
