@@ -23,6 +23,7 @@ export class FirebaseService {
   static async loginWithGoogle() {
     if (!auth) return null;
     const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
     try {
       const result = await signInWithPopup(auth, provider);
       return result.user;
@@ -132,6 +133,7 @@ export class FirebaseService {
             updates.metadata_added[code] = {
               email: user.email,
               name: user.displayName || user.name || user.email,
+              deviceId: user.deviceId || null,
               timestamp: Date.now()
             };
             updates.metadata_removed[code] = deleteField();
@@ -147,6 +149,7 @@ export class FirebaseService {
             updates.metadata_removed[code] = {
               email: user.email,
               name: user.displayName || user.name || user.email,
+              deviceId: user.deviceId || null,
               timestamp: Date.now()
             };
             updates.metadata_added[code] = deleteField();

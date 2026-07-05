@@ -4,6 +4,7 @@ export class Store {
   constructor(initialState = {}) {
     this.state = { 
       currentUser: null, // { email, name, avatar, role, maKhoa }
+      deviceId: 'device_' + Math.random().toString(36).substr(2, 9),
       ...initialState 
     };
     this.listeners = new Set();
@@ -67,12 +68,13 @@ export const actions = {
   toggleCode: (code, isSelected) => {
     const state = store.getState();
     const current = new Set(state.selectedCodes);
+    const userWithDevice = state.currentUser ? { ...state.currentUser, deviceId: state.deviceId } : null;
     if (isSelected) {
       current.add(code);
-      if (state.autoSave && state.departmentId && store.canEditCurrentDepartment()) FirebaseService.updateSelectionDiff(state.departmentId, [code], [], state.currentUser);
+      if (state.autoSave && state.departmentId && store.canEditCurrentDepartment()) FirebaseService.updateSelectionDiff(state.departmentId, [code], [], userWithDevice);
     } else {
       current.delete(code);
-      if (state.autoSave && state.departmentId && store.canEditCurrentDepartment()) FirebaseService.updateSelectionDiff(state.departmentId, [], [code], state.currentUser);
+      if (state.autoSave && state.departmentId && store.canEditCurrentDepartment()) FirebaseService.updateSelectionDiff(state.departmentId, [], [code], userWithDevice);
     }
     store.setState({ selectedCodes: current });
   },
@@ -80,7 +82,8 @@ export const actions = {
     const state = store.getState();
     const current = new Set(state.selectedCodes);
     current.delete(code);
-    if (state.autoSave && state.departmentId && store.canEditCurrentDepartment()) FirebaseService.updateSelectionDiff(state.departmentId, [], [code], state.currentUser);
+    const userWithDevice = state.currentUser ? { ...state.currentUser, deviceId: state.deviceId } : null;
+    if (state.autoSave && state.departmentId && store.canEditCurrentDepartment()) FirebaseService.updateSelectionDiff(state.departmentId, [], [code], userWithDevice);
     store.setState({ selectedCodes: current });
   },
   toggleCodesBulk: (codesArray, isSelected) => {
@@ -97,7 +100,10 @@ export const actions = {
         removed.push(code);
       }
     });
-    if (state.autoSave && state.departmentId && store.canEditCurrentDepartment()) FirebaseService.updateSelectionDiff(state.departmentId, added, removed, state.currentUser);
+    if (state.autoSave && state.departmentId && store.canEditCurrentDepartment()) {
+      const userWithDevice = state.currentUser ? { ...state.currentUser, deviceId: state.deviceId } : null;
+      FirebaseService.updateSelectionDiff(state.departmentId, added, removed, userWithDevice);
+    }
     store.setState({ selectedCodes: current });
   },
 };
