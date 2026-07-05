@@ -19,12 +19,12 @@ export class Toolbar {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
               </div>
               <img id="user-avatar" src="" alt="Avatar" style="width: 28px; height: 28px; border-radius: 6px; display: none;">
-              <div style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2;">
+              <div class="auth-btn-user-info" style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2;">
                 <span id="user-name" style="font-weight: 500; text-transform: lowercase;">guest</span>
                 <span id="user-role-badge" style="font-size: 0.65rem; color: var(--success-color); display: none;"></span>
               </div>
             </div>
-            <div style="display: flex; flex-direction: column; opacity: 0.5;">
+            <div class="auth-btn-chevron" style="display: flex; flex-direction: column; opacity: 0.5;">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: -4px;"><polyline points="18 15 12 9 6 15"></polyline></svg>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </div>
@@ -32,9 +32,11 @@ export class Toolbar {
           
           <!-- Auth Menu -->
           <div class="auth-profile-menu" id="auth-menu" style="padding: 0;">
-            <!-- Profile Info (Shows Email when logged in) -->
-            <div id="auth-menu-email-container" style="display: none; padding: 10px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; text-align: center; word-break: break-all;">
-              <span id="auth-menu-email"></span>
+            <!-- Profile Info (Shows Name, Role, Email when logged in) -->
+            <div id="auth-menu-user-info-container" style="display: none; padding: 10px 12px; border-bottom: 1px solid var(--border-color); text-align: center; word-break: break-word;">
+              <div id="auth-menu-name" style="font-weight: bold; font-size: 0.95rem; color: var(--text-main); margin-bottom: 2px;"></div>
+              <div id="auth-menu-role" style="font-size: 0.75rem; font-weight: 500; margin-bottom: 4px;"></div>
+              <div id="auth-menu-email" style="color: var(--text-muted); font-size: 0.75rem;"></div>
             </div>
             
             <!-- Preferences Section -->

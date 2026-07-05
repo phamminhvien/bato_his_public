@@ -299,11 +299,19 @@ class App {
         
         if (userName) userName.textContent = user.displayName || 'Người dùng';
         
-        const emailContainer = document.getElementById('auth-menu-email-container');
-        const emailSpan = document.getElementById('auth-menu-email');
-        if (emailContainer && emailSpan) {
-          emailSpan.textContent = user.email;
-          emailContainer.style.display = 'block';
+        const popupInfoContainer = document.getElementById('auth-menu-user-info-container');
+        const popupName = document.getElementById('auth-menu-name');
+        const popupRole = document.getElementById('auth-menu-role');
+        const popupEmail = document.getElementById('auth-menu-email');
+        
+        if (popupInfoContainer) {
+          if (popupName) popupName.textContent = user.displayName || 'Người dùng';
+          if (popupEmail) popupEmail.textContent = user.email;
+          if (popupRole) {
+            popupRole.textContent = 'Đang kiểm tra quyền...';
+            popupRole.style.color = 'var(--text-muted)';
+          }
+          popupInfoContainer.style.display = 'block';
         }
 
         if (userRoleBadge) {
@@ -327,16 +335,28 @@ class App {
             userRoleBadge.textContent = 'Super Admin';
             userRoleBadge.style.color = '#ff9800';
             userRoleBadge.title = 'Toàn quyền chỉnh sửa hệ thống';
+            if (popupRole) {
+              popupRole.textContent = 'Super Admin';
+              popupRole.style.color = '#ff9800';
+            }
           } else if (currentUser.role === 'admin') {
             const deptObj = DEPARTMENTS.find(d => d.id === currentUser.maKhoa);
             const deptName = deptObj ? deptObj.name : currentUser.maKhoa;
             userRoleBadge.textContent = 'Admin: ' + deptName;
             userRoleBadge.style.color = 'var(--primary-color)';
             userRoleBadge.title = 'Quản trị viên ' + deptName;
+            if (popupRole) {
+              popupRole.textContent = 'Admin: ' + deptName;
+              popupRole.style.color = 'var(--primary-color)';
+            }
           } else {
             userRoleBadge.textContent = 'Guest (Chỉ xem)';
             userRoleBadge.style.color = 'var(--text-muted)';
             userRoleBadge.title = 'Khách viếng thăm (Chỉ xem)';
+            if (popupRole) {
+              popupRole.textContent = 'Guest (Chỉ xem)';
+              popupRole.style.color = 'var(--text-muted)';
+            }
           }
           userRoleBadge.style.display = 'block';
         }
@@ -353,9 +373,9 @@ class App {
         if (userName) userName.textContent = 'guest';
         if (userRoleBadge) userRoleBadge.style.display = 'none';
         
-        const emailContainer = document.getElementById('auth-menu-email-container');
-        if (emailContainer) emailContainer.style.display = 'none';
-
+        const popupInfoContainer = document.getElementById('auth-menu-user-info-container');
+        if (popupInfoContainer) popupInfoContainer.style.display = 'none';
+        
         actions.setUserInfo(null);
       }
     });
