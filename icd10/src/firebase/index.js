@@ -65,21 +65,21 @@ export class FirebaseService {
     try {
       const docRef = doc(db, 'ICDdepartmentSelections', departmentId);
       
-      // Ensure document exists first by merging updatedAt
-      await setDoc(docRef, {
+      const updates = {
         department: departmentId,
         updatedAt: new Date().toISOString()
-      }, { merge: true });
+      };
 
-      // Run arrayUnion and arrayRemove
       if (addedCodes && addedCodes.length > 0) {
         console.log(`⬆️ [Firebase Push] Thêm mã:`, addedCodes);
-        await setDoc(docRef, { selected: arrayUnion(...addedCodes) }, { merge: true });
-      }
-      if (removedCodes && removedCodes.length > 0) {
+        updates.selected = arrayUnion(...addedCodes);
+      } else if (removedCodes && removedCodes.length > 0) {
         console.log(`⬇️ [Firebase Push] Xóa mã:`, removedCodes);
-        await setDoc(docRef, { selected: arrayRemove(...removedCodes) }, { merge: true });
+        updates.selected = arrayRemove(...removedCodes);
       }
+      
+      await setDoc(docRef, updates, { merge: true });
+      
     } catch (error) {
       console.error("Error updating diff in Firestore:", error);
       throw error;
