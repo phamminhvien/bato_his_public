@@ -45,18 +45,26 @@ class App {
     deptSelect.addEventListener('change', async (e) => {
       isSwitchingDept = true;
       const newDept = e.target.value;
+      
+      // Clear current selection immediately to prevent old data bleeding into new department
+      actions.setSelectedCodes([]);
       actions.setDepartment(newDept);
       localStorage.setItem('selectedDept', newDept);
       
       this.showLoader();
       try {
         const selected = await FirebaseService.loadSelections(newDept);
-        actions.setSelectedCodes(selected);
+        // Prevent race condition if user changed department again while loading
+        if (store.getState().departmentId === newDept) {
+          actions.setSelectedCodes(selected);
+        }
       } catch (err) {
         console.error("Error changing department:", err);
       }
-      isSwitchingDept = false;
-      this.hideLoader();
+      if (store.getState().departmentId === newDept) {
+        isSwitchingDept = false;
+        this.hideLoader();
+      }
     });
 
     // 2. Initialize UI Components
