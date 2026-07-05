@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -9,7 +10,7 @@
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/mobile.css">
   <link rel="stylesheet" href="./css/filter.css">
-  
+
   <!-- SheetJS for Export/Import -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
@@ -23,14 +24,15 @@
     }
   </script>
 </head>
+
 <body>
-  
+
   <div id="loader" class="loader-overlay">
     <div class="loader-text">Đang tải dữ liệu, vui lòng chờ...</div>
   </div>
 
   <div class="app-container">
-    
+
     <!-- Header -->
     <header class="header">
       <button class="mobile-toggle" id="btn-toggle-sidebar">☰</button>
@@ -53,12 +55,19 @@
         Quy tắc Cảnh báo
       </div>
       <div class="legend-container" id="legend-filter">
-        <span class="badge badge-red legend-badge" data-filter="MA_KHONG_DUOC_DUNG_LA_BENH_CHINH">Mã không được dùng làm bệnh chính</span>
-        <span class="badge badge-orange legend-badge" data-filter="MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH">Mã không khuyến khích dùng làm bệnh chính</span>
-        <span class="badge badge-brown legend-badge" data-filter="MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON">Mã không được sử dụng vì có mã 4 hoặc 5 ký tự cụ thể hơn</span>
-        <span class="badge badge-purple legend-badge" data-filter="CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG">Chỉ sử dụng mã hóa nguyên nhân tử vong</span>
-        <span class="badge badge-pink legend-badge" data-filter="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI">Các mã bệnh chỉ có hoặc chủ yếu có ở nữ giới</span>
-        <span class="badge badge-blue legend-badge" data-filter="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI">Các mã bệnh chỉ có hoặc chủ yếu có ở nam giới</span>
+        <span class="badge badge-red legend-badge" data-filter="MA_KHONG_DUOC_DUNG_LA_BENH_CHINH">Mã không được dùng làm
+          bệnh chính</span>
+        <span class="badge badge-orange legend-badge" data-filter="MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH">Mã không
+          khuyến khích dùng làm bệnh chính</span>
+        <span class="badge badge-brown legend-badge"
+          data-filter="MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON">Mã không được sử dụng vì có mã 4 hoặc 5
+          ký tự cụ thể hơn</span>
+        <span class="badge badge-purple legend-badge" data-filter="CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG">Chỉ sử dụng
+          mã hóa nguyên nhân tử vong</span>
+        <span class="badge badge-pink legend-badge" data-filter="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI">Các mã
+          bệnh chỉ có hoặc chủ yếu có ở nữ giới</span>
+        <span class="badge badge-blue legend-badge" data-filter="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI">Các mã
+          bệnh chỉ có hoặc chủ yếu có ở nam giới</span>
       </div>
     </aside>
 
@@ -67,8 +76,9 @@
       <div class="search-bar-container">
         <div class="search-wrapper">
           <!-- Total count badge -->
-          <div id="search-count" class="badge" style="background-color: #6c757d; margin-left: 10px; display: none;">0</div>
-          <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm theo mã, tên bệnh (tiếng Việt không dấu)...">
+          <div id="search-count" class="badge" style="background-color: #6c757d; margin-left: 10px; display: none;">0
+          </div>
+          <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm theo mã, tên bệnh ...">
         </div>
       </div>
       <div class="tree-container" id="tree-content">
@@ -81,19 +91,22 @@
       <div class="rightbar-header">
         <div style="display: flex; flex-direction: column;">
           <span>Đã chọn</span>
-          <span id="selected-count" style="font-weight: normal; font-size: 0.85rem; color: var(--text-muted);">0 / 0 ICD</span>
+          <span id="selected-count" style="font-weight: normal; font-size: 0.85rem; color: var(--text-muted);">0 / 0
+            ICD</span>
         </div>
-        <button id="btn-view-details" class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem;" title="Xem chi tiết toàn màn hình">
+        <button id="btn-view-details" class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem;"
+          title="Xem chi tiết toàn màn hình">
           🔍 Xem chi tiết
         </button>
       </div>
       <div class="search-bar-container" style="padding: 10px; border-bottom: 1px solid var(--border-color);">
-        <input type="text" id="selected-search" class="search-input" style="padding: 5px; font-size: 0.9rem;" placeholder="Lọc nhanh đã chọn..." />
+        <input type="text" id="selected-search" class="search-input" style="padding: 5px; font-size: 0.9rem;"
+          placeholder="Lọc nhanh đã chọn..." />
       </div>
       <div class="selected-list" id="selected-content">
         <!-- Selected items render here -->
       </div>
-      
+
       <div style="padding: 10px; border-top: 1px solid var(--border-color);">
         <div class="progress-text">Tiến độ danh mục</div>
         <div class="progress-bar-bg">
@@ -106,7 +119,7 @@
     <footer class="footer" id="footer-content">
       <!-- Buttons render here -->
     </footer>
-    
+
     <!-- Mobile Overlay -->
     <div class="mobile-overlay" id="mobile-overlay"></div>
 
@@ -117,36 +130,42 @@
     <div class="modal-content modal-content-large">
       <div class="modal-header" style="flex-wrap: wrap; gap: 10px;">
         <h2 id="modal-title">Danh mục ICD-10</h2>
-        
+
         <div class="modal-actions" style="display: flex; gap: 8px; margin-left: auto;">
           <div class="column-toggle-wrapper">
-            <button id="btn-toggle-columns" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">⚙ Tùy chỉnh cột</button>
+            <button id="btn-toggle-columns" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">⚙ Tùy
+              chỉnh cột</button>
             <div id="column-toggle-menu" class="column-toggle-menu hidden">
               <!-- Checkboxes for columns will be rendered here -->
             </div>
           </div>
-          <button class="btn btn-success" id="btn-export-excel" style="padding: 6px 12px; font-size: 0.85rem;">Xuất Excel</button>
-          <button class="btn btn-outline" id="btn-export-json" style="padding: 6px 12px; font-size: 0.85rem;">Xuất JSON</button>
+          <button class="btn btn-success" id="btn-export-excel" style="padding: 6px 12px; font-size: 0.85rem;">Xuất
+            Excel</button>
+          <button class="btn btn-outline" id="btn-export-json" style="padding: 6px 12px; font-size: 0.85rem;">Xuất
+            JSON</button>
           <button id="btn-close-modal" class="btn-close" style="margin-left: 10px;">&times;</button>
         </div>
       </div>
       <div class="modal-body" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
-        <div class="modal-toolbar" style="padding: 15px; border-bottom: 1px solid var(--border-color); display: flex; gap: 15px; align-items: center; background: #f8f9fa; flex-wrap: wrap;">
-           <div class="modal-stats" id="modal-stats" style="font-size: 0.95rem; flex: 1; color: var(--text-main);">
-              Tổng số: <b>0</b> mã
-           </div>
-           <input type="text" id="modal-search" class="search-input" style="width: 300px; padding: 6px 12px; font-size: 0.9rem;" placeholder="Tìm kiếm theo mã, tên bệnh...">
-           <select id="modal-warning-filter" class="search-input" style="width: 250px; padding: 6px; font-size: 0.9rem; cursor: pointer;">
-              <option value="">-- Tất cả cảnh báo --</option>
-              <option value="HAS_WARNING">⚠️ Có bất kỳ cảnh báo nào</option>
-              <option value="NO_WARNING">✅ Không có cảnh báo</option>
-              <option value="MA_KHONG_DUOC_DUNG_LA_BENH_CHINH">Cấm làm bệnh chính</option>
-              <option value="MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH">Không khuyến khích bệnh chính</option>
-              <option value="MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON">Cần mã chi tiết hơn</option>
-              <option value="CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG">Chỉ dùng tử vong</option>
-              <option value="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI">Nữ giới</option>
-              <option value="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI">Nam giới</option>
-           </select>
+        <div class="modal-toolbar"
+          style="padding: 15px; border-bottom: 1px solid var(--border-color); display: flex; gap: 15px; align-items: center; background: #f8f9fa; flex-wrap: wrap;">
+          <div class="modal-stats" id="modal-stats" style="font-size: 0.95rem; flex: 1; color: var(--text-main);">
+            Tổng số: <b>0</b> mã
+          </div>
+          <input type="text" id="modal-search" class="search-input"
+            style="width: 300px; padding: 6px 12px; font-size: 0.9rem;" placeholder="Tìm kiếm theo mã, tên bệnh...">
+          <select id="modal-warning-filter" class="search-input"
+            style="width: 250px; padding: 6px; font-size: 0.9rem; cursor: pointer;">
+            <option value="">-- Tất cả cảnh báo --</option>
+            <option value="HAS_WARNING">⚠️ Có bất kỳ cảnh báo nào</option>
+            <option value="NO_WARNING">✅ Không có cảnh báo</option>
+            <option value="MA_KHONG_DUOC_DUNG_LA_BENH_CHINH">Cấm làm bệnh chính</option>
+            <option value="MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH">Không khuyến khích bệnh chính</option>
+            <option value="MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON">Cần mã chi tiết hơn</option>
+            <option value="CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG">Chỉ dùng tử vong</option>
+            <option value="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI">Nữ giới</option>
+            <option value="CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI">Nam giới</option>
+          </select>
         </div>
         <div class="table-responsive" style="flex: 1; overflow: auto;">
           <table class="data-table" id="modal-selected-table">
@@ -167,4 +186,5 @@
   <!-- Main App Entry -->
   <script type="module" src="../src/pages/App.js"></script>
 </body>
+
 </html>
