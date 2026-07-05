@@ -5,8 +5,7 @@ import { Sidebar } from '../components/Sidebar.js';
 import { TreeView } from '../components/TreeView.js';
 import { SelectedList } from '../components/SelectedList.js';
 import { Toolbar } from '../components/Toolbar.js';
-import { ChartModal } from '../components/ChartModal.js';
-import { LeaderboardModal } from '../components/LeaderboardModal.js';
+import { DashboardModal } from '../components/DashboardModal.js';
 import { debounce } from '../utils/helpers.js';
 import { DEPARTMENTS } from '../utils/departments.js';
 
@@ -110,8 +109,7 @@ class App {
 
     // 4. Setup Mobile Menu & Modals
     this.setupMobileMenu();
-    new ChartModal();
-    new LeaderboardModal();
+    new DashboardModal();
 
     // 4.5 Listen to all departments for leaderboard
     FirebaseService.listenAllDepartments((data) => {

@@ -121,6 +121,7 @@ export class FirebaseService {
         allDepts.push({
           id: doc.id,
           count: data.selected ? data.selected.length : 0,
+          codes: data.selected || [],
           updatedAt: data.updatedAt
         });
       });
