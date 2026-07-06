@@ -265,8 +265,8 @@ class App {
           {
             element: '.rightbar',
             popover: {
-              title: 'Giỏ hàng / Đã chọn',
-              description: 'Mọi mã bệnh bạn đã chọn sẽ xuất hiện ở đây để dễ dàng kiểm tra lại.',
+              title: 'ICD-10 / Đã chọn',
+              description: 'Mọi mã bệnh bạn đã chọn sẽ xuất hiện ở đây để dễ dàng kiểm tra lại ở phần xem chi tiết, dễ dàng xuất excel tùy chỉnh như ý muốn.',
               side: "left", align: 'start'
             }
           },
@@ -284,14 +284,6 @@ class App {
               title: 'Đăng nhập & Quyền',
               description: 'Tùy chỉnh giao diện Sáng/Tối, Bật/Tắt âm thanh. Đăng nhập tại đây nếu bạn là Quản trị viên để có quyền thay đổi mã.',
               side: "top", align: 'end'
-            }
-          },
-          {
-            element: '#footer-content',
-            popover: {
-              title: 'Thanh công cụ',
-              description: 'Sử dụng thanh công cụ để lưu trữ, nạp hoặc xuất file Excel, và tải lại dữ liệu.',
-              side: "top", align: 'center'
             }
           }
         ]
