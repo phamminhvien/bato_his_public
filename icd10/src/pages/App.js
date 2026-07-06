@@ -231,6 +231,14 @@ class App {
             }
           },
           {
+            element: '#btn-auth-profile',
+            popover: {
+              title: 'Đăng nhập & Quyền',
+              description: 'Tùy chỉnh giao diện Sáng/Tối, Bật/Tắt âm thanh. Đăng nhập tại đây nếu bạn là Quản trị viên để có quyền thay đổi mã.',
+              side: "top", align: 'end'
+            }
+          },
+          {
             element: '#dept-select',
             popover: {
               title: 'Chọn Khoa / Phòng',
@@ -276,14 +284,6 @@ class App {
               title: 'Bảng điều khiển',
               description: 'Xem bảng xếp hạng thống kê số lượng mã bệnh của các Khoa.',
               side: "bottom", align: 'end'
-            }
-          },
-          {
-            element: '#btn-auth-profile',
-            popover: {
-              title: 'Đăng nhập & Quyền',
-              description: 'Tùy chỉnh giao diện Sáng/Tối, Bật/Tắt âm thanh. Đăng nhập tại đây nếu bạn là Quản trị viên để có quyền thay đổi mã.',
-              side: "top", align: 'end'
             }
           }
         ]
