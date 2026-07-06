@@ -23,6 +23,7 @@ export class Store {
     const { currentUser, departmentId } = this.state;
     if (!currentUser || !currentUser.role) return false;
     if (currentUser.role === 'super_admin') return true;
+    if (departmentId === '51011') return false; // Chỉ super_admin mới được sửa
     if (currentUser.role === 'admin' && currentUser.maKhoa === departmentId) return true;
     return false;
   }
