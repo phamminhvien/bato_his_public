@@ -12,6 +12,7 @@ import { DEPARTMENTS } from '../utils/departments.js';
 class App {
   constructor() {
     this.init();
+    this.setupHelpTour();
   }
 
   async init() {
@@ -206,6 +207,98 @@ class App {
           actions.setSearchFilter(filterKey);
         }
       });
+    });
+  }
+
+  setupHelpTour() {
+    const btnHelp = document.getElementById('btn-help-tour');
+    if (!btnHelp) return;
+    
+    btnHelp.addEventListener('click', () => {
+      // Create driver instance
+      const driverObj = window.driver.js.driver({
+        showProgress: true,
+        nextBtnText: 'Tiếp theo',
+        prevBtnText: 'Quay lại',
+        doneBtnText: 'Hoàn thành',
+        steps: [
+          {
+            element: '.header-text',
+            popover: {
+              title: 'Chào mừng!',
+              description: 'Chào mừng bạn đến với công cụ hỗ trợ chọn mã bệnh ICD-10 của TTYT Ba Tơ.',
+              side: "bottom", align: 'start'
+            }
+          },
+          {
+            element: '#dept-select',
+            popover: {
+              title: 'Chọn Khoa / Phòng',
+              description: 'Đầu tiên, hãy chọn Khoa/Phòng của bạn để tải danh sách mã bệnh tương ứng.',
+              side: "bottom", align: 'start'
+            }
+          },
+          {
+            element: '.search-wrapper',
+            popover: {
+              title: 'Tìm kiếm nhanh',
+              description: 'Sử dụng ô tìm kiếm để lọc nhanh các mã bệnh theo tên hoặc mã ICD.',
+              side: "bottom", align: 'start'
+            }
+          },
+          {
+            element: '.sidebar',
+            popover: {
+              title: 'Quy tắc cảnh báo',
+              description: 'Chú ý các màu sắc cảnh báo để chọn đúng mã ICD theo chuẩn thông tư 06/2026.',
+              side: "right", align: 'start'
+            }
+          },
+          {
+            element: '#tree-content',
+            popover: {
+              title: 'Cây danh mục ICD-10',
+              description: 'Đây là nơi bạn chọn mã bệnh. Dữ liệu sẽ tự động lưu và đồng bộ thời gian thực.',
+              side: "right", align: 'start'
+            }
+          },
+          {
+            element: '.rightbar',
+            popover: {
+              title: 'Giỏ hàng / Đã chọn',
+              description: 'Mọi mã bệnh bạn đã chọn sẽ xuất hiện ở đây để dễ dàng kiểm tra lại.',
+              side: "left", align: 'start'
+            }
+          },
+          {
+            element: '#btn-show-dashboard',
+            popover: {
+              title: 'Bảng điều khiển',
+              description: 'Xem bảng xếp hạng thống kê số lượng mã bệnh của các Khoa.',
+              side: "bottom", align: 'end'
+            }
+          },
+          {
+            element: '#btn-auth-profile',
+            popover: {
+              title: 'Đăng nhập & Quyền',
+              description: 'Nếu bạn là Quản trị viên, hãy đăng nhập tại đây để được cấp quyền thêm/xóa mã bệnh.',
+              side: "top", align: 'end'
+            }
+          },
+          {
+            element: '#footer-content',
+            popover: {
+              title: 'Thanh công cụ',
+              description: 'Sử dụng thanh công cụ để lưu trữ, xuất file Excel, tải lại hoặc thay đổi giao diện.',
+              side: "top", align: 'center'
+            }
+          }
+        ]
+      });
+      
+      // Start tour
+      driverObj.drive();
     });
   }
 
