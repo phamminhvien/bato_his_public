@@ -282,7 +282,7 @@ class App {
             element: '#btn-auth-profile',
             popover: {
               title: 'Đăng nhập & Quyền',
-              description: 'Nếu bạn là Quản trị viên, hãy đăng nhập tại đây để được cấp quyền thêm/xóa mã bệnh.',
+              description: 'Tùy chỉnh giao diện Sáng/Tối, Bật/Tắt âm thanh. Đăng nhập tại đây nếu bạn là Quản trị viên để có quyền thay đổi mã.',
               side: "top", align: 'end'
             }
           },
@@ -290,7 +290,7 @@ class App {
             element: '#footer-content',
             popover: {
               title: 'Thanh công cụ',
-              description: 'Sử dụng thanh công cụ để lưu trữ, xuất file Excel, tải lại hoặc thay đổi giao diện.',
+              description: 'Sử dụng thanh công cụ để lưu trữ, nạp hoặc xuất file Excel, và tải lại dữ liệu.',
               side: "top", align: 'center'
             }
           }
