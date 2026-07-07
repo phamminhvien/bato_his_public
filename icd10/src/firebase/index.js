@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, getDoc, onSnapshot, arrayUnion, arrayRemove, collection, deleteField, updateDoc } from 'firebase/firestore';
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
+import { getAuth, signInWithPopup, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { firebaseConfig } from './config.js';
 
 let app;
@@ -28,8 +28,14 @@ export class FirebaseService {
       const result = await signInWithPopup(auth, provider);
       return result.user;
     } catch (error) {
-      console.error("Error logging in:", error);
-      throw error;
+      if (error.code === 'auth/cancelled-popup-request' || error.code === 'auth/popup-blocked') {
+        console.warn("Popup blocked or cancelled. Falling back to redirect...");
+        await signInWithRedirect(auth, provider);
+        // Will reload the page
+      } else {
+        console.error("Error logging in:", error);
+        throw error;
+      }
     }
   }
 
