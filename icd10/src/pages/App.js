@@ -352,13 +352,25 @@ class App {
       });
     }
 
+    let isLoggingIn = false;
     if (btnLoginMenu) {
       btnLoginMenu.addEventListener('click', async () => {
+        if (isLoggingIn) return;
+        isLoggingIn = true;
         try {
           if (authMenu) authMenu.classList.remove('active');
           await FirebaseService.loginWithGoogle();
         } catch (err) {
-          alert("Đăng nhập thất bại: " + err.message);
+          if (err.code === 'auth/popup-closed-by-user') {
+            // User closed the popup manually, ignore
+          } else if (err.code === 'auth/cancelled-popup-request') {
+            // Double click or stuck state
+            console.warn("Popup request cancelled by another request.");
+          } else {
+            alert("Đăng nhập thất bại: " + err.message);
+          }
+        } finally {
+          isLoggingIn = false;
         }
       });
     }
