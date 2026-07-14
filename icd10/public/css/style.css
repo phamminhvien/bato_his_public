@@ -902,57 +902,6 @@ input:checked+.slider:before {
   vertical-align: middle;
 }
 
-.has-tooltip::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  top: 100%;
-  bottom: auto;
-  left: 0;
-  transform: translateX(-10px);
-  margin-top: 8px;
-  margin-bottom: 0;
-  background-color: rgba(33, 33, 33, 0.95);
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  white-space: pre-wrap;
-  width: max-content;
-  max-width: 350px;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.15s ease, margin-bottom 0.15s ease;
-  z-index: 9999;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  pointer-events: none;
-  font-weight: normal;
-  text-align: left;
-}
-
-.has-tooltip::before {
-  content: "";
-  position: absolute;
-  top: 100%;
-  bottom: auto;
-  left: 20px;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-bottom-color: rgba(33, 33, 33, 0.95);
-  margin-top: -4px;
-  margin-bottom: 0;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.15s ease, margin-top 0.15s ease;
-  z-index: 9999;
-  pointer-events: none;
-}
-
-.has-tooltip:hover::after,
-.has-tooltip:hover::before {
-  opacity: 1;
-  visibility: visible;
-  margin-top: 5px;
-}
 
 /* --- Shake Animation --- */
 @keyframes shake {
@@ -960,16 +909,6 @@ input:checked+.slider:before {
   25% { transform: translateX(-5px); }
   50% { transform: translateX(5px); }
   75% { transform: translateX(-5px); }
-}
-
-/* Center tooltip for specifically right-side or center items if needed */
-.tooltip-icon.has-tooltip::after {
-  left: 50%;
-  transform: translateX(-50%);
-}
-.tooltip-icon.has-tooltip::before {
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .shake {

@@ -13,6 +13,7 @@ class App {
   constructor() {
     this.init();
     this.setupHelpTour();
+    this.setupTooltips();
   }
 
   async init() {
@@ -208,6 +209,21 @@ class App {
         }
       });
     });
+  }
+
+  setupTooltips() {
+    // Use Tippy.js with event delegation so it works on dynamically added elements
+    if (window.tippy) {
+      window.tippy(document.body, {
+        target: '.has-tooltip',
+        content: (reference) => reference.getAttribute('data-tooltip'),
+        placement: 'auto',
+        theme: 'light',
+        arrow: true,
+        animation: 'fade',
+        maxWidth: 350
+      });
+    }
   }
 
   setupHelpTour() {
