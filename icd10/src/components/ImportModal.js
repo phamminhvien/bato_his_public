@@ -194,9 +194,7 @@ export class ImportModal {
 
     // Apply valid codes to store
     if (idsToSelect.size > 0) {
-      const currentSelected = new Set(store.getState().selectedCodes);
-      idsToSelect.forEach(id => currentSelected.add(id));
-      actions.setSelectedCodes(Array.from(currentSelected));
+      actions.toggleCodesBulk(Array.from(idsToSelect), true);
     }
   }
 }
