@@ -79,6 +79,7 @@ export class Toolbar {
       
       <!-- Hidden functional buttons -->
       <input type="file" id="import-file" accept=".json" class="hidden" />
+      <button class="btn btn-primary" id="btn-import-list" style="display: none;" title="Nhập hàng loạt mã ICD-10">📝 Nhập danh sách</button>
       <button class="btn btn-primary" id="btn-import" style="display: none;">Nhập từ JSON</button>
       <div class="auto-save-container" style="display: none;">
         <input type="checkbox" id="toggle-autosave" checked>
@@ -131,11 +132,33 @@ export class Toolbar {
     // Subscribe to store to update toggle and save button visibility
     store.subscribe((state) => {
       toggleAutoSave.checked = state.autoSave;
-      btnSave.style.display = state.autoSave ? 'none' : 'block';
+      
+      const canEdit = store.canEditCurrentDepartment();
+      const btnImport = document.getElementById('btn-import');
+      const btnImportList = document.getElementById('btn-import-list');
+      const autoSaveContainer = document.querySelector('.auto-save-container');
+      
+      if (canEdit) {
+        btnSave.style.display = state.autoSave ? 'none' : 'block';
+        btnImport.style.display = 'inline-block';
+        btnImportList.style.display = 'inline-block';
+        if (autoSaveContainer) autoSaveContainer.style.display = 'flex';
+      } else {
+        btnSave.style.display = 'none';
+        btnImport.style.display = 'none';
+        btnImportList.style.display = 'none';
+        if (autoSaveContainer) autoSaveContainer.style.display = 'none';
+      }
     });
 
     document.getElementById('btn-import').addEventListener('click', () => {
       document.getElementById('import-file').click();
+    });
+
+    document.getElementById('btn-import-list').addEventListener('click', () => {
+      if (window.importModal) {
+        window.importModal.open();
+      }
     });
 
     document.getElementById('import-file').addEventListener('change', (e) => {

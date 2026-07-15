@@ -6,6 +6,7 @@ import { TreeView } from '../components/TreeView.js';
 import { SelectedList } from '../components/SelectedList.js';
 import { Toolbar } from '../components/Toolbar.js';
 import { DashboardModal } from '../components/DashboardModal.js';
+import { ImportModal } from '../components/ImportModal.js';
 import { debounce } from '../utils/helpers.js';
 import { DEPARTMENTS } from '../utils/departments.js';
 
@@ -93,6 +94,7 @@ class App {
     // 4. Setup Mobile Menu & Modals
     this.setupMobileMenu();
     new DashboardModal();
+    window.importModal = new ImportModal();
     this.setupAuth();
 
     // 4.5 Listen to all departments for leaderboard
