@@ -56,6 +56,37 @@ export class ExportService {
     }
     const data = this.getSelectedData();
     const ws = XLSX.utils.json_to_sheet(data);
+
+    // Thêm style cho Excel (Yêu cầu xlsx-js-style)
+    const range = XLSX.utils.decode_range(ws['!ref']);
+    for (let R = range.s.r; R <= range.e.r; ++R) {
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cellAddress = { c: C, r: R };
+        const cellRef = XLSX.utils.encode_cell(cellAddress);
+        if (!ws[cellRef]) continue;
+
+        // Khởi tạo object style
+        if (!ws[cellRef].s) ws[cellRef].s = {};
+
+        // Căn chỉnh mặc định: Wrap text và Top vertical alignment
+        ws[cellRef].s.alignment = {
+          vertical: 'top',
+          wrapText: true
+        };
+
+        // Style cho dòng Header (Dòng đầu tiên)
+        if (R === 0) {
+          ws[cellRef].s.font = { bold: true };
+          ws[cellRef].s.fill = { fgColor: { rgb: "EAEAEA" } };
+          ws[cellRef].s.alignment.horizontal = "center";
+          ws[cellRef].s.alignment.vertical = "center";
+        }
+      }
+    }
+
+    // Tự động set độ rộng các cột (khoảng 25-30 ký tự)
+    ws['!cols'] = Object.keys(data[0] || {}).map(() => ({ wch: 30 }));
+
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Selected_ICD");
     XLSX.writeFile(wb, `ICD_${departmentId || 'ALL'}_${new Date().toISOString().slice(0,10)}.xlsx`);
