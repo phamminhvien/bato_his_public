@@ -281,7 +281,16 @@
         <p style="margin-bottom: 10px; font-size: 0.95rem; color: var(--text-muted);">
           Dán danh sách mã ICD-10 của bạn vào ô dưới đây (cách nhau bởi dấu phẩy), hoặc <b>Tải lên file Excel/CSV</b> (chỉ chứa 1 cột A các mã ICD).
         </p>
-        <div style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center;">
+        <div style="margin-bottom: 10px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+          <div style="display: flex; gap: 15px; align-items: center; border-right: 1px solid var(--border-color); padding-right: 15px;">
+            <label style="font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+              <input type="radio" name="import_type" value="MA_BENH" checked> Theo Mã bệnh
+            </label>
+            <label style="font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+              <input type="radio" name="import_type" value="MA_BENH_KHONG_DAU"> Theo Mã bệnh không dấu
+            </label>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
           <input type="file" id="import-excel-file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="hidden" />
           <button class="btn btn-outline" id="btn-import-excel" style="font-size: 0.85rem; padding: 6px 12px;">📁 Chọn file Excel / CSV</button>
           <span id="import-excel-filename" style="font-size: 0.85rem; color: var(--text-muted);"></span>

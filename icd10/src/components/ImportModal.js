@@ -54,8 +54,8 @@ export class ImportModal {
     this.modal.classList.add('hidden');
   }
 
-  getSelectableCodes() {
-    const selectableCodes = new Set();
+  getSelectableCodes(importType = 'MA_BENH') {
+    const selectableCodes = new Map();
     const chapters = store.getState().chapters;
     
     if (!chapters) return selectableCodes;
@@ -73,18 +73,24 @@ export class ImportModal {
           }
 
           if (group.codes.length === 1) {
-            selectableCodes.add(group.codes[0].id);
+            const c = group.codes[0];
+            const key = importType === 'MA_BENH_KHONG_DAU' ? (c.MA_BENH_KHONG_DAU || c.id) : c.id;
+            selectableCodes.set(key, c.id);
             return;
           }
 
           if (hasDetailWarning && group.codes.length > 1) {
             group.codes.forEach(c => {
               if (c.MA_BENH !== group.id) {
-                selectableCodes.add(c.id);
+                const key = importType === 'MA_BENH_KHONG_DAU' ? (c.MA_BENH_KHONG_DAU || c.id) : c.id;
+                selectableCodes.set(key, c.id);
               }
             });
           } else {
-            group.codes.forEach(c => selectableCodes.add(c.id));
+            group.codes.forEach(c => {
+              const key = importType === 'MA_BENH_KHONG_DAU' ? (c.MA_BENH_KHONG_DAU || c.id) : c.id;
+              selectableCodes.set(key, c.id);
+            });
           }
         });
       });
@@ -158,14 +164,17 @@ export class ImportModal {
     // Remove duplicates from input
     const uniqueInputCodes = [...new Set(rawCodes)];
 
-    const selectableCodes = this.getSelectableCodes();
+    const importType = document.querySelector('input[name="import_type"]:checked').value;
+    const selectableMap = this.getSelectableCodes(importType);
     
     const validCodes = [];
     const invalidCodes = [];
+    const idsToSelect = new Set();
 
     uniqueInputCodes.forEach(code => {
-      if (selectableCodes.has(code)) {
+      if (selectableMap.has(code)) {
         validCodes.push(code);
+        idsToSelect.add(selectableMap.get(code));
       } else {
         invalidCodes.push(code);
       }
@@ -184,9 +193,9 @@ export class ImportModal {
     }
 
     // Apply valid codes to store
-    if (validCodes.length > 0) {
+    if (idsToSelect.size > 0) {
       const currentSelected = new Set(store.getState().selectedCodes);
-      validCodes.forEach(code => currentSelected.add(code));
+      idsToSelect.forEach(id => currentSelected.add(id));
       actions.setSelectedCodes(Array.from(currentSelected));
     }
   }
