@@ -14,6 +14,10 @@ export class ImportModal {
     this.failedCountEl = document.getElementById('import-failed-count');
     this.failedTextarea = document.getElementById('import-failed-textarea');
 
+    this.fileInput = document.getElementById('import-excel-file');
+    this.btnImportExcel = document.getElementById('btn-import-excel');
+    this.fileNameDisplay = document.getElementById('import-excel-filename');
+
     if (!this.modal) return;
 
     this.closeBtn.addEventListener('click', () => this.close());
@@ -24,6 +28,13 @@ export class ImportModal {
     });
 
     this.confirmBtn.addEventListener('click', () => this.handleImport());
+    
+    if (this.btnImportExcel && this.fileInput) {
+      this.btnImportExcel.addEventListener('click', () => {
+        this.fileInput.click();
+      });
+      this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
+    }
   }
 
   open() {
@@ -35,6 +46,8 @@ export class ImportModal {
     this.successCountEl.textContent = '0';
     this.failedCountEl.textContent = '0';
     this.failedTextarea.value = '';
+    if (this.fileInput) this.fileInput.value = '';
+    if (this.fileNameDisplay) this.fileNameDisplay.textContent = '';
   }
 
   close() {
@@ -78,6 +91,53 @@ export class ImportModal {
     });
 
     return selectableCodes;
+  }
+
+  handleFileSelect(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (this.fileNameDisplay) {
+      this.fileNameDisplay.textContent = file.name;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      try {
+        const data = evt.target.result;
+        // Parse the excel or csv data
+        const workbook = window.XLSX.read(data, { type: 'binary' });
+        // Use the first sheet
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        
+        // Convert sheet to json array of arrays (header: 1 means array of arrays instead of array of objects)
+        const jsonData = window.XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        
+        // Extract column A (index 0) from every row
+        const codes = [];
+        jsonData.forEach(row => {
+          if (row && row.length > 0 && row[0]) {
+            const val = String(row[0]).trim();
+            if (val) codes.push(val);
+          }
+        });
+        
+        if (codes.length > 0) {
+          // Append to textarea, or replace it
+          const currentText = this.textarea.value.trim();
+          const newText = codes.join(', ');
+          this.textarea.value = currentText ? currentText + ', ' + newText : newText;
+        } else {
+          alert("Không tìm thấy dữ liệu ở cột A trong file.");
+        }
+      } catch (err) {
+        console.error("Lỗi khi đọc file Excel/CSV:", err);
+        alert("Lỗi khi đọc file: " + err.message);
+      }
+    };
+    
+    reader.readAsBinaryString(file);
   }
 
   handleImport() {

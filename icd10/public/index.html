@@ -279,8 +279,13 @@
       </div>
       <div class="modal-body">
         <p style="margin-bottom: 10px; font-size: 0.95rem; color: var(--text-muted);">
-          Dán danh sách mã ICD-10 của bạn vào ô dưới đây, các mã cách nhau bởi dấu phẩy (,).
+          Dán danh sách mã ICD-10 của bạn vào ô dưới đây (cách nhau bởi dấu phẩy), hoặc <b>Tải lên file Excel/CSV</b> (chỉ chứa 1 cột A các mã ICD).
         </p>
+        <div style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center;">
+          <input type="file" id="import-excel-file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="hidden" />
+          <button class="btn btn-outline" id="btn-import-excel" style="font-size: 0.85rem; padding: 6px 12px;">📁 Chọn file Excel / CSV</button>
+          <span id="import-excel-filename" style="font-size: 0.85rem; color: var(--text-muted);"></span>
+        </div>
         <textarea id="import-textarea" class="search-input" style="width: 100%; height: 150px; padding: 10px; font-family: monospace; resize: vertical;" placeholder="Ví dụ: A00, A00.1, B26.0, Z999"></textarea>
         
         <div id="import-results-container" class="hidden" style="margin-top: 15px; padding: 15px; border-radius: 8px; background: #f8f9fa; border: 1px solid var(--border-color);">
