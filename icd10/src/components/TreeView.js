@@ -192,9 +192,28 @@ export class TreeView {
     const fragment = document.createDocumentFragment();
     
     chapters.forEach(chapter => {
+      // Tự động tìm các ký tự khối (A, B, C...)
+      const letters = new Set();
+      if (chapter.blocks) {
+        chapter.blocks.forEach(block => {
+          if (block.id) {
+            // Lấy các chữ cái từ mã khối, vd: "A00-B99" -> lấy 'A' và 'B'
+            const chars = block.id.match(/[a-zA-Z]/g);
+            if (chars) {
+              chars.forEach(c => letters.add(c.toUpperCase()));
+            }
+          }
+        });
+      }
+      const lettersArray = Array.from(letters).sort();
+      let title = `Chương ${chapter.id}: ${chapter.name}`;
+      if (lettersArray.length > 0) {
+        title += ` <span style="color: #d32f2f; font-weight: bold; margin-left: 8px;">${lettersArray.join(', ')}</span>`;
+      }
+
       const chapterEl = this.createNode(
         `chapter-${chapter.id}`, 
-        `Chương ${chapter.id}: ${chapter.name}`, 
+        title, 
         () => this.renderBlocks(chapter)
       );
       fragment.appendChild(chapterEl);
