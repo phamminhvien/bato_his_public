@@ -50,7 +50,7 @@ export class DashboardModal {
     this.renderAll();
     
     // Check if user is admin 12t11phamminhvien
-    const userEmail = store.getState().user?.email || '';
+    const userEmail = store.getState().currentUser?.email || '';
     if (userEmail.includes('12t11phamminhvien')) {
       if (this.presenceView) this.presenceView.classList.remove('hidden');
       if (!this.unsubscribePresence) {
