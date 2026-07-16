@@ -210,7 +210,7 @@ export class SelectedList {
             return deptObj ? deptObj.name : d.id;
           });
         if (depts.length > 0) {
-          blameHtml = `<div style="font-size: 0.75rem; color: #2e7d32; font-weight: bold; margin-top: 4px;">🏥 ${depts.join(', ')}</div>`;
+          blameHtml = `<div style="font-size: 0.75rem; color: #2e7d32; font-weight: bold; margin-top: 4px; line-height: 1.3;">🏥 ${depts.join('<br>')}</div>`;
         }
       } else {
         const metadata = state.selectedMetadata[item.id];
@@ -257,8 +257,19 @@ export class SelectedList {
 
     // 1. Render Headers
     this.tableHeader.innerHTML = '';
-    TABLE_COLUMNS.forEach(col => {
-      if (!this.visibleColumns.has(col.id) && col.id !== 'MA_BENH' && col.id !== 'ACTIONS') return;
+    const columnsToRender = [...TABLE_COLUMNS];
+    if (state.departmentId === '51011' && state.showMergedCatalog) {
+      const actionsIndex = columnsToRender.findIndex(c => c.id === 'ACTIONS');
+      const col = { id: 'KHOA_SU_DUNG', label: 'Khoa/Phòng sử dụng' };
+      if (actionsIndex !== -1) {
+        columnsToRender.splice(actionsIndex, 0, col);
+      } else {
+        columnsToRender.push(col);
+      }
+    }
+
+    columnsToRender.forEach(col => {
+      if (!this.visibleColumns.has(col.id) && col.id !== 'MA_BENH' && col.id !== 'ACTIONS' && col.id !== 'KHOA_SU_DUNG') return;
 
       const th = document.createElement('th');
       let text = col.label;
@@ -267,7 +278,7 @@ export class SelectedList {
       }
       th.textContent = text;
 
-      if (col.id !== 'ACTIONS' && col.id !== 'WARNINGS') {
+      if (col.id !== 'ACTIONS' && col.id !== 'WARNINGS' && col.id !== 'KHOA_SU_DUNG') {
         th.addEventListener('click', () => this.handleSort(col.id));
       }
       if (col.id === 'MA_BENH') {
@@ -368,8 +379,8 @@ export class SelectedList {
     rowData.forEach(item => {
       const tr = document.createElement('tr');
 
-      TABLE_COLUMNS.forEach(col => {
-        if (!this.visibleColumns.has(col.id) && col.id !== 'MA_BENH' && col.id !== 'ACTIONS') return;
+      columnsToRender.forEach(col => {
+        if (!this.visibleColumns.has(col.id) && col.id !== 'MA_BENH' && col.id !== 'ACTIONS' && col.id !== 'KHOA_SU_DUNG') return;
 
         const td = document.createElement('td');
         if (col.id === 'MA_BENH') {
@@ -401,24 +412,24 @@ export class SelectedList {
           if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"]) labels += `<span class="badge badge-pink" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NỮ GIỚI</span>`;
           if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"]) labels += `<span class="badge badge-blue" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NAM GIỚI</span>`;
           td.innerHTML = labels;
+        } else if (col.id === 'KHOA_SU_DUNG') {
+          const depts = (state.leaderboard || [])
+            .filter(d => d.codes.includes(item.id))
+            .map(d => {
+              const deptObj = DEPARTMENTS.find(dep => dep.id === d.id);
+              return deptObj ? deptObj.name : d.id;
+            });
+          td.innerHTML = depts.join('<br>');
+          td.style.fontSize = '0.85rem';
+          td.style.color = '#2e7d32';
+          td.style.fontWeight = 'bold';
+          td.style.lineHeight = '1.3';
         } else if (col.id === 'MA_BENH') {
           let html = `<strong>${item[col.id] || ''}</strong>`;
-          if (state.departmentId === '51011' && state.showMergedCatalog) {
-            const depts = (state.leaderboard || [])
-              .filter(d => d.codes.includes(item.id))
-              .map(d => {
-                const deptObj = DEPARTMENTS.find(dep => dep.id === d.id);
-                return deptObj ? deptObj.name : d.id;
-              });
-            if (depts.length > 0) {
-              html += `<div style="font-size: 0.75rem; color: #2e7d32; font-weight: bold; margin-top: 4px;">🏥 ${depts.join(', ')}</div>`;
-            }
-          } else {
-            const metadata = state.selectedMetadata[item.id];
-            if (metadata && metadata.name) {
-              const displayStr = metadata.name.split('@')[0];
-              html += `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;" title="${metadata.email}">👤 ${displayStr}</div>`;
-            }
+          const metadata = state.selectedMetadata[item.id];
+          if (metadata && metadata.name) {
+            const displayStr = metadata.name.split('@')[0];
+            html += `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;" title="${metadata.email}">👤 ${displayStr}</div>`;
           }
           td.innerHTML = html;
         } else {
