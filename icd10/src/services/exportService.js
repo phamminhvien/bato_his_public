@@ -1,4 +1,5 @@
 import { store } from '../state/store.js';
+import { DEPARTMENTS } from '../utils/departments.js';
 
 import { TABLE_COLUMNS } from '../components/SelectedList.js';
 
@@ -42,6 +43,18 @@ export class ExportService {
             }
          }
       });
+      
+      // Nếu là chế độ gộp của Phòng KHNV-ĐD, thêm cột "Khoa sử dụng"
+      if (state.departmentId === '51011' && state.showMergedCatalog) {
+        const depts = (state.leaderboard || [])
+          .filter(d => d.codes.includes(item.id))
+          .map(d => {
+            const deptObj = DEPARTMENTS.find(dep => dep.id === d.id);
+            return deptObj ? deptObj.name : d.id;
+          });
+        row['Khoa sử dụng'] = depts.join(', ');
+      }
+      
       return row;
     });
   }

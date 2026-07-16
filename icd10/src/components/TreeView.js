@@ -295,15 +295,19 @@ export class TreeView {
     const header = document.createElement('div');
     header.className = 'tree-node-header';
     
-    const canEdit = store.canEditCurrentDepartment();
-    
+    const state = store.getState();
     let checkboxHtml = '';
-    if (groupData && canEdit) {
+    if (groupData) {
       const total = groupData.codes.length;
-      const selectedCount = groupData.codes.filter(c => store.getState().selectedCodes.has(c.id)).length;
+      const selectedCount = groupData.codes.filter(c => state.selectedCodes.has(c.id)).length;
       const allSelected = total > 0 && selectedCount === total;
       const codesList = groupData.codes.map(c => c.id).join(',');
-      checkboxHtml = `<input type="checkbox" class="group-checkbox" data-codes="${codesList}" style="margin-right:8px;" ${allSelected ? 'checked' : ''} title="Chọn tất cả mã trong nhóm này" />`;
+      
+      if (canEdit) {
+        checkboxHtml = `<input type="checkbox" class="group-checkbox" data-codes="${codesList}" style="margin-right:8px;" ${allSelected ? 'checked' : ''} title="Chọn tất cả mã trong nhóm này" />`;
+      } else if (state.departmentId === '51011' && state.showMergedCatalog) {
+        checkboxHtml = `<input type="checkbox" class="group-checkbox" data-codes="${codesList}" style="margin-right:8px; cursor: not-allowed; opacity: 0.7;" ${allSelected ? 'checked' : ''} disabled title="Xem danh mục hợp nhất (Chỉ xem)" />`;
+      }
     }
     
     header.innerHTML = `<span class="toggle-icon">+</span> ${checkboxHtml} <span class="node-text">${text}</span> ${extraHtml}`;
@@ -392,10 +396,15 @@ export class TreeView {
     }
     
     const canEdit = store.canEditCurrentDepartment();
-    const checkboxHtml = canEdit ? `<input type="checkbox" class="icd-checkbox" value="${item.id}" ${isChecked ? 'checked' : ''} />` : '';
+    const state = store.getState();
+    let checkboxHtml = '';
+    if (canEdit) {
+      checkboxHtml = `<input type="checkbox" class="icd-checkbox" value="${item.id}" ${isChecked ? 'checked' : ''} />`;
+    } else if (state.departmentId === '51011' && state.showMergedCatalog) {
+      checkboxHtml = `<input type="checkbox" class="icd-checkbox" value="${item.id}" ${isChecked ? 'checked' : ''} disabled style="cursor: not-allowed; opacity: 0.7; margin-right: 8px;" />`;
+    }
     
     // User attribution badge
-    const state = store.getState();
     let metadata = null;
     let isRemoved = false;
     

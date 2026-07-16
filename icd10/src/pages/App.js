@@ -98,9 +98,58 @@ class App {
     window.importModal = new ImportModal();
     this.setupAuth();
 
-    // 4.5 Listen to all departments for leaderboard
+    const toggleContainer = document.getElementById('merged-catalog-toggle-container');
+    const toggleCheckbox = document.getElementById('cb-merged-catalog');
+
+    const recalculateMergedCodes = () => {
+      const state = store.getState();
+      const leaderboard = state.leaderboard || [];
+      const merged = new Set();
+      leaderboard.forEach(d => {
+        d.codes.forEach(c => merged.add(c));
+      });
+      actions.setSelectedCodes(Array.from(merged), {}, {});
+    };
+
+    let unsubscribeSnapshot = null;
+
+    const setupSubscription = () => {
+      const state = store.getState();
+      const currentDept = state.departmentId;
+      
+      if (unsubscribeSnapshot) {
+        unsubscribeSnapshot();
+        unsubscribeSnapshot = null;
+      }
+      
+      if (currentDept === '51011' && state.showMergedCatalog) {
+        recalculateMergedCodes();
+      } else if (currentDept) {
+        isSwitchingDept = true;
+        unsubscribeSnapshot = FirebaseService.listenSelections(currentDept, (serverCodes, metadata, metaRemoved) => {
+          console.log(`🔥 [Real-time Sync] Nhận dữ liệu từ Khoa ${currentDept}:`, serverCodes);
+          if (store.getState().departmentId === currentDept && !store.getState().showMergedCatalog) {
+            actions.setSelectedCodes(serverCodes, metadata, metaRemoved);
+          }
+        });
+        isSwitchingDept = false;
+      }
+    };
+
+    if (toggleCheckbox) {
+      toggleCheckbox.addEventListener('change', (e) => {
+        actions.setShowMergedCatalog(e.target.checked);
+        setupSubscription();
+      });
+    }
+
+    // 4.5 Listen to all departments for leaderboard and merged catalog
     FirebaseService.listenAllDepartments((data) => {
       actions.setLeaderboard(data);
+      const state = store.getState();
+      if (state.departmentId === '51011' && state.showMergedCatalog) {
+        recalculateMergedCodes();
+      }
     });
 
     // 5. Load Data
@@ -108,19 +157,11 @@ class App {
     actions.setIcdData(flatData, chapters);
 
     // 6. Listen to real-time selections from Firebase
-    let unsubscribeSnapshot = null;
     if (dept) {
-      try {
-        isSwitchingDept = true;
-        unsubscribeSnapshot = FirebaseService.listenSelections(dept, (serverCodes, metadata, metaRemoved) => {
-          console.log(`🔥 [Real-time Sync] Nhận dữ liệu từ Khoa ${dept}:`, serverCodes);
-          actions.setSelectedCodes(serverCodes, metadata, metaRemoved);
-        });
-        isSwitchingDept = false;
-      } catch (e) {
-        console.error("Could not load from Firebase", e);
-        isSwitchingDept = false;
+      if (dept === '51011') {
+        if (toggleContainer) toggleContainer.classList.remove('hidden');
       }
+      setupSubscription();
     }
 
     // 7. Handle Department Changes
@@ -132,13 +173,19 @@ class App {
       // Handle subscription change when department changes
       if (state.departmentId && state.departmentId !== dept) {
         dept = state.departmentId;
-        if (unsubscribeSnapshot) unsubscribeSnapshot();
-        isSwitchingDept = true;
-        unsubscribeSnapshot = FirebaseService.listenSelections(dept, (serverCodes, metadata, metaRemoved) => {
-          console.log(`🔥 [Real-time Sync] Nhận dữ liệu từ Khoa ${dept}:`, serverCodes);
-          actions.setSelectedCodes(serverCodes, metadata, metaRemoved);
-        });
-        isSwitchingDept = false;
+        
+        // Show/hide toggle container
+        if (toggleContainer) {
+          if (dept === '51011') {
+            toggleContainer.classList.remove('hidden');
+          } else {
+            toggleContainer.classList.add('hidden');
+            actions.setShowMergedCatalog(false);
+            if (toggleCheckbox) toggleCheckbox.checked = false;
+          }
+        }
+        
+        setupSubscription();
       }
     });
 

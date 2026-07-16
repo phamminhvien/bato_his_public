@@ -20,10 +20,11 @@ export class Store {
   }
 
   canEditCurrentDepartment() {
-    const { currentUser, departmentId } = this.state;
+    const { currentUser, departmentId, showMergedCatalog } = this.state;
     if (!currentUser || !currentUser.role) return false;
+    if (departmentId === '51011' && showMergedCatalog) return false; // Khóa khi bật chế độ hợp nhất
     if (currentUser.role === 'super_admin') return true;
-    if (departmentId === '51011') return false; // Chỉ super_admin mới được sửa
+    if (departmentId === '51011') return false; // Chỉ super_admin mới được sửa riêng Phòng KHNV
     if (currentUser.role === 'admin' && currentUser.maKhoa === departmentId) return true;
     return false;
   }
@@ -51,7 +52,8 @@ export const store = new Store({
   searchFilter: null,
   isLoaded: false,
   autoSave: true, // Auto-save enabled by default
-  leaderboard: [] // Leaderboard data
+  leaderboard: [], // Leaderboard data
+  showMergedCatalog: false // merged catalog mode for 51011
 });
 
 // Actions
@@ -66,6 +68,7 @@ export const actions = {
   // Selection
   setSelectedCodes: (codes, metadata = {}, removedMetadata = {}) => store.setState({ selectedCodes: new Set(codes), selectedMetadata: metadata, removedMetadata: removedMetadata }),
   setUserInfo: (user) => store.setState({ currentUser: user }),
+  setShowMergedCatalog: (value) => store.setState({ showMergedCatalog: value }),
   toggleCode: (code, isSelected) => {
     const state = store.getState();
     const current = new Set(state.selectedCodes);

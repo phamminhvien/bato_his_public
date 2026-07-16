@@ -201,11 +201,23 @@ export class SelectedList {
       const canEdit = store.canEditCurrentDepartment();
       const removeBtnHtml = canEdit ? `<button class="remove-btn" title="Xóa" style="margin-left: 10px;">&times;</button>` : '';
 
-      const metadata = state.selectedMetadata[item.id];
       let blameHtml = '';
-      if (metadata && metadata.name) {
-        const displayStr = metadata.name.split('@')[0];
-        blameHtml = `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;" title="${metadata.email}">👤 ${displayStr}</div>`;
+      if (state.departmentId === '51011' && state.showMergedCatalog) {
+        const depts = (state.leaderboard || [])
+          .filter(d => d.codes.includes(item.id))
+          .map(d => {
+            const deptObj = DEPARTMENTS.find(dep => dep.id === d.id);
+            return deptObj ? deptObj.name : d.id;
+          });
+        if (depts.length > 0) {
+          blameHtml = `<div style="font-size: 0.75rem; color: #2e7d32; font-weight: bold; margin-top: 4px;">🏥 ${depts.join(', ')}</div>`;
+        }
+      } else {
+        const metadata = state.selectedMetadata[item.id];
+        if (metadata && metadata.name) {
+          const displayStr = metadata.name.split('@')[0];
+          blameHtml = `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;" title="${metadata.email}">👤 ${displayStr}</div>`;
+        }
       }
 
       el.innerHTML = `
@@ -390,11 +402,23 @@ export class SelectedList {
           if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"]) labels += `<span class="badge badge-blue" style="margin-right:4px; margin-bottom: 4px; display: inline-block;">CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NAM GIỚI</span>`;
           td.innerHTML = labels;
         } else if (col.id === 'MA_BENH') {
-          const metadata = state.selectedMetadata[item.id];
           let html = `<strong>${item[col.id] || ''}</strong>`;
-          if (metadata && metadata.name) {
-            const displayStr = metadata.name.split('@')[0];
-            html += `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;" title="${metadata.email}">👤 ${displayStr}</div>`;
+          if (state.departmentId === '51011' && state.showMergedCatalog) {
+            const depts = (state.leaderboard || [])
+              .filter(d => d.codes.includes(item.id))
+              .map(d => {
+                const deptObj = DEPARTMENTS.find(dep => dep.id === d.id);
+                return deptObj ? deptObj.name : d.id;
+              });
+            if (depts.length > 0) {
+              html += `<div style="font-size: 0.75rem; color: #2e7d32; font-weight: bold; margin-top: 4px;">🏥 ${depts.join(', ')}</div>`;
+            }
+          } else {
+            const metadata = state.selectedMetadata[item.id];
+            if (metadata && metadata.name) {
+              const displayStr = metadata.name.split('@')[0];
+              html += `<div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;" title="${metadata.email}">👤 ${displayStr}</div>`;
+            }
           }
           td.innerHTML = html;
         } else {
