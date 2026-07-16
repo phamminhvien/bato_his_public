@@ -40,6 +40,7 @@ export class DashboardModal {
     store.subscribe(() => {
       if (!this.modal.classList.contains('hidden')) {
         this.renderAll();
+        this.checkAdminAndShowPresence();
       }
     });
   }
@@ -48,7 +49,10 @@ export class DashboardModal {
     this.modal.classList.remove('hidden');
     this.showLeaderboardView(); // Always reset to leaderboard view
     this.renderAll();
-    
+    this.checkAdminAndShowPresence();
+  }
+
+  checkAdminAndShowPresence() {
     // Check if user is admin 12t11phamminhvien
     const userEmail = store.getState().currentUser?.email || '';
     if (userEmail.includes('12t11phamminhvien')) {
@@ -60,6 +64,10 @@ export class DashboardModal {
       }
     } else {
       if (this.presenceView) this.presenceView.classList.add('hidden');
+      if (this.unsubscribePresence) {
+        this.unsubscribePresence();
+        this.unsubscribePresence = null;
+      }
     }
   }
 
