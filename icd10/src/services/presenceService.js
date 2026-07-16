@@ -25,29 +25,38 @@ export class PresenceService {
       console.warn("Could not fetch IP info:", error);
     }
 
-    const state = store.getState();
-    const presenceData = {
-      visitorId: this.visitorId,
-      email: state.currentUser ? state.currentUser.email : 'Khách',
-      os: deviceInfo.os,
-      browser: deviceInfo.browser,
-      isMobile: deviceInfo.isMobile,
-      ip: locationInfo.ip,
-      location: locationInfo.location,
-      isp: locationInfo.isp,
-      loginAt: new Date().toISOString(),
-      userAgent: navigator.userAgent
+    this.deviceInfo = this.getDeviceInfo();
+    this.locationInfo = locationInfo;
+    this.loginAt = new Date().toISOString();
+
+    const sendPresence = async (email) => {
+      const presenceData = {
+        visitorId: this.visitorId,
+        email: email,
+        os: this.deviceInfo.os,
+        browser: this.deviceInfo.browser,
+        isMobile: this.deviceInfo.isMobile,
+        ip: this.locationInfo.ip,
+        location: this.locationInfo.location,
+        isp: this.locationInfo.isp,
+        loginAt: this.loginAt,
+        userAgent: navigator.userAgent
+      };
+      await FirebaseService.setPresence(this.visitorId, presenceData);
     };
 
-    // Ghi lên Firebase (1 lần khi load trang)
-    await FirebaseService.setPresence(this.visitorId, presenceData);
+    // Ghi lên Firebase lần đầu
+    const state = store.getState();
+    const initialEmail = state.currentUser ? state.currentUser.email : 'Khách';
+    this.lastEmail = initialEmail;
+    await sendPresence(initialEmail);
     
-    // Nếu user đăng nhập sau khi load trang, cập nhật lại email
+    // Nếu user đăng nhập sau khi load trang, cập nhật lại email cùng toàn bộ thông tin
     store.subscribe((newState) => {
       const email = newState.currentUser ? newState.currentUser.email : 'Khách';
       if (email !== this.lastEmail) {
         this.lastEmail = email;
-        FirebaseService.setPresence(this.visitorId, { email: email });
+        sendPresence(email);
       }
     });
 
