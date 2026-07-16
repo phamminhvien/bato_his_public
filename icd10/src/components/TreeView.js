@@ -295,6 +295,7 @@ export class TreeView {
     const header = document.createElement('div');
     header.className = 'tree-node-header';
     
+    const canEdit = store.canEditCurrentDepartment();
     const state = store.getState();
     let checkboxHtml = '';
     if (groupData) {
