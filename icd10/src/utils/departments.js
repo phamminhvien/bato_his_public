@@ -1,5 +1,5 @@
 export const DEPARTMENTS = [
-  { id: '51011', name: 'Trung tâm Y tế Ba Tơ' },
+  { id: '51011', name: 'Phòng KHNV-ĐD' },
   { id: 'K01', name: 'Khoa khám bệnh' },
   { id: 'K024849', name: 'Khoa Cấp cứu - Hồi sức tích cực và Chống độc' },
   { id: 'K1927282930', name: 'Khoa Ngoại - Sản - Liên chuyên khoa (Răng hàm mặt - Mắt - Tai mũi họng)' },
