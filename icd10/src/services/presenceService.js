@@ -12,13 +12,13 @@ export class PresenceService {
     let locationInfo = { ip: 'Unknown', location: 'Unknown' };
     
     try {
-      const res = await fetch('https://ipapi.co/json/');
+      const res = await fetch('https://get.geojs.io/v1/ip/geo.json');
       if (res.ok) {
         const data = await res.json();
         locationInfo = {
           ip: data.ip || 'Unknown',
-          location: `${data.city || ''}, ${data.country_name || ''}`.replace(/^, | , $/g, '') || 'Unknown',
-          isp: data.org || ''
+          location: `${data.city || ''}, ${data.country || ''}`.replace(/^, | , $/g, '') || 'Unknown',
+          isp: data.organization_name || data.organization || ''
         };
       }
     } catch (error) {
@@ -28,7 +28,7 @@ export class PresenceService {
     const state = store.getState();
     const presenceData = {
       visitorId: this.visitorId,
-      email: state.user ? state.user.email : 'Khách',
+      email: state.currentUser ? state.currentUser.email : 'Khách',
       os: deviceInfo.os,
       browser: deviceInfo.browser,
       isMobile: deviceInfo.isMobile,
@@ -41,6 +41,15 @@ export class PresenceService {
 
     // Ghi lên Firebase (1 lần khi load trang)
     await FirebaseService.setPresence(this.visitorId, presenceData);
+    
+    // Nếu user đăng nhập sau khi load trang, cập nhật lại email
+    store.subscribe((newState) => {
+      const email = newState.currentUser ? newState.currentUser.email : 'Khách';
+      if (email !== this.lastEmail) {
+        this.lastEmail = email;
+        FirebaseService.setPresence(this.visitorId, { email: email });
+      }
+    });
 
     // Lắng nghe sự kiện trước khi đóng trang để xoá presence
     window.addEventListener('beforeunload', () => {
