@@ -219,4 +219,49 @@ export class FirebaseService {
       console.error("Error listening to all departments:", error);
     });
   }
+  /**
+   * Theo dõi Online (Presence)
+   */
+  static async setPresence(visitorId, data) {
+    if (!db) return;
+    try {
+      const docRef = doc(db, 'presence', visitorId);
+      await setDoc(docRef, {
+        ...data,
+        last_updated: new Date().toISOString()
+      }, { merge: true });
+    } catch (error) {
+      console.warn("Could not set presence:", error);
+    }
+  }
+
+  static async removePresence(visitorId) {
+    if (!db) return;
+    try {
+      const docRef = doc(db, 'presence', visitorId);
+      // Dùng update thay vì delete để giữ log hoặc delete hẳn
+      // Theo yêu cầu của user, ta có thể delete hẳn để db sạch sẽ
+      // Tuy nhiên beforeunload không gọi được await tốt, nên ta gửi beacon hoặc setDoc
+      await setDoc(docRef, { state: 'offline', logoutAt: new Date().toISOString() }, { merge: true });
+    } catch (error) {
+      console.warn("Could not remove presence:", error);
+    }
+  }
+
+  static onPresenceChange(callback) {
+    if (!db) return () => {};
+    const presenceRef = collection(db, 'presence');
+    return onSnapshot(presenceRef, (snapshot) => {
+      const users = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.state !== 'offline') {
+          users.push(data);
+        }
+      });
+      callback(users);
+    }, (error) => {
+      console.error("Lỗi khi theo dõi presence:", error);
+    });
+  }
 }

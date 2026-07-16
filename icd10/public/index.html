@@ -245,14 +245,24 @@
           <!-- Leaderboard View -->
           <div id="dashboard-leaderboard-view" style="flex: 1; display: flex; flex-direction: column;">
             <h3 style="text-align: center; margin-bottom: 10px; color: #0d6efd;">🏆 Đường Đua Các Khoa</h3>
-            <div style="flex: 1; overflow-y: auto;">
+            <div style="flex: 1; overflow-y: auto; max-height: 50%;">
               <ul id="leaderboard-list" class="leaderboard-list">
                 <!-- Leaderboard items go here -->
               </ul>
             </div>
           </div>
 
-          <!-- Detail View (Hidden by default) -->
+          <!-- Presence View (Admin Only) -->
+          <div id="dashboard-presence-view" class="hidden" style="flex: 1; display: flex; flex-direction: column; margin-top: 20px; border-top: 2px dashed var(--border-color); padding-top: 20px;">
+            <h3 style="text-align: center; margin-bottom: 10px; color: #198754;">🟢 Đang Online (<span id="presence-count">0</span>)</h3>
+            <div style="flex: 1; overflow-y: auto;">
+              <ul id="presence-list" class="leaderboard-list" style="font-size: 0.85rem;">
+                <!-- Presence items go here -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- Detail View (When clicked on chart) -->
           <div id="dashboard-detail-view" class="hidden" style="flex: 1; display: flex; flex-direction: column;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
               <h3 id="detail-view-title" style="color: #dc3545; font-size: 1.1rem; flex: 1;">Chi tiết mã bệnh</h3>

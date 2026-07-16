@@ -9,6 +9,7 @@ import { DashboardModal } from '../components/DashboardModal.js';
 import { ImportModal } from '../components/ImportModal.js';
 import { debounce } from '../utils/helpers.js';
 import { DEPARTMENTS } from '../utils/departments.js';
+import { PresenceService } from '../services/presenceService.js';
 
 class App {
   constructor() {
@@ -140,6 +141,9 @@ class App {
         isSwitchingDept = false;
       }
     });
+
+    // Initialize Presence Tracking
+    PresenceService.start();
 
     this.hideLoader();
   }

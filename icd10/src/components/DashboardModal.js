@@ -1,5 +1,6 @@
 import { store } from '../state/store.js';
 import { DEPARTMENTS } from '../utils/departments.js';
+import { FirebaseService } from '../firebase/index.js';
 
 export class DashboardModal {
   constructor() {
@@ -12,12 +13,16 @@ export class DashboardModal {
     
     // Views
     this.leaderboardView = document.getElementById('dashboard-leaderboard-view');
+    this.presenceView = document.getElementById('dashboard-presence-view');
+    this.presenceList = document.getElementById('presence-list');
+    this.presenceCount = document.getElementById('presence-count');
     this.detailView = document.getElementById('dashboard-detail-view');
     this.detailTitle = document.getElementById('detail-view-title');
     this.detailList = document.getElementById('detail-code-list');
     this.btnBack = document.getElementById('btn-back-leaderboard');
 
     this.chartInstance = null;
+    this.unsubscribePresence = null;
 
     if (!this.modal || !this.btnOpen) return;
 
@@ -43,10 +48,27 @@ export class DashboardModal {
     this.modal.classList.remove('hidden');
     this.showLeaderboardView(); // Always reset to leaderboard view
     this.renderAll();
+    
+    // Check if user is admin 12t11phamminhvien
+    const userEmail = store.getState().user?.email || '';
+    if (userEmail.includes('12t11phamminhvien')) {
+      if (this.presenceView) this.presenceView.classList.remove('hidden');
+      if (!this.unsubscribePresence) {
+        this.unsubscribePresence = FirebaseService.onPresenceChange((users) => {
+          this.renderPresenceList(users);
+        });
+      }
+    } else {
+      if (this.presenceView) this.presenceView.classList.add('hidden');
+    }
   }
 
   close() {
     this.modal.classList.add('hidden');
+    if (this.unsubscribePresence) {
+      this.unsubscribePresence();
+      this.unsubscribePresence = null;
+    }
   }
 
   showLeaderboardView() {
@@ -195,6 +217,53 @@ export class DashboardModal {
           }
         }
       }
+    });
+  }
+
+  renderPresenceList(users) {
+    if (!this.presenceList || !this.presenceCount) return;
+    
+    // Lọc bỏ những user quá cũ (ví dụ: > 1 ngày) nếu họ bị kẹt
+    const now = new Date().getTime();
+    const activeUsers = users.filter(u => {
+      if (!u.loginAt) return false;
+      const loginTime = new Date(u.loginAt).getTime();
+      return (now - loginTime) < 24 * 60 * 60 * 1000; // trong vòng 24h
+    });
+
+    // Sắp xếp mới nhất lên đầu
+    activeUsers.sort((a, b) => new Date(b.loginAt) - new Date(a.loginAt));
+
+    this.presenceCount.textContent = activeUsers.length;
+    this.presenceList.innerHTML = '';
+
+    if (activeUsers.length === 0) {
+      this.presenceList.innerHTML = '<li style="padding: 10px; text-align: center; color: var(--text-muted);">Không có ai online.</li>';
+      return;
+    }
+
+    activeUsers.forEach(u => {
+      const li = document.createElement('li');
+      li.className = 'leaderboard-item';
+      li.style.flexDirection = 'column';
+      li.style.alignItems = 'flex-start';
+      li.style.padding = '10px';
+      
+      const loginDate = new Date(u.loginAt);
+      const timeStr = loginDate.toLocaleTimeString('vi-VN');
+
+      li.innerHTML = `
+        <div style="width: 100%; display: flex; justify-content: space-between; margin-bottom: 5px;">
+          <strong style="color: #0d6efd;">${u.email === 'Khách' ? '👤 Khách vãng lai' : '👑 ' + u.email}</strong>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">⏱ ${timeStr}</span>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-main); display: flex; flex-direction: column; gap: 3px;">
+          <span>📱 <b>Thiết bị:</b> ${u.os} - ${u.browser} ${u.isMobile ? '(Mobile)' : ''}</span>
+          <span>📍 <b>Vị trí:</b> ${u.location} (IP: ${u.ip})</span>
+          <span style="color: var(--text-muted); font-size: 0.75rem;">🌐 ISP: ${u.isp || 'N/A'}</span>
+        </div>
+      `;
+      this.presenceList.appendChild(li);
     });
   }
 }
