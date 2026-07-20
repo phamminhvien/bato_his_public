@@ -106,7 +106,9 @@ class App {
       const leaderboard = state.leaderboard || [];
       const merged = new Set();
       leaderboard.forEach(d => {
-        d.codes.forEach(c => merged.add(c));
+        if (d.id !== '51011') {
+          d.codes.forEach(c => merged.add(c));
+        }
       });
       actions.setSelectedCodes(Array.from(merged), {}, {});
     };

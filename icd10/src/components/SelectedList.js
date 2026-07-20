@@ -204,7 +204,7 @@ export class SelectedList {
       let blameHtml = '';
       if (state.departmentId === '51011' && state.showMergedCatalog) {
         const depts = (state.leaderboard || [])
-          .filter(d => d.codes.includes(item.id))
+          .filter(d => d.id !== '51011' && d.codes.includes(item.id))
           .map(d => {
             const deptObj = DEPARTMENTS.find(dep => dep.id === d.id);
             return deptObj ? deptObj.name : d.id;
@@ -414,7 +414,7 @@ export class SelectedList {
           td.innerHTML = labels;
         } else if (col.id === 'KHOA_SU_DUNG') {
           const depts = (state.leaderboard || [])
-            .filter(d => d.codes.includes(item.id))
+            .filter(d => d.id !== '51011' && d.codes.includes(item.id))
             .map(d => {
               const deptObj = DEPARTMENTS.find(dep => dep.id === d.id);
               return deptObj ? deptObj.name : d.id;

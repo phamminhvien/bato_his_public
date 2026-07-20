@@ -47,7 +47,7 @@ export class ExportService {
       // Nếu là chế độ gộp của Phòng KHNV-ĐD, thêm cột "Khoa/Phòng sử dụng"
       if (state.departmentId === '51011' && state.showMergedCatalog) {
         const depts = (state.leaderboard || [])
-          .filter(d => d.codes.includes(item.id))
+          .filter(d => d.id !== '51011' && d.codes.includes(item.id))
           .map(d => {
             const deptObj = DEPARTMENTS.find(dep => dep.id === d.id);
             return deptObj ? deptObj.name : d.id;
