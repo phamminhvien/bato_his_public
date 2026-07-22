@@ -12,6 +12,9 @@ export class ExportService {
     const selectedCodes = state.selectedCodes;
     const icdData = state.icdData;
     
+    const cbSplit = document.getElementById('cb-split-warnings-excel');
+    const splitWarnings = cbSplit ? cbSplit.checked : false;
+    
     // Get visible columns from localStorage, or default
     const savedCols = localStorage.getItem('visibleColumns');
     let visibleSet;
@@ -30,14 +33,23 @@ export class ExportService {
          
          if (visibleSet.has(col.id) || col.id === 'MA_BENH') {
             if (col.id === 'WARNINGS') {
-                let w = [];
-                if (item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"]) w.push("MÃ KHÔNG ĐƯỢC DÙNG LÀ BỆNH CHÍNH");
-                if (item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"]) w.push("MÃ KHÔNG KHUYẾN KHÍCH DÙNG LÀ BỆNH CHÍNH");
-                if (item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"]) w.push("MÃ KHÔNG ĐƯỢC SỬ DỤNG VÌ CÓ MÃ 4 HOẶC 5 KÝ TỰ CỤ THỂ HƠN");
-                if (item["CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"]) w.push("CHỈ SỬ DỤNG MÃ HÓA NGUYÊN NHÂN TỬ VONG");
-                if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"]) w.push("CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NỮ GIỚI");
-                if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"]) w.push("CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NAM GIỚI");
-                row[col.label] = w.join(", ");
+                if (splitWarnings) {
+                    row["MÃ KHÔNG ĐƯỢC DÙNG LÀ BỆNH CHÍNH"] = item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"] ? "X" : "";
+                    row["MÃ KHÔNG KHUYẾN KHÍCH DÙNG LÀ BỆNH CHÍNH"] = item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"] ? "X" : "";
+                    row["MÃ KHÔNG ĐƯỢC SỬ DỤNG VÌ CÓ MÃ 4 HOẶC 5 KÝ TỰ CỤ THỂ HƠN"] = item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"] ? "X" : "";
+                    row["CHỈ SỬ DỤNG MÃ HÓA NGUYÊN NHÂN TỬ VONG"] = item["CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"] ? "X" : "";
+                    row["CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NỮ GIỚI"] = item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"] ? "X" : "";
+                    row["CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NAM GIỚI"] = item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"] ? "X" : "";
+                } else {
+                    let w = [];
+                    if (item["MA_KHONG_DUOC_DUNG_LA_BENH_CHINH"]) w.push("MÃ KHÔNG ĐƯỢC DÙNG LÀ BỆNH CHÍNH");
+                    if (item["MA_KHONG_KHUYEN_KHICH_DUNG_LA_BENH_CHINH"]) w.push("MÃ KHÔNG KHUYẾN KHÍCH DÙNG LÀ BỆNH CHÍNH");
+                    if (item["MA_KHONG_DUOC_SU_DUNG_VI_CO_MA_4_HOAC_5_KY_TU_CU_THE_HON"]) w.push("MÃ KHÔNG ĐƯỢC SỬ DỤNG VÌ CÓ MÃ 4 HOẶC 5 KÝ TỰ CỤ THỂ HƠN");
+                    if (item["CHI_SU_DUNG_MA_HOA_NGUYEN_NHAN_TU_VONG"]) w.push("CHỈ SỬ DỤNG MÃ HÓA NGUYÊN NHÂN TỬ VONG");
+                    if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NU_GIOI"]) w.push("CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NỮ GIỚI");
+                    if (item["CAC_MA_BENH_CHI_CO_HOAC_CHU_YEU_CO_O_NAM_GIOI"]) w.push("CÁC MÃ BỆNH CHỈ CÓ HOẶC CHỦ YẾU CÓ Ở NAM GIỚI");
+                    row[col.label] = w.join(", ");
+                }
             } else {
                 row[col.label] = item[col.id] || '';
             }
